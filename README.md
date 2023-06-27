@@ -35,6 +35,8 @@
 
 - Memo在线笔记（类似于flomo，只不过我这个是自用的，不公开） - [m.unc1e.io](m.unc1e.io)
 
+- Linux命令速查表 - [pst.unc1e.io/cheatsheets/](https://pst.unc1e.io/cheatsheets/)
+
   
 
 
