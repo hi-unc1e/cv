@@ -1,6 +1,6 @@
 
 
-# Unc1e.io
+# Unc1e as a coder
 
 >  张五常：任何学问，我重视基础。
 >
@@ -30,15 +30,9 @@
 
 
 # 二、常用链接
-- excalidraw手绘流程图（推荐） - [d.unc1e.io](https://d.unc1e.io/)
+- excalidraw手绘流程图（推荐） - [d.unc1e.com](https://d.unc1e.com/)
+- CyberChef - [x.unc1e.com](x.unc1e.com)
 
-- CyberChef - [x.unc1e.io](x.unc1e.io)
-
-- Memo在线笔记（类似于flomo，只不过我这个是自用的，不公开） - [m.unc1e.io](m.unc1e.io)
-
-- Linux命令速查表 - [pst.unc1e.io/cheatsheets/](https://pst.unc1e.io/cheatsheets/)
-
-  
 
 
 # 三、其他
