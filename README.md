@@ -28,10 +28,8 @@
 
 
 # 二、常用链接
-- excalidraw手绘流程图（推荐） - [d.unc1e.com](https://d.unc1e.com/)
-- CyberChef - [x.unc1e.com](x.unc1e.com)
 
-
-
-# 三、其他
-- 通过深度学习卷积神经网络（CNN）识别图片验证码 - [https://github.com/hi-unc1e/captcha_identify.pytorch](https://github.com/hi-unc1e/captcha_identify.pytorch)
+| 名称     | 说明                     | URL                         |
+| -------- | ------------------------ | --------------------------- |
+| Excalidraw | 手绘流程图（推荐）         | [d.unc1e.com](https://d.unc1e.com/) |
+| CyberChef | 网络安全瑞士军刀           | [x.unc1e.com](https://x.unc1e.com/) |
