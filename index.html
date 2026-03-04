@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unc1e as a coder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        blockquote {
+            background: #f9f9f9;
+            border-left: 4px solid #ddd;
+            padding: 10px 20px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+        blockquote p {
+            margin-bottom: 8px;
+        }
+        h1 {
+            color: #24292e;
+            margin-bottom: 10px;
+        }
+        h2 {
+            color: #24292e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e1e4e8;
+            padding-bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e4e8;
+        }
+        th {
+            background: #f6f8fa;
+            font-weight: 600;
+        }
+        tr:hover {
+            background: #f6f8fa;
+        }
+        .status-open {
+            color: #22863a;
+        }
+        .status-private {
+            color: #d73a49;
+        }
+        a {
+            color: #0366d6;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .lang {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #e1e4e8;
+            border-radius: 12px;
+            font-size: 12px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>督促自己多沉下心来写代码。</p>
+
+        <blockquote>
+            <p>张五常：任何学问，我重视基础。</p>
+            <p>李笑来：虽然写代码这事刚开始学起来好像门槛很高，那只不过是幻觉，其实门槛比它更高的多的去了。因为用文字值得写出来的是思想，用代码值得写出来的是创造，或者起码是有意义的问题的有效解决方案。到最后，它就是个最基础的工具，还是得靠思考能力。</p>
+            <p>赫伯特·西蒙："最好"是好的敌人。</p>
+        </blockquote>
+
+        <h1>一、编程项目</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>项目</th>
+                    <th>开发内容</th>
+                    <th>状态</th>
+                    <th>语言</th>
+                    <th>URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>高价值漏洞采集与推送服务</td>
+                    <td>为其开发提供微步在线、Struts2的数据源</td>
+                    <td class="status-open">公开</td>
+                    <td><span class="lang">Golang</span></td>
+                    <td><a href="https://github.com/hi-unc1e/watchvuln" target="_blank">watchvuln</a></td>
+                </tr>
+                <tr>
+                    <td>ICP：浏览器插件</td>
+                    <td>Chrome浏览器插件_ICP备案信息查询</td>
+                    <td class="status-open">公开</td>
+                    <td><span class="lang">JavaScript</span></td>
+                    <td><a href="https://github.com/hi-unc1e/Chrome_Extension-Domain-ICP-Info" target="_blank">Chrome_Extension-Domain-ICP-Info</a></td>
+                </tr>
+                <tr>
+                    <td>X-Crack：弱口令爆破工具</td>
+                    <td>在原作者的基础上二开，添加了几种协议</td>
+                    <td class="status-open">公开</td>
+                    <td><span class="lang">Golang</span></td>
+                    <td><a href="https://github.com/ZhiQiAnSecFork/x-crack" target="_blank">x-crack</a></td>
+                </tr>
+                <tr>
+                    <td>BAP-Suite：HTTP Basic认证爆破工具</td>
+                    <td>自己刚学Python时写的一个小项目，勉强能用。</td>
+                    <td class="status-open">公开</td>
+                    <td><span class="lang">Python</span></td>
+                    <td><a href="https://github.com/hi-unc1e/BAP-Suite" target="_blank">BAP-Suite</a></td>
+                </tr>
+                <tr>
+                    <td>Pentest：杂七杂八的渗透小脚本</td>
+                    <td>+selenium反向代理，可用于维持浏览器登录态进行SQL注入。</td>
+                    <td class="status-open">公开</td>
+                    <td><span class="lang">Python</span></td>
+                    <td><a href="https://github.com/hi-unc1e/pentest" target="_blank">pentest</a></td>
+                </tr>
+                <tr>
+                    <td>POC-T：并发漏洞扫描工具</td>
+                    <td>增强版本，我将其改写成了Python3，还增加了几十个EXP/POC，扩充了集中dork的数据源，例如hunter</td>
+                    <td class="status-private">未公开</td>
+                    <td><span class="lang">Python</span></td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>CVE-Monitor：监控github上CVE漏洞并推送到IM</td>
+                    <td>自己开发的小项目。</td>
+                    <td class="status-private">未公开</td>
+                    <td><span class="lang">Python</span></td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>xxx-helper：油猴浏览器插件</td>
+                    <td>浏览器插件入门</td>
+                    <td class="status-private">未公开</td>
+                    <td><span class="lang">JavaScript</span></td>
+                    <td>-</td>
+                </tr>
+                <tr>
+                    <td>RSSHub：自制RSS源</td>
+                    <td>增强版本，我增加了一些漏洞的信息来源。</td>
+                    <td class="status-private">未公开</td>
+                    <td><span class="lang">NodeJS</span></td>
+                    <td>-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2>二、常用链接</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>名称</th>
+                    <th>说明</th>
+                    <th>URL</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Excalidraw</td>
+                    <td>手绘流程图（推荐）</td>
+                    <td><a href="https://d.unc1e.com/" target="_blank">d.unc1e.com</a></td>
+                </tr>
+                <tr>
+                    <td>CyberChef</td>
+                    <td>网络安全瑞士军刀</td>
+                    <td><a href="https://x.unc1e.com/" target="_blank">x.unc1e.com</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
