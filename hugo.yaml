@@ -1,0 +1,122 @@
+baseURL: https://www.unc.la/
+locale: zh-CN
+defaultContentLanguage: zh-cn
+title: Uncle
+theme:
+  - PaperMod
+timeZone: Asia/Shanghai
+
+enableRobotsTXT: true
+enableEmoji: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+pagination:
+  pagerSize: 10
+
+caches:
+  images:
+    dir: :cacheDir/images
+
+taxonomies:
+  category: categories
+  tag: tags
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  highlight:
+    noClasses: false
+
+minify:
+  disableXML: true
+  minifyOutput: true
+
+params:
+  env: production
+  title: Uncle
+  description: Security Researcher · Builder · Systems Thinking
+  keywords:
+    - 安全研究
+    - 软件工程
+    - 系统思考
+    - 个人作品集
+  author: Uncle
+  mainSections:
+    - posts
+  DateFormat: "2006-01-02"
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowWordCount: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowRssButtonInSectionTermList: true
+  ShowAllPagesInArchive: true
+  ShowPageNums: true
+  ShowToc: true
+  UseHugoToc: true
+  comments: false
+  disableSpecial1stPost: true
+
+  label:
+    text: Uncle
+
+  socialIcons:
+    - name: github
+      title: GitHub
+      url: https://github.com/hi-unc1e
+    - name: linkedin
+      title: LinkedIn
+      url: https://www.linkedin.com/in/henry-luo-737924219/
+    - name: rss
+      title: RSS
+      url: /index.xml
+
+  assets:
+    disableHLJS: true
+    theme_color: "#10141d"
+    msapplication_TileColor: "#10141d"
+
+  footer:
+    text: Built for focus · “Done > Best”
+
+menu:
+  main:
+    - identifier: posts
+      name: 文章
+      url: /posts/
+      weight: 10
+    - identifier: archives
+      name: 归档
+      url: /archives/
+      weight: 20
+    - identifier: projects
+      name: 项目
+      url: /projects/
+      weight: 30
+    - identifier: funny
+      name: 小玩意
+      url: /funny/work-checkin/
+      weight: 35
+    - identifier: about
+      name: 关于
+      url: /about/
+      weight: 40
+    - identifier: search
+      name: 搜索
+      url: /search/
+      weight: 50
+    - identifier: yuque
+      name: 语雀
+      url: https://unc1e.cn/
+      weight: 60

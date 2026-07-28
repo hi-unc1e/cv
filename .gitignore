@@ -1,0 +1,16 @@
+# Hugo build output and generated caches
+/public/
+/resources/_gen/
+.hugo_build.lock
+
+# Local deployment state
+/.vercel/
+
+# Machine-local working files
+.DS_Store
+**/.DS_Store
+/.claude/
+/.open.sh
+
+# Local planning/reference material; never publish this directory.
+/devdocs/

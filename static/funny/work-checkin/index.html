@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="一个不诊断、不上传答案的工作状态趣味自检。用 3 分钟看看最近的工作系统在发出什么信号。">
+  <meta name="theme-color" content="#172033">
+  <meta property="og:title" content="工作状态 Check-in · Uncle">
+  <meta property="og:description" content="12 个问题，看看最近的工作系统在发出什么信号。答案只在浏览器中计算。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.unc.la/funny/work-checkin/">
+  <link rel="canonical" href="https://www.unc.la/funny/work-checkin/">
+  <title>工作状态 Check-in · Uncle</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="score.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main class="shell">
+    <nav class="topbar" aria-label="工具导航">
+      <a class="back-link" href="/">← UNC.LA</a>
+      <span class="privacy">LOCAL ONLY · 不上传答案</span>
+    </nav>
+
+    <header class="hero">
+      <p class="eyebrow">FUNNY / WORK CHECK-IN</p>
+      <h1>今天的工作系统，<br><em>运行得怎么样？</em></h1>
+      <p class="hero-copy">想想最近两周，而不是某个特别糟糕的星期一。12 个问题，约 3 分钟。没有好坏答案，也没有心理诊断。</p>
+      <div class="status-console" aria-label="自检说明">
+        <div>
+          <strong>PRE-FLIGHT CHECK</strong>
+          <span>诚实一点就好；所有计算只发生在当前浏览器。</span>
+        </div>
+        <span class="blink" aria-hidden="true">● READY</span>
+      </div>
+    </header>
+
+    <form id="checkin-form" novalidate>
+      <noscript><p class="form-error">这个小工具需要 JavaScript 才能在浏览器本地完成计算。</p></noscript>
+      <div class="progress-sticky">
+        <span class="progress-label">CHECKLIST</span>
+        <div class="progress-track" role="progressbar" aria-label="答题进度" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><span id="progress-fill"></span></div>
+        <strong id="progress-text">0 / 12</strong>
+      </div>
+      <div id="questions" class="questions"></div>
+      <div class="form-actions">
+        <p id="form-error" class="form-error" role="alert" hidden></p>
+        <button class="button" type="submit">生成状态快照 →</button>
+      </div>
+    </form>
+
+    <section id="result" class="result" tabindex="-1" aria-live="polite" hidden></section>
+    <div class="form-actions reset-actions">
+      <span></span>
+      <button id="reset-checkin" class="button secondary" type="button">重新检查</button>
+    </div>
+    <footer class="page-footer">UNC.LA · FOR REFLECTION, NOT DIAGNOSIS</footer>
+  </main>
+</body>
+</html>
