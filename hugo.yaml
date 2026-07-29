@@ -1,7 +1,7 @@
 baseURL: https://www.unc.la/
 locale: zh-CN
 defaultContentLanguage: zh-cn
-title: Uncle
+title: "@Unc1e"
 theme:
   - PaperMod
 timeZone: Asia/Shanghai
@@ -42,14 +42,14 @@ minify:
 
 params:
   env: production
-  title: Uncle
+  title: "@Unc1e"
   description: Security Researcher · Builder · Systems Thinking
   keywords:
     - 安全研究
     - 软件工程
     - 系统思考
     - 个人作品集
-  author: Uncle
+  author: "@Unc1e"
   mainSections:
     - posts
   DateFormat: "2006-01-02"
@@ -69,7 +69,7 @@ params:
   disableSpecial1stPost: true
 
   label:
-    text: Uncle
+    text: "@Unc1e"
 
   socialIcons:
     - name: github

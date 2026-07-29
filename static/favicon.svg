@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Uncle">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="@Unc1e">
   <rect width="64" height="64" rx="14" fill="#172033"/>
   <path d="M17 15v21c0 10 5.7 15 15 15s15-5 15-15V15h-8v20.5c0 5.6-2.2 8.3-7 8.3s-7-2.7-7-8.3V15z" fill="#f7f9fc"/>
   <circle cx="50" cy="14" r="4" fill="#61c7d4"/>
