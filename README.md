@@ -9,7 +9,7 @@
 - `code.unc1e.com`：同一份 Hugo 内容的 GitHub Pages 镜像。
 - `unc1e.com`：预留为 Hugo 域名，绑定与跳转策略后续配置。
 
-站内已发布 115 篇语雀公开文章：81 篇安全研究与工程实践、34 篇思考与生活记录。Web Archive 提交和自动增量同步暂未实现。
+站内同步语雀公开文章，分为安全研究与工程实践、思考与生活记录两个栏目。Web Archive 提交暂未实现。
 
 ## 本地开发
 
@@ -24,10 +24,10 @@ hugo server -D
 原创静态小工具位于 `static/funny/`。工作状态趣味自检的公开路径是
 `/funny/work-checkin/`，所有答案只在浏览器中计算，不会发送到服务端。
 
-计分逻辑可单独验证：
+本地逻辑可单独验证：
 
 ```bash
-node --test tests/work-checkin.test.cjs
+node --test tests/*.test.*
 ```
 
 如果仓库已经克隆：
@@ -41,6 +41,7 @@ hugo server -D
 
 ```bash
 hugo --gc --minify
+node scripts/verify-build.mjs public
 ```
 
 生成目录为 `public/`，它不进入 Git。
@@ -62,9 +63,26 @@ Front matter 约定：
 - `source`：批量导出的语雀来源标识，例如 `yuque/penetration`；迁移内容保留该字段。
 - `draft`：发布前保持 `true`，确认后改为 `false`。
 
-语雀同步的最低原则是：语雀正文为内容真相源，Git 保留公开 Markdown 副本；同步器不得覆盖本站专用 front matter 和静态资源。
+语雀同步的最低原则是：语雀正文为内容真相源，Git 保留公开 Markdown 副本；同步器不会删除博客中已有但本次导出未包含的文章。
+
+导入新导出的语雀文章：
+
+```bash
+# 只检查，不写文件
+node scripts/import-yuque.mjs --dry-run
+
+# 执行增量导入；默认读取 ../knowledge/yuque-export
+node scripts/import-yuque.mjs
+
+# 指定其他导出目录
+node scripts/import-yuque.mjs --source /absolute/path/to/yuque-export
+```
+
+导入器会核对 `index.json`、公开状态、文件、日期和 slug，修复 front matter 引号与不可见 NUL 字节，并拒绝空 slug、非 URL 安全 slug 和重复 slug。已经发布的 slug 默认保持不变；如果同一文件的 slug 被主动修改，旧地址会自动写入 Hugo `aliases`。仅修改标题造成导出文件名变化时，导入器会按稳定 slug 找回原内容文件，避免重复页面。
 
 语雀 CDN 图片继续使用原始外链。项目级 Markdown 图片 render hook 会为 `cdn.nlark.com` 设置 `referrerpolicy="no-referrer"`，避免外站 Referer 触发防盗链 403。
+
+站点启用 Hugo 的 CJK 语言检测，文章元信息按中文字符统计，并以约 500 字/分钟估算阅读时间；不要移除 `hasCJKLanguage: true`，否则无空格的中文段落会被严重低估。
 
 ## 发布
 
