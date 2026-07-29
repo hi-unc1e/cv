@@ -321,6 +321,90 @@ body.home .main {
   line-height: 1.65;
 }
 
+.project-index {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 1.5rem 0 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--border);
+}
+
+.project-index-item {
+  display: flex;
+  min-height: 260px;
+  flex-direction: column;
+  padding: 24px;
+  background: var(--entry);
+}
+
+.project-index-item:last-child:nth-child(odd) {
+  min-height: 220px;
+  grid-column: 1 / -1;
+}
+
+.project-index-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+  color: var(--secondary);
+  font-family: var(--uncle-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+}
+
+.post-content .project-index-item h3 {
+  margin: 24px 0 12px;
+  font-size: 1.28rem;
+}
+
+.post-content .project-index-item h3 a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.project-index-item p {
+  color: var(--secondary);
+  font-size: 0.92rem;
+  line-height: 1.75;
+}
+
+.post-content a.project-index-link {
+  align-self: flex-start;
+  margin-top: auto;
+  color: var(--uncle-blue);
+  font-family: var(--uncle-mono);
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
+.post-content .project-index-item h3 a:hover,
+.post-content a.project-index-link:hover,
+.post-content .project-index-more a:hover {
+  text-decoration: underline;
+}
+
+.project-index-item a:focus-visible,
+.project-index-more a:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--uncle-blue) 65%, transparent);
+  outline-offset: 3px;
+}
+
+.project-index-more {
+  margin-top: 18px;
+  text-align: right;
+}
+
+.post-content .project-index-more a {
+  color: var(--secondary);
+  font-family: var(--uncle-mono);
+  font-size: 0.78rem;
+  text-decoration: none;
+}
+
 @media (max-width: 760px) {
   .home-profile {
     padding-top: 38px;
@@ -336,6 +420,24 @@ body.home .main {
 
   .home-links {
     gap: 10px 18px;
+  }
+
+  .project-index {
+    grid-template-columns: 1fr;
+  }
+
+  .project-index-item {
+    min-height: 0;
+    padding: 22px 20px;
+  }
+
+  .project-index-item:last-child:nth-child(odd) {
+    min-height: 0;
+    grid-column: auto;
+  }
+
+  .post-content a.project-index-link {
+    margin-top: 12px;
   }
 }
 

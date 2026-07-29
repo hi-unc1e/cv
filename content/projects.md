@@ -14,17 +14,42 @@ showtoc: false
 
 ## 编程项目
 
-| 项目 | 开发内容 | 状态 | 语言 | URL |
-| --- | --- | --- | --- | --- |
-| watchvuln | 高价值漏洞采集与推送服务；为其开发提供微步在线、Struts2 的数据源 | 公开 | Golang | [GitHub](https://github.com/hi-unc1e/watchvuln) |
-| ICP：浏览器插件 | Chrome 浏览器插件，查询 ICP 备案信息 | 公开 | JavaScript | [GitHub](https://github.com/hi-unc1e/Chrome_Extension-Domain-ICP-Info) |
-| x-crack | 在原作者基础上二次开发，增加多种协议支持 | 公开 | Golang | [GitHub](https://github.com/ZhiQiAnSecFork/x-crack) |
-| BAP-Suite | HTTP Basic 认证爆破工具，学习 Python 时完成的实用项目 | 公开 | Python | [GitHub](https://github.com/hi-unc1e/BAP-Suite) |
-| pentest | 渗透测试脚本合集，包含用于维持浏览器登录态的 Selenium 反向代理 | 公开 | Python | [GitHub](https://github.com/hi-unc1e/pentest) |
-| POC-T | Python 3 重写，增加数十个 EXP/POC，并扩充 Hunter 等 dork 数据源 | 公开 | Python | [GitHub](https://github.com/hi-unc1e/POC-T) |
-| CVE-Monitor | 监控 GitHub 上的 CVE 漏洞并推送到即时通讯工具 | 未公开 | Python | — |
-| xxx-helper | 油猴浏览器脚本入门项目 | 未公开 | JavaScript | — |
-| RSSHub | 增强版本，增加多个漏洞信息来源 | 未公开 | Node.js | — |
+这里只放仍能代表我当前技术方向的公开仓库。
+
+<div class="project-index">
+  <article class="project-index-item">
+    <div class="project-index-meta"><span>AI SECURITY</span><span>PYTHON · LANGGRAPH</span></div>
+    <h3><a href="https://github.com/hi-unc1e/Auto_JB_APE" rel="noopener">Auto_JB_APE</a></h3>
+    <p>用 LangGraph 编排 Planner、Player、Executor 与 Checker，自动生成、并发执行并迭代攻击提示，用于授权的 LLM 红队测试。</p>
+    <a class="project-index-link" href="https://github.com/hi-unc1e/Auto_JB_APE" rel="noopener">查看源码 <span aria-hidden="true">↗</span></a>
+  </article>
+  <article class="project-index-item">
+    <div class="project-index-meta"><span>RED TEAM</span><span>RUST · WINDOWS</span></div>
+    <h3><a href="https://github.com/hi-unc1e/ds" rel="noopener">DLL Sideloading &amp; Evasion Suite</a></h3>
+    <p>一组以 Rust 实现的 Windows DLL 侧载与内存规避实验，覆盖导出转发、Module Stomping、构建期加密和自动化构建。</p>
+    <a class="project-index-link" href="https://github.com/hi-unc1e/ds" rel="noopener">查看源码 <span aria-hidden="true">↗</span></a>
+  </article>
+  <article class="project-index-item">
+    <div class="project-index-meta"><span>VULNERABILITY RESEARCH</span><span>PYTHON · KUBERNETES</span></div>
+    <h3><a href="https://github.com/hi-unc1e/CVE-2025-1974-poc" rel="noopener">CVE-2025-1974 PoC</a></h3>
+    <p>基于公开研究完善的 IngressNightmare 验证代码，补充本地转发、参数化利用与复现实例。</p>
+    <a class="project-index-link" href="https://github.com/hi-unc1e/CVE-2025-1974-poc" rel="noopener">查看源码 <span aria-hidden="true">↗</span></a>
+  </article>
+  <article class="project-index-item">
+    <div class="project-index-meta"><span>PROTOCOL ENGINEERING</span><span>GO · ICMP</span></div>
+    <h3><a href="https://github.com/hi-unc1e/icmp-transfer" rel="noopener">icmp-transfer</a></h3>
+    <p>把文件分片封装进 ICMP 报文，包含会话、ACK、重传和 CRC 校验，支持 Windows、Linux 与 macOS。</p>
+    <a class="project-index-link" href="https://github.com/hi-unc1e/icmp-transfer" rel="noopener">查看源码 <span aria-hidden="true">↗</span></a>
+  </article>
+  <article class="project-index-item">
+    <div class="project-index-meta"><span>INFRASTRUCTURE</span><span>SHELL · DOCKER</span></div>
+    <h3><a href="https://github.com/hi-unc1e/qiniu-auto-cert" rel="noopener">qiniu-auto-cert</a></h3>
+    <p>将 ACME 申请、DNS 验证、证书上传和续期检查封装为 Docker 服务，面向七牛云 CDN 的无人值守证书维护。</p>
+    <a class="project-index-link" href="https://github.com/hi-unc1e/qiniu-auto-cert" rel="noopener">查看源码 <span aria-hidden="true">↗</span></a>
+  </article>
+</div>
+
+<p class="project-index-more"><a href="https://github.com/hi-unc1e?tab=repositories" rel="noopener">查看全部公开仓库 <span aria-hidden="true">→</span></a></p>
 
 ## 常用工具
 
