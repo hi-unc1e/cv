@@ -1,0 +1,26 @@
+{{- $u := urls.Parse .Destination -}}
+{{- $src := $u.String -}}
+{{- if not $u.IsAbs -}}
+  {{- $path := strings.TrimPrefix "./" $u.Path }}
+  {{- with or (.PageInner.Resources.Get $path) (resources.Get $path) -}}
+    {{- $src = .RelPermalink -}}
+    {{- with $u.RawQuery -}}
+      {{- $src = printf "%s?%s" $src . -}}
+    {{- end -}}
+    {{- with $u.Fragment -}}
+      {{- $src = printf "%s#%s" $src . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $defaults := dict "alt" .Text "src" $src "title" (.Title | transform.HTMLEscape) "loading" "lazy" -}}
+{{- if eq $u.Host "cdn.nlark.com" -}}
+  {{- $defaults = merge $defaults (dict "referrerpolicy" "no-referrer") -}}
+{{- end -}}
+{{- $attributes := merge .Attributes $defaults -}}
+<img
+  {{- range $k, $v := $attributes -}}
+    {{- if $v -}}
+      {{- printf " %s=%q" $k $v | safeHTMLAttr -}}
+    {{- end -}}
+  {{- end -}}>
+{{- /**/ -}}
