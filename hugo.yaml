@@ -1,6 +1,7 @@
 baseURL: https://www.unc.la/
 locale: zh-CN
 defaultContentLanguage: zh-cn
+hasCJKLanguage: true
 title: "@Unc1e"
 theme:
   - PaperMod
@@ -43,7 +44,7 @@ minify:
 params:
   env: production
   title: "@Unc1e"
-  description: Security Researcher · Builder · Systems Thinking
+  description: "@Unc1e 的个人主页：网络安全、工程实践与生活记录。"
   keywords:
     - 安全研究
     - 软件工程
@@ -87,9 +88,6 @@ params:
     theme_color: "#10141d"
     msapplication_TileColor: "#10141d"
 
-  footer:
-    text: Built for focus · “Done > Best”
-
 menu:
   main:
     - identifier: posts
@@ -116,7 +114,3 @@ menu:
       name: 搜索
       url: /search/
       weight: 50
-    - identifier: yuque
-      name: 语雀
-      url: https://unc1e.cn/
-      weight: 60
