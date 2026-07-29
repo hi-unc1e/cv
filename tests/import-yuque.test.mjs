@@ -134,6 +134,38 @@ test("reuses existing content when an exported filename changes but slug stays s
   );
 });
 
+test("keeps a relocated source out of posts and requires its old URL alias", async (context) => {
+  const setup = await fixture([
+    {
+      repository: "thoughts",
+      filename: "Links.md",
+      title: "Links",
+      slug: "qcccnq",
+      markdown: article({ title: "Links", slug: "qcccnq" }).replace(
+        "source: yuque/penetration",
+        "source: yuque/thoughts",
+      ),
+    },
+  ]);
+  context.after(() => fs.rm(setup.root, { recursive: true, force: true }));
+
+  await fs.writeFile(
+    path.join(setup.root, "links.md"),
+    "---\ntitle: 友情链接\naliases:\n  - /posts/thoughts/qcccnq/\n---\n",
+    "utf8",
+  );
+  const result = await importYuque({
+    ...setup,
+    relocations: { "thoughts/qcccnq": "links.md" },
+  });
+
+  assert.equal(result.stats.scanned, 1);
+  assert.equal(result.stats.relocated, 1);
+  await assert.rejects(
+    fs.access(path.join(setup.contentDir, "thoughts", "Links.md")),
+  );
+});
+
 test("rejects duplicate slugs before writing the second article", async (context) => {
   const setup = await fixture([
     {

@@ -80,6 +80,8 @@ node scripts/import-yuque.mjs --source /absolute/path/to/yuque-export
 
 导入器会核对 `index.json`、公开状态、文件、日期和 slug，修复 front matter 引号与不可见 NUL 字节，并拒绝空 slug、非 URL 安全 slug 和重复 slug。已经发布的 slug 默认保持不变；如果同一文件的 slug 被主动修改，旧地址会自动写入 Hugo `aliases`。仅修改标题造成导出文件名变化时，导入器会按稳定 slug 找回原内容文件，避免重复页面。
 
+已经从文章迁为独立页面的语雀内容记录在 `data/yuque-relocations.json`。目标页面必须为原文章地址提供 alias；导入器会验证迁移关系，不会把它重新加入文章列表。
+
 语雀 CDN 图片继续使用原始外链。项目级 Markdown 图片 render hook 会为 `cdn.nlark.com` 设置 `referrerpolicy="no-referrer"`，避免外站 Referer 触发防盗链 403。
 
 站点启用 Hugo 的 CJK 语言检测，文章元信息按中文字符统计，并以约 500 字/分钟估算阅读时间；不要移除 `hasCJKLanguage: true`，否则无空格的中文段落会被严重低估。

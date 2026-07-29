@@ -191,6 +191,7 @@ async function readIfPresent(filename) {
 export async function importYuque({
   sourceDir,
   contentDir,
+  relocations = {},
   dryRun = false,
   log = () => {},
 }) {
@@ -201,6 +202,7 @@ export async function importYuque({
     added: 0,
     updated: 0,
     unchanged: 0,
+    relocated: 0,
     shadowedIndexEntries: 0,
   };
   const matched = new Set();
@@ -273,6 +275,38 @@ export async function importYuque({
       }
       slugs.set(metadata.slug, filename);
       matched.add(`${repository}\0${filename}\0${metadata.slug}`);
+      stats.scanned += 1;
+
+      const relocation = relocations[`${repository}/${metadata.slug}`];
+      if (relocation) {
+        if (
+          typeof relocation !== "string" ||
+          path.isAbsolute(relocation) ||
+          relocation.split(path.sep).includes("..")
+        ) {
+          throw new Error(
+            `${repository}/${filename}: invalid relocation ${JSON.stringify(relocation)}`,
+          );
+        }
+
+        const relocatedPath = path.join(path.dirname(contentDir), relocation);
+        const relocatedMarkdown = await readIfPresent(relocatedPath);
+        if (!relocatedMarkdown) {
+          throw new Error(
+            `${repository}/${filename}: relocated content ${relocation} does not exist`,
+          );
+        }
+        const relocated = splitFrontMatter(relocatedMarkdown, relocation);
+        const oldUrl = `/posts/${repository}/${metadata.slug}/`;
+        if (!readAliases(relocated.frontMatter).includes(oldUrl)) {
+          throw new Error(
+            `${repository}/${filename}: relocated content ${relocation} must alias ${oldUrl}`,
+          );
+        }
+
+        stats.relocated += 1;
+        continue;
+      }
 
       const exactTarget = path.join(targetRepository, filename);
       const exactExisting = await readIfPresent(exactTarget);
@@ -299,7 +333,6 @@ export async function importYuque({
         label: `${repository}/${filename}`,
       });
 
-      stats.scanned += 1;
       if (existingMarkdown === normalized) {
         stats.unchanged += 1;
         continue;
@@ -387,13 +420,17 @@ async function main() {
     return;
   }
 
+  const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+  const relocationsPath = path.join(projectRoot, "data", "yuque-relocations.json");
+  const relocations = JSON.parse(await fs.readFile(relocationsPath, "utf8"));
   const result = await importYuque({
     ...options,
+    relocations,
     log: (message) => console.log(message),
   });
 
   console.log(
-    `Yuque import: ${result.stats.scanned} scanned, ${result.stats.added} added, ${result.stats.updated} updated, ${result.stats.unchanged} unchanged`,
+    `Yuque import: ${result.stats.scanned} scanned, ${result.stats.added} added, ${result.stats.updated} updated, ${result.stats.unchanged} unchanged, ${result.stats.relocated} relocated`,
   );
   for (const warning of result.warnings) {
     console.warn(`warning: ${warning}`);
