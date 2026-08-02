@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Runtime Guard (ARG) — 技术讲解</title>
+<style>
+  :root{
+    --bg:#0d1117; --bg2:#161b22; --bg3:#21262d; --bd:#30363d;
+    --tx:#c9d1d9; --txd:#8b949e; --acc:#58a6ff; --acc2:#3fb950;
+    --warn:#f0883e; --danger:#f85149; --code:#1f2428;
+    --mono:'SF Mono','Cascadia Code',Consolas,'Liberation Mono',Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--tx);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    line-height:1.7; font-size:16px;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px}
+  header{
+    border-bottom:1px solid var(--bd); padding:40px 0 30px;
+    background:linear-gradient(180deg,#0d1117 0%, #161b22 100%);
+  }
+  header h1{margin:0 0 8px; font-size:34px; letter-spacing:-0.5px}
+  header h1 .ver{color:var(--acc2); font-size:18px; font-weight:500; margin-left:8px}
+  header .sub{color:var(--txd); font-size:17px}
+  header .meta{margin-top:18px; display:flex; gap:8px; flex-wrap:wrap}
+  .tag{
+    font:13px var(--mono); background:var(--bg3); border:1px solid var(--bd);
+    padding:3px 10px; border-radius:12px; color:var(--txd);
+  }
+  nav.toc{
+    position:sticky; top:0; z-index:10; background:rgba(13,17,23,0.92);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--bd);
+    padding:12px 0; font-size:14px;
+  }
+  nav.toc .wrap{display:flex; gap:18px; flex-wrap:wrap}
+  nav.toc a{color:var(--txd); text-decoration:none; white-space:nowrap}
+  nav.toc a:hover{color:var(--acc)}
+  main{padding:40px 0 80px}
+  section{margin:0 0 56px; scroll-margin-top:70px}
+  h2{
+    font-size:24px; border-bottom:1px solid var(--bd); padding-bottom:10px;
+    margin:0 0 20px; display:flex; align-items:center; gap:10px;
+  }
+  h2 .n{
+    font:600 14px var(--mono); color:var(--bg); background:var(--acc);
+    width:26px; height:26px; border-radius:6px; display:inline-flex;
+    align-items:center; justify-content:center;
+  }
+  h3{font-size:18px; margin:26px 0 12px; color:var(--acc)}
+  p{margin:12px 0}
+  ul,ol{margin:12px 0; padding-left:24px}
+  li{margin:6px 0}
+  code{
+    font-family:var(--mono); font-size:0.88em; background:var(--bg3);
+    padding:2px 6px; border-radius:4px; color:var(--acc);
+  }
+  pre{
+    background:var(--code); border:1px solid var(--bd); border-radius:8px;
+    padding:16px; overflow-x:auto; margin:16px 0;
+  }
+  pre code{background:none; padding:0; color:#e6edf3; font-size:13px}
+  .kw{color:#ff7b72}.str{color:#a5d6ff}.num{color:#79c0ff}.com{color:#8b949e}
+  .fn{color:#d2a8ff}.ty{color:#ffa657}
+  .card{
+    background:var(--bg2); border:1px solid var(--bd); border-radius:10px;
+    padding:20px 22px; margin:16px 0;
+  }
+  .grid{display:grid; gap:16px; margin:16px 0}
+  .grid.cols-2{grid-template-columns:1fr 1fr}
+  .grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:780px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+  .item{
+    background:var(--bg2); border:1px solid var(--bd); border-radius:8px; padding:16px;
+  }
+  .item h4{margin:0 0 8px; font-size:15px; color:var(--acc)}
+  .item p{margin:0; font-size:14px; color:var(--txd)}
+  .callout{
+    border-left:3px solid var(--acc); background:rgba(88,166,255,0.08);
+    padding:14px 18px; border-radius:0 8px 8px 0; margin:16px 0;
+  }
+  .callout.warn{border-color:var(--warn); background:rgba(240,136,62,0.08)}
+  .callout.danger{border-color:var(--danger); background:rgba(248,81,73,0.08)}
+  .callout.ok{border-color:var(--acc2); background:rgba(63,185,80,0.08)}
+  .callout b{color:#fff}
+  table{border-collapse:collapse; width:100%; margin:16px 0; font-size:14px}
+  th,td{border:1px solid var(--bd); padding:10px 12px; text-align:left; vertical-align:top}
+  th{background:var(--bg3); color:var(--acc); font-weight:600}
+  .pill{
+    display:inline-block; font:12px var(--mono); padding:1px 8px;
+    border-radius:10px; border:1px solid var(--bd); color:var(--txd);
+  }
+  .pill.g{color:var(--acc2); border-color:var(--acc2)}
+  .pill.r{color:var(--danger); border-color:var(--danger)}
+  .pill.y{color:var(--warn); border-color:var(--warn)}
+  .flow{
+    background:var(--code); border:1px solid var(--bd); border-radius:8px;
+    padding:18px; font-family:var(--mono); font-size:13px; line-height:1.5;
+    overflow-x:auto; white-space:pre; color:#e6edf3;
+  }
+  .layer-list{list-style:none; padding:0; counter-reset:layer}
+  .layer-list li{
+    counter-increment:layer; position:relative; padding:14px 16px 14px 56px;
+    background:var(--bg2); border:1px solid var(--bd); border-radius:8px; margin:10px 0;
+  }
+  .layer-list li::before{
+    content:counter(layer); position:absolute; left:14px; top:14px;
+    width:28px; height:28px; background:var(--acc); color:var(--bg);
+    border-radius:6px; font:600 14px var(--mono);
+    display:flex; align-items:center; justify-content:center;
+  }
+  footer{border-top:1px solid var(--bd); padding:24px 0; color:var(--txd); font-size:13px}
+  a.lk{color:var(--acc); text-decoration:none; border-bottom:1px dotted var(--acc)}
+  a.lk:hover{opacity:.8}
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:0; margin:16px 0}
+  @media(max-width:780px){.compare{grid-template-columns:1fr}}
+  .compare > div{padding:16px 18px; border:1px solid var(--bd)}
+  .compare > div:first-child{border-radius:8px 0 0 8px}
+  .compare > div:last-child{border-radius:0 8px 8px 0}
+  @media(max-width:780px){
+    .compare > div:first-child{border-radius:8px 8px 0 0}
+    .compare > div:last-child{border-radius:0 0 8px 8px}
+  }
+  .compare .bad{background:rgba(248,81,73,0.06)}
+  .compare .good{background:rgba(63,185,80,0.06)}
+  .compare h4{margin:0 0 8px}
+  .compare .bad h4{color:var(--danger)} .compare .good h4{color:var(--acc2)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <svg viewBox="0 0 940 110" role="img" aria-label="ARG banner" style="width:100%;max-width:940px;display:block;margin:0 0 22px">
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#1f6feb"/>
+          <stop offset="100%" stop-color="#a371f7"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#a371f7" stop-opacity="0.15"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="940" height="110" rx="14" fill="url(#g2)" stroke="#30363d"/>
+      <path d="M 60 24 L 100 40 L 100 64 Q 100 90 60 104 Q 20 90 20 64 L 20 40 Z" fill="url(#g1)" stroke="#58a6ff" stroke-width="1.5"/>
+      <text x="60" y="72" text-anchor="middle" fill="#fff" font-size="30" font-weight="700" font-family="monospace">ARG</text>
+      <text x="130" y="50" fill="#c9d1d9" font-size="26" font-weight="700">Agent Runtime Guard</text>
+      <text x="130" y="76" fill="#a371f7" font-size="14" font-family="monospace">v1.1.6 · local-first runtime guard</text>
+      <text x="130" y="96" fill="#8b949e" font-size="12" font-family="monospace">Trace · Rule · Policy · Fail-open — endpoint first</text>
+      <g font-family="monospace" font-size="11">
+        <circle cx="760" cy="55" r="22" fill="#21262d" stroke="#58a6ff"/><text x="760" y="59" text-anchor="middle" fill="#58a6ff">HOOK</text>
+        <line x1="782" y1="55" x2="818" y2="55" stroke="#8b949e" stroke-dasharray="3,3"/>
+        <circle cx="840" cy="55" r="22" fill="#21262d" stroke="#3fb950"/><text x="840" y="59" text-anchor="middle" fill="#3fb950">OBS</text>
+      </g>
+    </svg>
+    <h1>Agent Runtime Guard <span class="ver">v1.1.6</span></h1>
+    <div class="sub">本地优先 · 零外部依赖 · 把 Agent 动作记成执行链，再做可回滚的轻量强制</div>
+    <div class="meta">
+      <span class="tag">Local-First / Tracing-First / Fail-Open</span>
+      <span class="tag">Python 3.10+ · pure stdlib</span>
+      <span class="tag">Claude Code Hook · Tool Broker</span>
+      <span class="tag">observe / alert / redact / deny</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#what">① 是什么</a>
+    <a href="#why">② 解决什么</a>
+    <a href="#core">③ 核心链路</a>
+    <a href="#design">④ 设计原则</a>
+    <a href="#rules">⑤ 规则与策略</a>
+    <a href="#hook">⑥ 端侧接入</a>
+    <a href="#threat">⑦ 威胁模型</a>
+    <a href="#vs">⑧ vs AGT</a>
+    <a href="#run">⑨ 怎么跑</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="what">
+<h2><span class="n">1</span>一句话:它是什么</h2>
+<p>
+ARG 是一个面向 AI Agent 的 <b>本地运行时安全护栏</b>。
+它不是完整 EDR，也不是企业 IAM 平台，而是：
+把 Agent 的每一次动作记录成执行链，用本地规则做动态判定，并在可回滚的前提下做轻量强制。
+</p>
+
+<div class="callout">
+<b>一句话给技术人:</b> 在「模型已经决定调用工具、真实副作用还没发生」的边界上，
+挂一层纯 Python 标准库的判定器。默认可以只观察；高置信风险再 deny；
+Guard 自己挂了，<b>业务不能一起挂</b>。
+</div>
+
+<div class="card">
+<h3>定位坐标</h3>
+<div class="grid cols-3">
+  <div class="item"><h4>不是什么</h4><p>不是模型对齐、不是 prompt 防火墙、不是中心化网关全家桶、不是 eBPF/内核隔离。</p></div>
+  <div class="item"><h4>是什么</h4><p>端侧 / 进程内的 <b>trace + rule + policy</b> 闭环：可观测、可灰度、可解释、可回滚。</p></div>
+  <div class="item"><h4>类比</h4><p>= 本机 Agent 的“轻量 WAF + auditd + 一键 dry-run”，坐在 tool dispatch 点上。</p></div>
+</div>
+</div>
+</section>
+
+<section id="why">
+<h2><span class="n">2</span>它要解决的真实痛点</h2>
+<p>端侧 Agent（Claude Code / Cursor / Qoder / Electron 产品）已经能读写文件、跑 shell、装依赖、读密钥、出网。
+风险不再只是「服务端 API 是否越权」，而是：</p>
+
+<div class="grid cols-3">
+  <div class="item">
+    <h4>① 动作发生在本机</h4>
+    <p><code>curl | bash</code>、<code>npm install</code>、读 <code>~/.ssh</code>、打 metadata endpoint——
+    中心网关经常看不见，或来不及看见。</p>
+  </div>
+  <div class="item">
+    <h4>② 二阶注入最后落成 tool call</h4>
+    <p>网页 / 邮件 / 商品详情里的指令，最终都要变成一次 tool 调用。
+    prompt 里“请忽略”没用；dispatcher 前判一次有用。</p>
+  </div>
+  <div class="item">
+    <h4>③ 强制太早会被卸掉</h4>
+    <p>端侧 fail-closed 一误伤开发流，用户就关 Guard。
+    关了等于裸奔。所以 ARG 先把 <b>精确率 / 体验 / 降级通道</b> 当最高优先级。</p>
+  </div>
+</div>
+
+<div class="callout danger">
+<b>核心判断:</b> 你不能让概率模型自己当警察。
+必须把动作抽成结构（tool / args / resource / actor），再用确定性规则判。
+ARG 做的就是这件事——而且默认允许灰度，不当单点故障。
+</div>
+</section>
+
+<section id="core">
+<h2><span class="n">3</span>核心链路:一条事件怎么走完</h2>
+
+<svg viewBox="0 0 900 420" role="img" aria-label="ARG 事件链路" style="width:100%;max-width:860px;display:block;margin:16px auto;background:var(--code);border:1px solid var(--bd);border-radius:8px">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+  </defs>
+
+  <rect x="30" y="28" width="160" height="56" rx="8" fill="#21262d" stroke="#58a6ff"/>
+  <text x="110" y="52" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="600" font-family="monospace">Runtime Event</text>
+  <text x="110" y="70" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">JSONL / Hook JSON</text>
+
+  <line x1="190" y1="56" x2="230" y2="56" stroke="#8b949e" marker-end="url(#arr)"/>
+
+  <rect x="230" y="28" width="150" height="56" rx="8" fill="#21262d" stroke="#a371f7"/>
+  <text x="305" y="52" text-anchor="middle" fill="#a371f7" font-size="13" font-weight="600" font-family="monospace">Normalize</text>
+  <text x="305" y="70" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">models.py</text>
+
+  <line x1="380" y1="56" x2="420" y2="56" stroke="#8b949e" marker-end="url(#arr)"/>
+
+  <rect x="420" y="28" width="170" height="56" rx="8" fill="rgba(88,166,255,0.10)" stroke="#58a6ff"/>
+  <text x="505" y="52" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="600" font-family="monospace">Rule Engine</text>
+  <text x="505" y="70" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">recommended mode</text>
+
+  <line x1="590" y1="56" x2="630" y2="56" stroke="#8b949e" marker-end="url(#arr)"/>
+
+  <rect x="630" y="28" width="170" height="56" rx="8" fill="rgba(63,185,80,0.10)" stroke="#3fb950"/>
+  <text x="715" y="52" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="600" font-family="monospace">Policy Layer</text>
+  <text x="715" y="70" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">enforce / dry-run</text>
+
+  <line x1="715" y1="84" x2="715" y2="130" stroke="#8b949e" marker-end="url(#arr)"/>
+
+  <rect x="120" y="140" width="660" height="100" rx="10" fill="rgba(163,113,247,0.06)" stroke="#a371f7"/>
+  <text x="450" y="168" text-anchor="middle" fill="#a371f7" font-size="13" font-weight="700" font-family="monospace">Decision: observe · alert · redact · deny</text>
+  <text x="450" y="194" text-anchor="middle" fill="#c9d1d9" font-size="12" font-family="monospace">mode / recommended_mode / enforced / rule_id / reason / latency_ms</text>
+  <text x="450" y="218" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">检测与强制解耦：规则只推荐，策略决定是否真正拦</text>
+
+  <line x1="450" y1="240" x2="450" y2="280" stroke="#8b949e" marker-end="url(#arr)"/>
+
+  <rect x="120" y="286" width="300" height="70" rx="8" fill="#21262d" stroke="#f0883e"/>
+  <text x="270" y="316" text-anchor="middle" fill="#f0883e" font-size="13" font-weight="600" font-family="monospace">Redact secrets</text>
+  <text x="270" y="336" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">落库前掩码密钥</text>
+
+  <rect x="480" y="286" width="300" height="70" rx="8" fill="#21262d" stroke="#3fb950"/>
+  <text x="630" y="316" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="600" font-family="monospace">SQLite Trace</text>
+  <text x="630" y="336" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">trace_id 可还原执行链</text>
+</svg>
+
+<div class="flow">运行时事件 → 规范化 → 规则引擎(推荐决策) → 策略层(强制/dry-run/allowlist)
+         → 脱敏 → 本地 SQLite → CLI 查询 / Hook 回写</div>
+
+<div class="card">
+<h3>决策结构（可解释）</h3>
+<pre><code>{
+  <span class="str">"mode"</span>: <span class="str">"observe"</span>,            <span class="com">// 实际生效</span>
+  <span class="str">"recommended_mode"</span>: <span class="str">"deny"</span>,   <span class="com">// 规则推荐</span>
+  <span class="str">"enforced"</span>: <span class="kw">false</span>,           <span class="com">// dry-run / allowlist 时为 false</span>
+  <span class="str">"rule_id"</span>: <span class="str">"block-metadata-access"</span>,
+  <span class="str">"reason"</span>: <span class="str">"Agent network request targets cloud metadata endpoint"</span>
+}</code></pre>
+</div>
+</section>
+
+<section id="design">
+<h2><span class="n">4</span>设计原则（差异化来源）</h2>
+
+<ol class="layer-list">
+  <li>
+    <b>Local-First</b> — <span class="pill g">零外部依赖</span><br>
+    纯标准库，单机可跑。中心不可用时，本机 Guard 仍可工作；
+    这是端侧 Agent 场景的硬要求。
+  </li>
+  <li>
+    <b>Tracing-First</b> — <span class="pill">先看见再强制</span><br>
+    先完整记录 <code>context → action → object → decision</code>，
+    再谈拦截。很多事故不是“没拦住”，而是“说不清谁干的”。
+  </li>
+  <li>
+    <b>Fail-Open</b> — <span class="pill y">安全组件不当 SPOF</span><br>
+    规则异常 / 判定超时 → 默认放行并记账。
+    宁可短暂漏，也不因 Guard 把自己变成全员停摆。
+  </li>
+  <li>
+    <b>检测 / 强制解耦</b> — <span class="pill">Policy as Code</span><br>
+    规则只出推荐；<code>policy.json</code> 决定 enforce / dry-run / allowlist。
+    一键 <code>--observe</code> 全局回滚，便于推广灰度。
+  </li>
+</ol>
+
+<div class="callout ok">
+<b>企业落地纪律:</b> 高 TP（true positive）与零噪音优先于“看起来很严”。
+先 observe 证明 precision，再对高置信规则开 deny。
+没有精确率，就没有强制权。
+</div>
+</section>
+
+<section id="rules">
+<h2><span class="n">5</span>规则与策略</h2>
+
+<h3>默认规则覆盖（节选）</h3>
+<table>
+<tr><th>rule_id</th><th>mode</th><th>说明</th></tr>
+<tr><td><code>block-metadata-access</code></td><td><span class="pill r">deny</span></td><td>拦截 cloud metadata endpoint</td></tr>
+<tr><td><code>deny-dangerous-shell</code></td><td><span class="pill r">deny</span></td><td>破坏性 / 远程执行 shell（含常见混淆）</td></tr>
+<tr><td><code>deny-package-install-shell</code></td><td><span class="pill r">deny</span></td><td>拦截 npm/pip/apt 等依赖安装</td></tr>
+<tr><td><code>deny-sensitive-file-read</code></td><td><span class="pill r">deny</span></td><td>拦截 ~/.ssh、.env、kubeconfig 等</td></tr>
+<tr><td><code>redact-secret-log</code></td><td><span class="pill y">redact</span></td><td>日志落库前掩码密钥</td></tr>
+<tr><td><code>alert-identity-collapse</code></td><td><span class="pill">alert</span></td><td>用户身份塌缩成 service account</td></tr>
+<tr><td><code>alert-external-context-shell</code></td><td><span class="pill">alert</span></td><td>外部上下文触发 shell</td></tr>
+<tr><td><code>deny-cross-tenant-oss-write</code></td><td><span class="pill r">deny</span></td><td>OSS 跨租户命名空间越界</td></tr>
+</table>
+
+<div class="card">
+<h3>策略层（强制开关）</h3>
+<pre><code>{
+  <span class="str">"default_mode"</span>: <span class="str">"enforce"</span>,
+  <span class="str">"dry_run"</span>: <span class="kw">false</span>,
+  <span class="str">"apps"</span>: { <span class="str">"demo-agent"</span>: <span class="str">"enforce"</span> },
+  <span class="str">"allowlist"</span>: [
+    {
+      <span class="str">"rule_id"</span>: <span class="str">"deny-sensitive-file-read"</span>,
+      <span class="str">"app_id"</span>: <span class="str">"demo-agent"</span>,
+      <span class="str">"reason"</span>: <span class="str">"known safe probe"</span>
+    }
+  ]
+}</code></pre>
+<p style="margin-top:12px;color:var(--txd);font-size:14px">
+<code>dry_run: true</code> 或 CLI <code>--observe</code>：推荐仍是 deny，实际 mode 降为 observe，
+但命中率继续统计——这是推广时最关键的“先证明再拦截”。
+</p>
+</div>
+
+<div class="card">
+<h3>事件类型</h3>
+<p>
+<code>context_received</code> · <code>tool_call</code> · <code>network_request</code> ·
+<code>oss_operation</code> · <code>log_write</code> · <code>shell_exec</code> · <code>file_read</code>
+</p>
+</div>
+</section>
+
+<section id="hook">
+<h2><span class="n">6</span>端侧接入路线</h2>
+<p>ARG 优先面向 <b>端侧 Agent Runtime</b>：Claude Code、Cursor、Qoder、Electron + LLM 产品。
+不同客户端只写 Adapter；规则、策略、trace、benchmark 复用。</p>
+
+<svg viewBox="0 0 860 180" role="img" aria-label="端侧接入" style="width:100%;max-width:820px;display:block;margin:16px auto;background:var(--code);border:1px solid var(--bd);border-radius:8px">
+  <rect x="20" y="40" width="180" height="70" rx="8" fill="#21262d" stroke="#58a6ff"/>
+  <text x="110" y="72" text-anchor="middle" fill="#58a6ff" font-size="13" font-weight="600" font-family="monospace">Endpoint Agent</text>
+  <text x="110" y="92" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">Claude / Cursor / Electron</text>
+
+  <rect x="240" y="40" width="180" height="70" rx="8" fill="#21262d" stroke="#a371f7"/>
+  <text x="330" y="72" text-anchor="middle" fill="#a371f7" font-size="13" font-weight="600" font-family="monospace">Hook / Broker</text>
+  <text x="330" y="92" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">PreToolUse / Tool Broker</text>
+
+  <rect x="460" y="40" width="180" height="70" rx="8" fill="rgba(63,185,80,0.10)" stroke="#3fb950"/>
+  <text x="550" y="72" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="600" font-family="monospace">Guard Core</text>
+  <text x="550" y="92" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">rules + policy + SQLite</text>
+
+  <rect x="680" y="40" width="160" height="70" rx="8" fill="#21262d" stroke="#f0883e"/>
+  <text x="760" y="72" text-anchor="middle" fill="#f0883e" font-size="13" font-weight="600" font-family="monospace">Decision</text>
+  <text x="760" y="92" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">allow/alert/deny</text>
+
+  <text x="430" y="150" text-anchor="middle" fill="#8b949e" font-size="12" font-family="monospace">副作用发生前判定 · Hook 失败时 fail-open</text>
+</svg>
+
+<div class="grid cols-2">
+  <div class="item">
+    <h4>Claude Code</h4>
+    <p>
+      关键点 <code>PreToolUse</code>。危险 Bash / 装依赖 / 读密钥可 deny；
+      普通测试命令只 observe，不抢宿主权限系统。
+      提供 Node wrapper：异常 exit fail-open，避免 Guard 阻断开发。
+    </p>
+  </div>
+  <div class="item">
+    <h4>Electron / function-call</h4>
+    <p>
+      外部商品信息、网页、附件一旦影响工具调用，先经 Main Process Tool Broker
+      转成 ARG event，再决定 observe / ask / deny。
+      模型输出绝不能直通原始 command runner。
+    </p>
+  </div>
+</div>
+
+<div class="callout">
+<b>建议观测链路:</b>
+<code>SessionStart</code> → <code>UserPromptSubmit</code>（intent anchor）→
+<code>PreToolUse</code>（主判定）→ <code>PostToolUse</code> → <code>Stop/SessionEnd</code>。
+</div>
+</section>
+
+<section id="threat">
+<h2><span class="n">7</span>Agentic 威胁模型（工程分类）</h2>
+<table>
+<tr><th>类别</th><th>含义</th><th>ARG 现状</th></tr>
+<tr><td><b>过度主动</b></td><td>理解了任务，但越过授权边界</td><td>高危 shell / 安装 / 敏感文件 deny；其余 alert</td></tr>
+<tr><td><b>诚实误判</b></td><td>无恶意，但误判环境/归属/影响面</td><td>租户 OSS 前缀、私网访问、metadata 拦截</td></tr>
+<tr><td><b>Prompt Injection</b></td><td>外部上下文劫持目标</td><td>外部 context 触发网络/shell 告警；dispatcher 前硬拦高危后果</td></tr>
+<tr><td><b>模型失配</b></td><td>行为持续无法用用户目标解释</td><td>靠 trace 还原；不做完整行为基线（边界内）</td></tr>
+</table>
+<div class="callout warn">
+<b>诚实边界:</b> ARG 不保证阻断所有 prompt injection；
+它优先阻断高置信危险后果，并留下可复盘的执行链。
+不做 eBPF；不做完整沙箱；不把服务端业务 API 鉴权当第一优先级。
+</div>
+</section>
+
+<section id="vs">
+<h2><span class="n">8</span>对比 AGT：互补，不是替代</h2>
+<table>
+<tr><th></th><th>ARG</th><th>微软 AGT</th></tr>
+<tr><td>默认姿态</td><td><span class="pill y">fail-open</span> 灰度</td><td><span class="pill r">fail-closed</span> 默认拒绝</td></tr>
+<tr><td>依赖</td><td>零外部依赖 / 纯 stdlib</td><td>多语言 SDK + 可选 Rust/OPA/Cedar</td></tr>
+<tr><td>重心</td><td>端侧 Runtime / Hook / Tool Broker</td><td>企业应用中间件 / 身份 / 沙箱 / 合规</td></tr>
+<tr><td>审计</td><td>本地 SQLite + trace_id</td><td>Merkle / 签名 TRACE / Decision Record</td></tr>
+<tr><td>卖点</td><td>灰度不可能停摆</td><td>结构上不可能作恶</td></tr>
+<tr><td>上手</td><td>一条 CLI demo</td><td>概念面厚，生产配置成本高</td></tr>
+</table>
+
+<div class="compare">
+  <div class="good">
+    <h4>什么时候选 ARG 思路</h4>
+    端侧 Agent、开发者本机、试点推广、需要 dry-run 证明 precision、
+    安全组件不能成为 SPOF。
+  </div>
+  <div class="bad">
+    <h4>什么时候选 AGT 思路</h4>
+    强合规生产、多 Agent 身份归因、防篡改审计、
+    需要 fail-closed 的“宁可全停，不可裸奔”。
+  </div>
+</div>
+
+<div class="callout ok">
+<b>落地建议:</b> 企业统一入口可走大模型安全网关（低侵入）；
+端侧真实副作用仍要 Tool Call / Hook / Broker 兜底。
+ARG 与 AGT 是不同 blast radius 上的纵深，不是二选一。
+</div>
+</section>
+
+<section id="run">
+<h2><span class="n">9</span>5 分钟上手</h2>
+<pre><code><span class="com"># 需要 Python 3.10+，无第三方依赖</span>
+<span class="com"># 1. 内置 demo（覆盖主要风险类别）</span>
+python3 -m agent_runtime_guard.cli demo
+
+<span class="com"># 2. 一键全局观察模式（推荐决策仍记，强制降级）</span>
+python3 -m agent_runtime_guard.cli demo --observe
+
+<span class="com"># 3. 处理自己的 JSONL</span>
+python3 -m agent_runtime_guard.cli ingest \
+  --events examples/demo_events.jsonl \
+  --rules  rules/default_rules.json \
+  --policy config/policy.json \
+  --db     .arg/trace.db
+
+<span class="com"># 4. 按 trace 还原执行链</span>
+python3 -m agent_runtime_guard.cli trace demo-ssrf --timeline
+
+<span class="com"># 5. Claude Code PreToolUse demo</span>
+python3 -m agent_runtime_guard.cli hook claude-code \
+  --input examples/claude_code_pretooluse_bash_danger.json
+
+<span class="com"># 6. labeled benchmark / 对抗样本</span>
+python3 -m agent_runtime_guard.cli bench
+python3 -m agent_runtime_guard.cli bench --events examples/evasion_events.jsonl --strict</code></pre>
+
+<div class="card">
+<h3>验收时看什么</h3>
+<ul>
+  <li><b>precision</b>：deny/alert 有多少是真风险（人工核验）</li>
+  <li><b>dry_run_hits</b>：灰度期间“若 enforce 会拦什么”</li>
+  <li><b>latency_ms</b>：端侧可接受的判定延迟</li>
+  <li><b>bypass_rate</b>：对抗样本（混淆 shell / 编码 IP / MCP 边界）漏报率</li>
+</ul>
+</div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    讲解基于本地仓库 <code>agent-runtime-guard</code>（v1.1.6）README / rules / docs 实证生成 ·
+    与微软 AGT 对照见配套 <a class="lk" href="./AGT_讲解.html">AGT_讲解.html</a> ·
+    深度差距图见 <code>devdocs/A0_AGT_deep_read.md</code>
+  </div>
+</footer>
+
+</body>
+</html>

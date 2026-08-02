@@ -1,0 +1,41 @@
+{{- /* 单篇文章切换整页排版模板：frontmatter `pageStyle: clear-guide` 或站点 params.pageStyle，注入对应模板 CSS，仅覆盖本页。 */ -}}
+{{- $ps := .Page.Params.pageStyle | default site.Params.pageStyle -}}
+{{- with $ps -}}
+  {{- with resources.Get (printf "css/templates/%s.css" .) -}}
+<style>{{ .Content | safeCSS }}</style>
+  {{- else -}}
+{{- warnf "pageStyle %q not found in assets/css/templates/" . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* 单篇文章切换代码高亮风格：frontmatter 写 `codeStyle: tokyonight-night` 即生效，仅覆盖本页。 */ -}}
+{{- with .Page.Params.codeStyle -}}
+  {{- with resources.Get (printf "highlight/%s.css" .) -}}
+<style>{{ .Content | safeCSS }}</style>
+  {{- else -}}
+{{- warnf "codeStyle %q not found in assets/highlight/" . -}}
+  {{- end -}}
+{{- end -}}
+
+{{- /* mermaid 客户端渲染：仅当页面含 ```mermaid 代码块时从 CDN 加载，失败退化为普通代码块。 */ -}}
+<script type="module">
+  if (document.querySelector('pre > code.language-mermaid')) {
+    import('https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs')
+      .then(async ({ default: mermaid }) => {
+        const root = document.documentElement;
+        const dark = root.dataset.theme === 'dark' ||
+          (root.dataset.theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default', securityLevel: 'loose', fontFamily: 'inherit' });
+        document.querySelectorAll('pre > code.language-mermaid').forEach((code) => {
+          const pre = code.parentElement;
+          const div = document.createElement('div');
+          div.className = 'mermaid';
+          div.textContent = code.textContent;
+          pre.replaceWith(div);
+        });
+        await mermaid.run();
+      })
+      .catch(() => { /* CDN 失败：保留原始代码块，不阻断阅读 */ });
+  }
+</script>
+{{- /* Head custom content area end */ -}}

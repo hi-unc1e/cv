@@ -1,0 +1,1076 @@
+/* 适配 PaperMod：原 #wemd 容器 → .post-content；补浅色可读背景，使浅色排版在深色主题下可读 */
+.post-content {
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 28px 32px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+.post-content a { color: #1f6feb; }
+.post-content code { background: rgba(0,0,0,.06); }
+.post-content pre { background: #1f2428 !important; }
+.post-content pre code { background: transparent; }
+
+/* 学术论文 */
+/* 默认样式，最佳实践 */
+
+/* 全局属性 */
+.post-content {
+  font-size: 16px;
+  color: #000000;
+  padding: 0 8px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', 'Microsoft YaHei', '微软雅黑', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* 段落 */
+.post-content p {
+  font-size: 16px;
+  margin: 0;
+  line-height: 26px;
+  color: #000000;
+}
+
+/* 标题 */
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: #000000;
+}
+.post-content h1 {
+  font-size: 24px;
+}
+.post-content h2 {
+  font-size: 22px;
+}
+.post-content h3 {
+  font-size: 20px;
+}
+.post-content h4 {
+  font-size: 18px;
+}
+.post-content h5 {
+  font-size: 16px;
+}
+.post-content h6 {
+  font-size: 16px;
+}
+
+.post-content h1 .prefix,
+.post-content h2 .prefix,
+.post-content h3 .prefix,
+.post-content h4 .prefix,
+.post-content h5 .prefix,
+.post-content h6 .prefix {
+  display: none;
+}
+
+.post-content h1 .suffix,
+.post-content h2 .suffix,
+.post-content h3 .suffix,
+.post-content h4 .suffix,
+.post-content h5 .suffix,
+.post-content h6 .suffix {
+  display: none;
+}
+
+/* 列表 */
+.post-content ul,
+.post-content ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: #000000;
+}
+.post-content ul {
+  list-style-type: disc;
+}
+.post-content ul ul {
+  list-style-type: square;
+}
+
+.post-content ol {
+  list-style-type: decimal;
+}
+
+.post-content li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: #010101; /* 使用接近黑色的 HEX，避免微信吞掉纯黑色 */
+  font-weight: 500;
+}
+
+/* 引用 */
+.post-content blockquote {
+  border: none;
+}
+
+.post-content .multiquote-1 {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.post-content .multiquote-1 p {
+  margin: 0px;
+  color: #000000;
+  line-height: 26px;
+}
+
+.post-content .multiquote-2 {
+  box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.post-content .multiquote-3 {
+  box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.post-content .multiquote-3 p {
+  text-align: center;
+}
+
+.post-content .multiquote-3 h3 {
+  text-align: center;
+}
+
+.post-content .table-of-contents a {
+  border: none;
+  color: #000000;
+  font-weight: normal;
+}
+
+/* 链接 */
+.post-content a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/* 加粗 */
+.post-content strong {
+  font-weight: bold;
+  color: #000000;
+}
+
+/* 斜体 */
+.post-content em {
+  font-style: italic;
+  color: #000000;
+}
+
+/* 加粗斜体 */
+.post-content em strong {
+  font-weight: bold;
+  color: #000000;
+}
+
+/* 删除线 */
+.post-content del {
+  font-style: italic;
+  color: #000000;
+}
+
+/* 下划线 */
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+/* 分隔线 */
+.post-content hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/* 代码块容器 */
+.post-content pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content pre.custom {
+  padding: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.post-content pre code {
+  display: block;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  white-space: pre;
+  min-width: max-content;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content pre code span {
+  line-height: 26px;
+}
+
+/* 行内代码 */
+.post-content p code,
+.post-content li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/* 图片 */
+.post-content img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* 图片 */
+.post-content figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* 图片描述文字 */
+.post-content figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+
+/* 表格容器 */
+.post-content .table-container{
+  overflow-x: auto;
+}
+
+/* 表格 */
+.post-content table {
+  display: table;
+  text-align: left;
+}
+.post-content tbody {
+  border: 0;
+}
+
+.post-content table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: #ffffff;
+}
+
+.post-content table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+.post-content table tr th,
+.post-content table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+.post-content table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 表格最小列宽4个汉字 */
+.post-content table tr th:nth-of-type(n),
+.post-content table tr td:nth-of-type(n){
+  min-width:85px;
+}
+
+.post-content .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+.post-content .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+.post-content .footnote-item {
+  display: flex;
+}
+
+.post-content .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.post-content .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: #000000;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+.post-content sub, sup {
+  line-height: 0;
+}
+
+.post-content .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+.post-content .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .block-equation > svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .inline-equation {
+}
+
+.post-content .inline-equation > svg {
+}
+
+.post-content .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+.post-content .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.post-content .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: top;
+  width: 80%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.post-content .imageflow-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.post-content .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+.post-content .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+.post-content figure a {
+  border: none;
+}
+
+.post-content figure a img {
+  margin: 0px;
+}
+
+.post-content figure {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套 */
+.post-content figure a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套，图片解释 */
+.post-content figure a + figcaption {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: -35px;
+  background: rgba(0,0,0,0.7);
+  color: #ffffff;
+  line-height: 35px;
+  z-index: 20;
+}
+
+.post-content .callout {
+  margin: 24px 0;
+  padding: 18px 20px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+}
+
+.post-content .callout-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  letter-spacing: 0.05em;
+}
+
+.post-content .callout-icon { margin-right: 8px;
+  font-size: 18px;
+}
+
+.post-content .callout-note { border-left: 4px solid #6366f1; background: #f5f5ff; }
+.post-content .callout-tip { border-left: 4px solid #10b981; background: #ecfdf5; }
+.post-content .callout-important { border-left: 4px solid #8b5cf6; background: #f5f3ff; }
+.post-content .callout-warning { border-left: 4px solid #f59e0b; background: #fffbeb; }
+.post-content .callout-caution { border-left: 4px solid #ef4444; background: #fff5f5; }
+
+
+.post-content .task-list-item {
+  list-style: none;
+  margin-left: -1.2em;
+  margin-bottom: 6px;
+  display: flex;
+  gap: 0;
+  align-items: flex-start;
+}
+
+.post-content .task-list-item input[type='checkbox'] {
+  margin-top: 4px;
+  pointer-events: none;
+}
+
+/* 学术论文风格 */
+.post-content {
+    padding: 5px 20px;
+    max-width: 677px;
+    margin: 0 auto;
+    /* 混合字体栈：西文Times + 中文宋体 */
+    font-family: "Times New Roman", "Songti SC", "SimSun", serif;
+    color: #000;
+    background-color: transparent;
+    /* 透明背景，兼容微信深色模式 */
+    word-break: break-word;
+}
+
+/* 正文 - 移除首行缩进，改用段间距适应移动端 */
+.post-content p {
+    margin: 16px 0;
+    line-height: 1.7;
+    text-align: justify;
+    text-indent: 0;
+    color: #1a1a1a;
+    font-size: 16px;
+}
+
+/* 一级标题 - 居中论文题 */
+.post-content h1 {
+    margin: 40px 0 30px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+.post-content h1 .content {
+    font-size: 22px;
+    font-weight: bold;
+    color: #000;
+}
+
+.post-content h1 .prefix,
+.post-content h1 .suffix {
+    display: none;
+}
+
+/* 二级标题 - 章节 Section */
+.post-content h2 {
+    margin: 30px 0 15px;
+    text-align: left;
+    border-bottom: 2px solid #000;
+    /* 加粗底线 */
+    padding-bottom: 8px;
+}
+
+.post-content h2 .content {
+    font-size: 18px;
+    font-weight: bold;
+    color: #000;
+}
+
+.post-content h2 .prefix,
+.post-content h2 .suffix {
+    display: none;
+}
+
+/* 三级标题 - Subsection */
+.post-content h3 {
+    margin: 20px 0 10px;
+}
+
+.post-content h3 .content {
+    font-size: 16px;
+    font-weight: bold;
+    color: #800000;
+    /* 栗色，区分层级 */
+}
+
+.post-content h3 .prefix,
+.post-content h3 .suffix {
+    display: none;
+}
+
+/* 四级标题 */
+.post-content h4 {
+    margin: 15px 0 5px;
+}
+
+.post-content h4 .content {
+    font-size: 16px;
+    font-weight: bold;
+    font-style: italic;
+    /* 斜体标题 */
+    color: #333;
+}
+
+.post-content h4 .prefix,
+.post-content h4 .suffix {
+    display: none;
+}
+
+/* 引用 - 简洁边框 */
+.post-content .multiquote-1 {
+    margin: 20px 0;
+    padding: 16px 20px;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-left: 4px solid #666;
+}
+
+.post-content .multiquote-1 p {
+    color: #555;
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.6;
+    text-indent: 0;
+}
+
+.post-content .multiquote-2 {
+    margin: 18px 0 18px 20px;
+    padding: 14px 18px;
+    background: #fafafa;
+    border: 1px solid #ddd;
+}
+
+.post-content .multiquote-2 p {
+    color: #555;
+    font-size: 15px;
+    margin: 0;
+}
+
+.post-content .multiquote-3 {
+    margin: 16px 0 16px 20px;
+    padding: 12px 16px;
+    background: #fcfcfc;
+    border: 1px solid #e0e0e0;
+}
+
+.post-content .multiquote-3 p {
+    color: #555;
+    font-size: 15px;
+    margin: 0;
+}
+
+/* 列表 */
+.post-content ul {
+    list-style: disc;
+    padding-left: 20px;
+    margin: 16px 0;
+}
+
+.post-content ul ul {
+    list-style-type: square;
+    margin-top: 5px;
+}
+
+.post-content ol {
+    list-style: decimal;
+    padding-left: 20px;
+    margin: 16px 0;
+}
+
+.post-content ol ol {
+    list-style-type: lower-alpha;
+}
+
+.post-content li section {
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 链接 - 经典深蓝 */
+.post-content a {
+    color: #000080;
+    text-decoration: underline;
+}
+
+/* 加粗 */
+.post-content strong {
+    color: #000;
+    font-weight: bold;
+}
+
+/* 斜体 */
+.post-content em {
+    font-style: italic;
+    color: #000;
+}
+
+/* 加粗斜体 */
+.post-content em strong {
+    font-weight: bold;
+    font-style: italic;
+    color: #000;
+}
+
+/* 高亮 - 学术标记风格 */
+.post-content mark {
+    background: #fff3cd;
+    color: #000;
+    padding: 0 2px;
+}
+
+/* 删除线 */
+.post-content del {
+    text-decoration: line-through;
+    color: #666;
+    opacity: 0.7;
+}
+
+/* 图片 - 简洁无装饰 */
+.post-content img {
+    display: block;
+    margin: 30px auto;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+.post-content figcaption {
+    margin-top: 8px;
+    text-align: center;
+    color: #666;
+    font-size: 14px;
+    font-style: italic;
+}
+
+/* 
+ * 行内代码 - LaTeX 	exttt 风格 (修复重点)
+ * 纯黑文字 + 极淡灰底 + 等宽字体
+ */
+.post-content p code,
+.post-content li code {
+    color: #000;
+    /* 纯黑 */
+    background: #f4f4f4;
+    /* 极淡灰 */
+    border: 1px solid #eee;
+    /* 极细边框 */
+    padding: 1px 4px;
+    margin: 0 2px;
+    border-radius: 2px;
+    font-size: 14px;
+    font-family: "Courier New", Courier, monospace;
+    /* 强制等宽 */
+}
+
+/* 代码块 - 简单的学术风格 */
+/* 注意：不要设置 color，让语法高亮主题控制文字颜色 */
+.post-content pre code.hljs {
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    /* color 由 .hljs 语法高亮主题控制 */
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    padding: 12px;
+    border-radius: 0;
+    /* 直角 */
+    overflow-x: auto;
+    white-space: pre;
+  min-width: max-content;
+}
+
+/* 如果没有语法高亮，设置默认颜色 */
+.post-content pre code:not(.hljs) {
+    color: #333;
+}
+
+/* 表格 - 经典三线表 */
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
+
+.post-content table tr th {
+    border-bottom: 1px solid #000;
+    padding: 10px 5px;
+    font-weight: bold;
+    text-align: center;
+    background: #fff;
+}
+
+.post-content table tr td {
+    padding: 10px 5px;
+    border: none;
+    text-align: center;
+    color: #333;
+}
+
+/* 隔行微底色 */
+.post-content table tr:nth-child(even) td {
+    background-color: #fafafa;
+}
+
+/* 脚注 */
+.post-content .footnote-word,
+.post-content .footnote-ref {
+    color: #000080;
+}
+
+.post-content .footnotes-sep {
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+    margin-top: 40px;
+    width: 20%;
+    /* 短线 */
+}
+
+.post-content .footnote-num {
+    font-weight: bold;
+    color: #000;
+    margin-right: 4px;
+    vertical-align: super;
+    font-size: 10px;
+}
+
+.post-content .footnote-item p {
+    color: #666;
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+/* 公式 */
+.post-content .block-equation > svg {
+    max-width: 100% !important;
+}
+
+.post-content .inline-equation > svg {
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+/* 提示块 - 学术风格 */
+.post-content .callout {
+    margin: 20px 0;
+    padding: 16px 20px;
+    border: 1px solid #ddd;
+    border-radius: 0;
+    background: #fafafa;
+}
+
+.post-content .callout-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 14px;
+    text-transform: uppercase;
+    color: #000;
+}
+
+.post-content .callout-icon { margin-right: 8px;
+    margin-right: 6px;
+}
+
+.post-content .callout-note { 
+    border-left: 4px solid #666; 
+    background: #f5f5f5;
+}
+
+.post-content .callout-tip { 
+    border-left: 4px solid #555; 
+    background: #f5f5f5;
+}
+
+.post-content .callout-important { 
+    border-left: 4px solid #888; 
+    background: #f5f5f5;
+}
+
+.post-content .callout-warning { 
+    border-left: 4px solid #999; 
+    background: #f5f5f5;
+}
+
+.post-content .callout-caution { 
+    border-left: 4px solid #000; 
+    background: #f5f5f5;
+}
+
+/* Imageflow CSS */
+.post-content .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  /* white-space: normal; */
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+.post-content .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.post-content .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: top;
+  width: 80%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.post-content .imageflow-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.post-content .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+/*
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+*/
+
+/* 代码块样式 - 需要添加 .post-content 前缀以匹配包装后的 HTML */
+.post-content .hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.post-content .hljs-comment,
+.post-content .hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.post-content .hljs-keyword,
+.post-content .hljs-selector-tag,
+.post-content .hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.post-content .hljs-number,
+.post-content .hljs-literal,
+.post-content .hljs-variable,
+.post-content .hljs-template-variable,
+.post-content .hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.post-content .hljs-string,
+.post-content .hljs-doctag {
+  color: #d14;
+}
+
+.post-content .hljs-title,
+.post-content .hljs-section,
+.post-content .hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.post-content .hljs-subst {
+  font-weight: normal;
+}
+
+.post-content .hljs-type,
+.post-content .hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.post-content .hljs-tag,
+.post-content .hljs-name,
+.post-content .hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.post-content .hljs-regexp,
+.post-content .hljs-link {
+  color: #009926;
+}
+
+.post-content .hljs-symbol,
+.post-content .hljs-bullet {
+  color: #990073;
+}
+
+.post-content .hljs-built_in,
+.post-content .hljs-builtin-name {
+  color: #0086b3;
+}
+
+.post-content .hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.post-content .hljs-deletion {
+  background: #fdd;
+}
+
+.post-content .hljs-addition {
+  background: #dfd;
+}
+
+.post-content .hljs-emphasis {
+  font-style: italic;
+}
+
+.post-content .hljs-strong {
+  font-weight: bold;
+}
+
+/* Imageflow CSS */
+.post-content .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  /* white-space: normal; */
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+.post-content .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.post-content .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: top;
+  width: 80%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.post-content .imageflow-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.post-content .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}

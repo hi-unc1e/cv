@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Governance Toolkit (AGT) — 技术讲解</title>
+<style>
+  :root{
+    --bg:#0d1117; --bg2:#161b22; --bg3:#21262d; --bd:#30363d;
+    --tx:#c9d1d9; --txd:#8b949e; --acc:#58a6ff; --acc2:#3fb950;
+    --warn:#f0883e; --danger:#f85149; --code:#1f2428;
+    --mono:'SF Mono','Cascadia Code',Consolas,'Liberation Mono',Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0; background:var(--bg); color:var(--tx);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+    line-height:1.7; font-size:16px;
+  }
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px}
+  header{
+    border-bottom:1px solid var(--bd); padding:40px 0 30px;
+    background:linear-gradient(180deg,#0d1117 0%, #161b22 100%);
+  }
+  header h1{margin:0 0 8px; font-size:34px; letter-spacing:-0.5px}
+  header h1 .ver{color:var(--acc2); font-size:18px; font-weight:500; margin-left:8px}
+  header .sub{color:var(--txd); font-size:17px}
+  header .meta{margin-top:18px; display:flex; gap:8px; flex-wrap:wrap}
+  .tag{
+    font:13px var(--mono); background:var(--bg3); border:1px solid var(--bd);
+    padding:3px 10px; border-radius:12px; color:var(--txd);
+  }
+  nav.toc{
+    position:sticky; top:0; z-index:10; background:rgba(13,17,23,0.92);
+    backdrop-filter:blur(8px); border-bottom:1px solid var(--bd);
+    padding:12px 0; font-size:14px;
+  }
+  nav.toc .wrap{display:flex; gap:18px; flex-wrap:wrap}
+  nav.toc a{color:var(--txd); text-decoration:none; white-space:nowrap}
+  nav.toc a:hover{color:var(--acc)}
+  main{padding:40px 0 80px}
+  section{margin:0 0 56px; scroll-margin-top:70px}
+  h2{
+    font-size:24px; border-bottom:1px solid var(--bd); padding-bottom:10px;
+    margin:0 0 20px; display:flex; align-items:center; gap:10px;
+  }
+  h2 .n{
+    font:600 14px var(--mono); color:var(--bg); background:var(--acc);
+    width:26px; height:26px; border-radius:6px; display:inline-flex;
+    align-items:center; justify-content:center;
+  }
+  h3{font-size:18px; margin:26px 0 12px; color:var(--acc)}
+  p{margin:12px 0}
+  ul,ol{margin:12px 0; padding-left:24px}
+  li{margin:6px 0}
+  code{
+    font-family:var(--mono); font-size:0.88em; background:var(--bg3);
+    padding:2px 6px; border-radius:4px; color:var(--acc);
+  }
+  pre{
+    background:var(--code); border:1px solid var(--bd); border-radius:8px;
+    padding:16px; overflow-x:auto; margin:16px 0;
+  }
+  pre code{background:none; padding:0; color:#e6edf3; font-size:13px}
+  .kw{color:#ff7b72}.str{color:#a5d6ff}.num{color:#79c0ff}.com{color:#8b949e}
+  .fn{color:#d2a8ff}.ty{color:#ffa657}
+  .card{
+    background:var(--bg2); border:1px solid var(--bd); border-radius:10px;
+    padding:20px 22px; margin:16px 0;
+  }
+  .grid{display:grid; gap:16px; margin:16px 0}
+  .grid.cols-2{grid-template-columns:1fr 1fr}
+  .grid.cols-3{grid-template-columns:1fr 1fr 1fr}
+  @media(max-width:780px){.grid.cols-2,.grid.cols-3{grid-template-columns:1fr}}
+  .item{
+    background:var(--bg2); border:1px solid var(--bd); border-radius:8px; padding:16px;
+  }
+  .item h4{margin:0 0 8px; font-size:15px; color:var(--acc)}
+  .item p{margin:0; font-size:14px; color:var(--txd)}
+  .callout{
+    border-left:3px solid var(--acc); background:rgba(88,166,255,0.08);
+    padding:14px 18px; border-radius:0 8px 8px 0; margin:16px 0;
+  }
+  .callout.warn{border-color:var(--warn); background:rgba(240,136,62,0.08)}
+  .callout.danger{border-color:var(--danger); background:rgba(248,81,73,0.08)}
+  .callout.ok{border-color:var(--acc2); background:rgba(63,185,80,0.08)}
+  .callout b{color:#fff}
+  table{border-collapse:collapse; width:100%; margin:16px 0; font-size:14px}
+  th,td{border:1px solid var(--bd); padding:10px 12px; text-align:left; vertical-align:top}
+  th{background:var(--bg3); color:var(--acc); font-weight:600}
+  .pill{
+    display:inline-block; font:12px var(--mono); padding:1px 8px;
+    border-radius:10px; border:1px solid var(--bd); color:var(--txd);
+  }
+  .pill.g{color:var(--acc2); border-color:var(--acc2)}
+  .pill.r{color:var(--danger); border-color:var(--danger)}
+  .pill.y{color:var(--warn); border-color:var(--warn)}
+  .flow{
+    background:var(--code); border:1px solid var(--bd); border-radius:8px;
+    padding:18px; font-family:var(--mono); font-size:13px; line-height:1.5;
+    overflow-x:auto; white-space:pre; color:#e6edf3;
+  }
+  .layer-list{list-style:none; padding:0; counter-reset:layer}
+  .layer-list li{
+    counter-increment:layer; position:relative; padding:14px 16px 14px 56px;
+    background:var(--bg2); border:1px solid var(--bd); border-radius:8px; margin:10px 0;
+  }
+  .layer-list li::before{
+    content:counter(layer); position:absolute; left:14px; top:14px;
+    width:28px; height:28px; background:var(--acc); color:var(--bg);
+    border-radius:6px; font:600 14px var(--mono);
+    display:flex; align-items:center; justify-content:center;
+  }
+  footer{border-top:1px solid var(--bd); padding:24px 0; color:var(--txd); font-size:13px}
+  a.lk{color:var(--acc); text-decoration:none; border-bottom:1px dotted var(--acc)}
+  a.lk:hover{opacity:.8}
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:0; margin:16px 0}
+  @media(max-width:780px){.compare{grid-template-columns:1fr}}
+  .compare > div{padding:16px 18px; border:1px solid var(--bd)}
+  .compare > div:first-child{border-radius:8px 0 0 8px}
+  .compare > div:last-child{border-radius:0 8px 8px 0}
+  @media(max-width:780px){
+    .compare > div:first-child{border-radius:8px 8px 0 0}
+    .compare > div:last-child{border-radius:0 0 8px 8px}
+  }
+  .compare .bad{background:rgba(248,81,73,0.06)}
+  .compare .good{background:rgba(63,185,80,0.06)}
+  .compare h4{margin:0 0 8px}
+  .compare .bad h4{color:var(--danger)} .compare .good h4{color:var(--acc2)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <svg viewBox="0 0 940 110" role="img" aria-label="AGT banner" style="width:100%;max-width:940px;display:block;margin:0 0 22px">
+      <defs>
+        <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#1f6feb"/>
+          <stop offset="100%" stop-color="#238636"/>
+        </linearGradient>
+        <linearGradient id="g2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#58a6ff" stop-opacity="0.15"/>
+          <stop offset="100%" stop-color="#3fb950" stop-opacity="0.15"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="940" height="110" rx="14" fill="url(#g2)" stroke="#30363d"/>
+      <!-- shield -->
+      <path d="M 60 24 L 100 40 L 100 64 Q 100 90 60 104 Q 20 90 20 64 L 20 40 Z" fill="url(#g1)" stroke="#58a6ff" stroke-width="1.5"/>
+      <text x="60" y="72" text-anchor="middle" fill="#fff" font-size="34" font-weight="700" font-family="monospace">AGT</text>
+      <!-- title text -->
+      <text x="130" y="50" fill="#c9d1d9" font-size="26" font-weight="700">Agent Governance Toolkit</text>
+      <text x="130" y="76" fill="#3fb950" font-size="14" font-family="monospace">v5.0.0 · microsoft/agent-governance-toolkit</text>
+      <text x="130" y="96" fill="#8b949e" font-size="12" font-family="monospace">Policy · Identity · Sandbox · Audit — fail-closed by design</text>
+      <!-- right-side chain nodes -->
+      <g font-family="monospace" font-size="11">
+        <circle cx="760" cy="55" r="22" fill="#21262d" stroke="#58a6ff"/><text x="760" y="59" text-anchor="middle" fill="#58a6ff">PEP</text>
+        <line x1="782" y1="55" x2="818" y2="55" stroke="#8b949e" stroke-dasharray="3,3"/>
+        <circle cx="840" cy="55" r="22" fill="#21262d" stroke="#a371f7"/><text x="840" y="59" text-anchor="middle" fill="#a371f7">ID</text>
+        <line x1="862" y1="55" x2="898" y2="55" stroke="#8b949e" stroke-dasharray="3,3"/>
+      </g>
+    </svg>
+    <h1>Agent Governance Toolkit <span class="ver">v5.0.0</span></h1>
+    <div class="sub">微软开源 · 给自主 AI Agent 上"操作系统中断层"的治理内核</div>
+    <div class="meta">
+      <span class="tag">github.com/microsoft/agent-governance-toolkit</span>
+      <span class="tag">MIT · Public Preview</span>
+      <span class="tag">OWASP Agentic Top10 — 10/10 Covered</span>
+      <span class="tag">5.6k★ stars</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="wrap">
+    <a href="#what">① 是什么</a>
+    <a href="#why">② 解决什么</a>
+    <a href="#core">③ 核心机制</a>
+    <a href="#layers">④ 四层栈</a>
+    <a href="#lang">⑤ 多语言/集成</a>
+    <a href="#owasp">⑥ OWASP 映射</a>
+    <a href="#fail">⑦ fail-closed</a>
+    <a href="#vs">⑧ 对比/边界</a>
+    <a href="#run">⑨ 怎么跑</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<!-- ① 是什么 -->
+<section id="what">
+<h2><span class="n">1</span>一句话:它是什么</h2>
+<p>
+AGT 是微软 2025-2026 力推的开源 <b>Agent 治理运行时</b>(Agent Governance Runtime)。
+本质是给 AI Agent 的每一次 <b>工具调用 / 消息发送 / Agent 间委托</b> 加一道
+<code>确定性代码拦截层</code>——在 LLM 的意图真正"上线路"之前,
+由确定性代码(不是 prompt、不是模型自我约束)判 allow / deny。
+</p>
+
+<div class="callout">
+<b>一句话给技术人:</b> 它不是"AI 安全护栏"(那种写 prompt 让模型别干坏事),
+而是把<b>操作系统的强制访问控制(MAC)思想</b>搬到了 Agent 运行时上——
+类似 SELinux/AppArmor 之于进程,AGT 之于 Agent。被 deny 的动作不是"不太可能发生",
+而是<b>结构上不可能发生</b>。
+</div>
+
+<div class="card">
+<h3>定位坐标</h3>
+<div class="grid cols-3">
+  <div class="item"><h4>不是什么</h4><p>不是 SAST/DAST、不是模型层护栏、不是 prompt 注入检测器、不是 fuzzing 工具。</p></div>
+  <div class="item"><h4>是什么</h4><p>Agent 行为的<b>策略执行点(PEP)</b> + 身份 + 审计 + 沙箱,四件套一体的运行时。</p></div>
+  <div class="item"><h4>类比</h4><p>= Linux Kernel LSM + sudoers + auditd + seccomp,但运行在 Agent 的 tool-call 边界上。</p></div>
+</div>
+</div>
+</section>
+
+<!-- ② 为什么 -->
+<section id="why">
+<h2><span class="n">2</span>它要解决的真实痛点</h2>
+<p>README 开篇直接点出企业上线 Agent 时回答不了的三个问题:</p>
+
+<div class="grid cols-3">
+  <div class="item">
+    <h4>① 这个动作允许吗?</h4>
+    <p>一个 Agent 同时有 <code>send_email</code> 和 <code>query_database</code> 权限,
+    OAuth scope / IAM role 只管"能不能连到这个服务",管不了"连上之后干什么"——
+    它不该能 <code>drop_table</code>。</p>
+  </div>
+  <div class="item">
+    <h4>② 是哪个 Agent 干的?</h4>
+    <p>多 Agent 系统里 5 个 Agent 共用一个 API key,出事时"是某个 Agent 干的"根本没法做应急响应。</p>
+  </div>
+  <div class="item">
+    <h4>③ 能证明发生了什么吗?</h4>
+    <p>审计/合规要<b>防篡改</b>的决策记录:当时哪条策略生效、Agent 申请了什么、为什么 allow/deny。</p>
+  </div>
+</div>
+
+<div class="callout danger">
+<b>为什么 prompt 护栏不够:</b> AGT 援引 Andriushchenko (ICLR 2025) 等研究——
+对 GPT-4o / Claude 3 / Llama-3 的自适应越狱攻击成功率 <b>100%</b>。
+结论:prompt 级防护是"对随机系统的礼貌请求",不是控制面。
+AGT 的打法是<b>不在 prompt 里赢这场仗</b>,而在模型意图到线路之间用确定性代码截断。
+</div>
+</section>
+
+<!-- ③ 核心机制 -->
+<section id="core">
+<h2><span class="n">3</span>核心机制:截在"上线路"之前</h2>
+
+<svg viewBox="0 0 880 470" role="img" aria-label="AGT 拦截流程" style="width:100%;max-width:820px;display:block;margin:16px auto;background:var(--code);border:1px solid var(--bd);border-radius:8px">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8b949e"/>
+    </marker>
+    <marker id="arrg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#3fb950"/>
+    </marker>
+    <marker id="arrr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#f85149"/>
+    </marker>
+  </defs>
+
+  <!-- Agent -->
+  <rect x="340" y="18" width="200" height="46" rx="8" fill="#21262d" stroke="#58a6ff" stroke-width="1.5"/>
+  <text x="440" y="38" text-anchor="middle" fill="#58a6ff" font-size="14" font-weight="600" font-family="monospace">Agent (LLM)</text>
+  <text x="440" y="55" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">输出 tool_call 意图</text>
+
+  <!-- arrow down -->
+  <line x1="440" y1="64" x2="440" y2="96" stroke="#8b949e" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Kernel big box -->
+  <rect x="150" y="100" width="580" height="172" rx="10" fill="rgba(63,185,80,0.06)" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="440" y="120" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="700" font-family="monospace">AGT Kernel(确定性代码,非 LLM)</text>
+
+  <!-- Policy Engine -->
+  <rect x="185" y="132" width="510" height="44" rx="6" fill="#0d1117" stroke="#30363d"/>
+  <text x="440" y="151" text-anchor="middle" fill="#c9d1d9" font-size="13" font-family="monospace">① Policy Engine</text>
+  <text x="440" y="168" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">按 YAML / OPA / Cedar 策略求值</text>
+
+  <!-- Identity -->
+  <rect x="185" y="186" width="510" height="44" rx="6" fill="#0d1117" stroke="#30363d"/>
+  <text x="440" y="205" text-anchor="middle" fill="#c9d1d9" font-size="13" font-family="monospace">② Identity</text>
+  <text x="440" y="222" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">SPIFFE / DID / mTLS 验明正身</text>
+
+  <!-- split arrows -->
+  <path d="M 360 272 L 215 322" fill="none" stroke="#3fb950" stroke-width="1.5" marker-end="url(#arrg)"/>
+  <path d="M 520 272 L 665 322" fill="none" stroke="#f85149" stroke-width="1.5" marker-end="url(#arrr)"/>
+  <text x="270" y="296" fill="#3fb950" font-size="12" font-family="monospace">allow</text>
+  <text x="585" y="296" fill="#f85149" font-size="12" font-family="monospace">deny</text>
+
+  <!-- Tool -->
+  <rect x="110" y="326" width="210" height="46" rx="8" fill="rgba(63,185,80,0.10)" stroke="#3fb950" stroke-width="1.5"/>
+  <text x="215" y="346" text-anchor="middle" fill="#3fb950" font-size="13" font-weight="600" font-family="monospace">Tool 真正执行</text>
+  <text x="215" y="363" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">动作上线路</text>
+
+  <!-- Denied -->
+  <rect x="560" y="326" width="210" height="46" rx="8" fill="rgba(248,81,73,0.10)" stroke="#f85149" stroke-width="1.5"/>
+  <text x="665" y="346" text-anchor="middle" fill="#f85149" font-size="13" font-weight="600" font-family="monospace">GovernanceDenied</text>
+  <text x="665" y="363" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">动作根本到不了 tool</text>
+
+  <!-- merge to audit -->
+  <path d="M 215 372 L 215 396 L 440 410" fill="none" stroke="#8b949e" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M 665 372 L 665 396 L 440 410" fill="none" stroke="#8b949e" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Audit -->
+  <rect x="240" y="416" width="400" height="44" rx="8" fill="#21262d" stroke="#a371f7" stroke-width="1.5"/>
+  <text x="440" y="436" text-anchor="middle" fill="#a371f7" font-size="13" font-weight="600" font-family="monospace">Audit Log</text>
+  <text x="440" y="453" text-anchor="middle" fill="#8b949e" font-size="11" font-family="monospace">防篡改决策记录 → Decision Record</text>
+</svg>
+
+<p>关键点:<b>拦截发生在应用代码里,在模型意图到达 wire 之前</b>。被 deny 的不是"概率低",
+是 <code>structurally impossible</code>。这是它和所有 prompt-level 防护的根本分野。</p>
+
+<div class="card">
+<h3>最小用法 — 两行包住任意 tool</h3>
+<pre><code><span class="kw">from</span> agentmesh.governance <span class="kw">import</span> govern
+
+safe_tool = govern(my_tool, policy=<span class="str">"policy.yaml"</span>)   <span class="com"># 每次调用都过策略</span>
+
+safe_tool(action=<span class="str">"drop"</span>, table=<span class="str">"users"</span>)
+<span class="com"># → GovernanceDenied: Action denied by policy rule 'block-destructive'</span></code></pre>
+
+<p>策略是声明式 YAML,不写代码:</p>
+<pre><code><span class="com"># policy.yaml</span>
+apiVersion: governance.toolkit/v1
+name: production-policy
+default_action: allow
+rules:
+  - name: block-destructive
+    condition: <span class="str">"action.type in ['drop', 'delete', 'truncate']"</span>
+    action: deny
+  - name: require-approval-for-send
+    condition: <span class="str">"action.type == 'send_email'"</span>
+    action: require_approval
+    approvers: [<span class="str">"security-team"</span>]</code></pre>
+</div>
+</section>
+
+<!-- ④ 四层栈 -->
+<section id="layers">
+<h2><span class="n">4</span>四大能力层(每一层可选)</h2>
+<p>README 明说:"每一层都是可选的,先用 <code>govern()</code>,风险增长了再加层。多数团队只跑策略执行 + 审计。"</p>
+
+<svg viewBox="0 0 820 250" role="img" aria-label="AGT 四层栈" style="width:100%;max-width:780px;display:block;margin:16px auto;background:var(--code);border:1px solid var(--bd);border-radius:8px">
+  <!-- Audit (top) -->
+  <rect x="20" y="16" width="780" height="42" rx="7" fill="rgba(163,113,247,0.10)" stroke="#a371f7" stroke-width="1.5"/>
+  <circle cx="50" cy="37" r="14" fill="#a371f7"/><text x="50" y="41" text-anchor="middle" fill="#0d1117" font-size="12" font-weight="700" font-family="monospace">4</text>
+  <text x="78" y="33" fill="#a371f7" font-size="13" font-weight="700" font-family="monospace">Audit / SRE</text>
+  <text x="78" y="50" fill="#8b949e" font-size="11" font-family="monospace">防篡改 Decision Record · agt verify --strict · 满足合规"能证明发生了什么"</text>
+
+  <!-- Sandbox -->
+  <rect x="20" y="72" width="780" height="42" rx="7" fill="rgba(240,136,62,0.10)" stroke="#f0883e" stroke-width="1.5"/>
+  <circle cx="50" cy="93" r="14" fill="#f0883e"/><text x="50" y="97" text-anchor="middle" fill="#0d1117" font-size="12" font-weight="700" font-family="monospace">3</text>
+  <text x="78" y="89" fill="#f0883e" font-size="13" font-weight="700" font-family="monospace">Sandboxing</text>
+  <text x="78" y="106" fill="#8b949e" font-size="11" font-family="monospace">NonoSandboxProvider · Landlock(Linux)/Seatbelt(macOS) 内核级 · RingEnforcer 命令黑名单</text>
+
+  <!-- Identity -->
+  <rect x="20" y="128" width="780" height="42" rx="7" fill="rgba(88,166,255,0.10)" stroke="#58a6ff" stroke-width="1.5"/>
+  <circle cx="50" cy="149" r="14" fill="#58a6ff"/><text x="50" y="153" text-anchor="middle" fill="#0d1117" font-size="12" font-weight="700" font-family="monospace">2</text>
+  <text x="78" y="145" fill="#58a6ff" font-size="13" font-weight="700" font-family="monospace">Identity</text>
+  <text x="78" y="162" fill="#8b949e" font-size="11" font-family="monospace">SPIFFE SVID / DID · mTLS · 联邦到 Entra / TEE · 解决"5 个 Agent 共用一个 key"</text>
+
+  <!-- Policy (bottom, core) -->
+  <rect x="20" y="184" width="780" height="42" rx="7" fill="rgba(63,185,80,0.10)" stroke="#3fb950" stroke-width="1.5"/>
+  <circle cx="50" cy="205" r="14" fill="#3fb950"/><text x="50" y="209" text-anchor="middle" fill="#0d1117" font-size="12" font-weight="700" font-family="monospace">1</text>
+  <text x="78" y="201" fill="#3fb950" font-size="13" font-weight="700" font-family="monospace">Policy Engine(核心层)</text>
+  <text x="78" y="218" fill="#8b949e" font-size="11" font-family="monospace">YAML / OPA / Cedar · Rust ACS 核心经 FFI 跨语言 · allow / deny / require_approval</text>
+</svg>
+
+<ol class="layer-list">
+  <li>
+    <b>策略引擎 (Policy Engine)</b> — <span class="pill">核心层</span><br>
+    支持 <code>YAML</code> / <code>OPA/Rego</code> / <code>Cedar</code> 三种策略语言,
+    对每个 action 求 allow / deny / require_approval。
+    底层核心是 <b>Rust 写的 ACS 引擎</b>(<code>policy-engine/core</code>),
+    通过 FFI 暴露给 Python / Node / .NET / Go,跨语言语义一致。
+  </li>
+  <li>
+    <b>身份 (Identity)</b> — <span class="pill">SPIFFE/DID/mTLS</span><br>
+    每个 Agent 有可验证身份(SPIFFE SVID / 去中心化 DID),Agent 间通信走 mTLS。
+    解决"5 个 Agent 共用一个 key,出事分不清"的问题。可联邦到 Entra / TEE(可信执行环境)。
+  </li>
+  <li>
+    <b>沙箱 (Sandboxing)</b> — <span class="pill">Landlock/Seatbelt</span><br>
+    v5 新增 <code>NonoSandboxProvider</code>:Linux 走 Landlock、macOS 走 Seatbelt 的<b>内核级</b>沙箱,
+    过滤出站、AST 预扫。RingEnforcer 还带命令黑名单(<code>;</code>&<code>|</code> 元字符剥离防注入绕过)。
+    给 Agent 跑 subprocess / 文件操作时兜底。
+  </li>
+  <li>
+    <b>审计 (Audit / SRE)</b> — <span class="pill g">防篡改</span><br>
+    每次决策落 <b>Decision Record</b>(防篡改),<code>agt verify --evidence ... --strict</code>
+    可在 CI 里按证据强度 fail。<code>agent-sre</code> 模块提供运行时 SRE。
+    这一层满足审计/合规的"能证明发生了什么"。
+  </li>
+</ol>
+</section>
+
+<!-- ⑤ 多语言 -->
+<section id="lang">
+<h2><span class="n">5</span>多语言 SDK + IDE/框架集成</h2>
+<p>AGT 是个<b>巨型企业 monorepo</b>,5 大语言一等公民,所有包在 v5 对齐到 <code>5.0.0</code>。
+4.0 时还把 45 个 Python 包<b>合并成 5 个</b>分发(core / runtime / sre / cli / full)。</p>
+
+<table>
+<tr><th>语言</th><th>包</th><th>集成形态</th></tr>
+<tr><td><b>Python</b></td><td><code>agent-governance-toolkit[full]</code> (PyPI)</td><td><code>govern()</code> 装饰器、<code>AgentControl</code> 运行时、CLI <code>agt</code></td></tr>
+<tr><td><b>TypeScript/Node</b></td><td><code>@microsoft/agent-governance-sdk</code> (npm)</td><td><code>PolicyEngine</code> 类</td></tr>
+<tr><td><b>.NET</b></td><td><code>Microsoft.AgentGovernance</code> (NuGet)</td><td><code>GovernanceKernel</code> + MCP <code>WithGovernance()</code> 扩展</td></tr>
+<tr><td><b>Rust</b></td><td><code>agentmesh</code> crate</td><td><code>AgentMeshClient::execute_with_governance()</code></td></tr>
+<tr><td><b>Go</b></td><td><code>github.com/microsoft/agent-governance-toolkit/agent-governance-golang</code></td><td><code>client.ExecuteWithGovernance()</code></td></tr>
+</table>
+
+<div class="grid cols-3">
+  <div class="item"><h4>Claude Code</h4><p>官方插件市场:<code>/plugin install agt-governance@agent-governance-toolkit</code></p></div>
+  <div class="item"><h4>OpenCode / Antigravity / Copilot CLI</h4><p>各有独立子仓集成(<code>agent-governance-opencode</code> 等)</p></div>
+  <div class="item"><h4>MCP</h4><p>.NET 有 <code>WithGovernance()</code>;另有 <code>agentmesh-mcp</code> Rust 包</p></div>
+</div>
+
+<p>CLI 工具(任何框架都可用):</p>
+<pre><code>agt doctor                          <span class="com"># 检查安装</span>
+agt verify --evidence ./e.json --strict  <span class="com"># CI 里按证据强度 fail</span>
+agt red-team scan ./prompts/ --min-grade B <span class="com"># prompt 注入审计</span>
+agt lint-policy policies/            <span class="com"># 校验策略文件</span></code></pre>
+</section>
+
+<!-- ⑥ OWASP -->
+<section id="owasp">
+<h2><span class="n">6</span>对齐的合规框架</h2>
+<div class="grid cols-3">
+  <div class="item">
+    <h4>OWASP Agentic Top10</h4>
+    <p><span class="pill g">10/10 Covered</span><br>Agent 专用风险 Top10 全覆盖(README 徽章)。</p>
+  </div>
+  <div class="item">
+    <h4>AARM Extended</h4>
+    <p><span class="pill g">R1–R9</span><br>Agent Attack & Risk Model 扩展要求。</p>
+  </div>
+  <div class="item">
+    <h4>ATF</h4>
+    <p><span class="pill g">All 5 Elements</span><br>Agentic Trust Framework 全 5 要素。</p>
+  </div>
+</div>
+<div class="callout warn">
+<b>注意(技术视角):</b> "10/10 Covered" 是 README 徽章声称,实际文档里 <code>docs/compliance/owasp-agentic-top10-architecture.md</code>
+是逐条映射。是"架构覆盖"而非"每条都 100% 解决"——比如 prompt 注入只能<b>限制后果(截断动作)</b>,
+无法从根上消除注入本身(这点 README 自己也承认)。读文档时区分"覆盖"和"根治"。
+</div>
+</section>
+
+<!-- ⑦ fail-closed -->
+<section id="fail">
+<h2><span class="n">7</span>设计哲学:fail-closed(默认拒绝)</h2>
+<div class="compare">
+  <div class="bad">
+    <h4>fail-open(很多 runtime 的默认)</h4>
+    策略引擎连不上 / 超时 / 策略解析失败 → <b>放行</b>,怕影响业务可用性。<br>
+    后果:故障/攻击时治理层恰好失效,Agent 在"无约束"窗口期干坏事。
+  </div>
+  <div class="good">
+    <h4>AGT = fail-closed</h4>
+    求值失败、无定价、策略不匹配 → <b>拒绝并抛错</b>。<br>
+    代价:治理层故障 = Agent 不可用;但这是安全系统该有的取舍——
+    "宁可全停,不可裸奔"。
+  </div>
+</div>
+<p>典型体现:CI 里 <code>agt verify --strict</code>,证据不达标直接 fail 构建;
+你的扩展层(如 enterprise 配置)设了预算但模型无定价 → 抛错而非静默放行。</p>
+</section>
+
+<!-- ⑧ 对比/边界 -->
+<section id="vs">
+<h2><span class="n">8</span>对比与边界(给你做技术决策用)</h2>
+
+<h3>vs. prompt 级 / 模型层护栏</h3>
+<table>
+<tr><th></th><th>prompt 护栏 / 模型对齐</th><th>AGT</th></tr>
+<tr><td>拦截位置</td><td>模型内部(概率)</td><td>tool-call 边界(确定性代码)</td></tr>
+<tr><td>被拒动作</td><td>概率低,仍可能发生</td><td>结构上不可能(到不了 tool)</td></tr>
+<tr><td>可审计</td><td>弱(模型黑盒)</td><td>强(防篡改决策记录)</td></tr>
+<tr><td>对抗自适应攻击</td><td>已知 ASR 接近 100%</td><td>攻击者改不了应用层代码</td></tr>
+</table>
+
+<h3>它 <span class="pill r">不</span> 解决什么(边界)</h3>
+<ul>
+  <li><b>不</b>做静态代码扫描(SAST)——那是 codex-security / Semgrep 的活。</li>
+  <li><b>不</b>从根上消除 prompt 注入——它截断注入的<b>后果</b>(动作),让注入"得逞了也干不成事"。</li>
+  <li><b>不</b>是模型对齐替代品——和模型层防护是<b>纵深防御</b>关系,不是二选一。</li>
+  <li><b>Public Preview</b>:微软自己标了"production-quality 但 GA 前可能有 breaking change",生产接入要锁版本。</li>
+</ul>
+
+<div class="callout ok">
+<b>和你的 ARG 项目的关系:</b> AGT 是<b>中心化、平台化、fail-closed</b>的企业重型方案(策略引擎→Rust ACS、
+身份→Entra/TEE、库→运维平台);你的 ARG 是<b>Local-First / Fail-Open / 零依赖 / Tracing-First</b> 的轻量侧。
+两者哲学相反,但在纵深防御里互补:ARG 做本地快速 tracing 与软拦截,AGT 做中心化强执行。
+</div>
+</section>
+
+<!-- ⑨ 怎么跑 -->
+<section id="run">
+<h2><span class="n">9</span>5 分钟上手</h2>
+<pre><code><span class="com"># 1. 装(Python 3.10+)</span>
+pip install <span class="str">"agent-governance-toolkit[full]"</span>
+
+<span class="com"># 2. 写策略 policy.yaml(见第③节)</span>
+
+<span class="com"># 3. 包住你的 tool</span>
+<span class="kw">from</span> agentmesh.governance <span class="kw">import</span> govern
+safe_tool = govern(my_tool, policy=<span class="str">"policy.yaml"</span>)
+
+<span class="com"># 4. 自检 / CI</span>
+agt doctor
+agt verify --evidence ./agt-evidence.json --strict</code></pre>
+
+<p>进阶用 <code>AgentControl</code>(完整 manifest,可编排多 Agent 身份 + 沙箱 + 审计):</p>
+<pre><code><span class="kw">from</span> agent_control_specification <span class="kw">import</span> AgentControl
+
+runtime = AgentControl.from_path(<span class="str">"manifest.yaml"</span>)
+result = runtime.evaluate(<span class="str">"input"</span>, {
+    <span class="str">"envelope"</span>: {<span class="str">"agent_id"</span>: <span class="str">"example-agent"</span>},
+    <span class="str">"input"</span>: {<span class="str">"body"</span>: {<span class="str">"action"</span>: <span class="str">"web_search"</span>, <span class="str">"params"</span>: {}}},
+})
+print(result.verdict)
+runtime.close()</code></pre>
+
+<div class="callout">
+<b>本地克隆 vs GitHub:</b> 你当前目录下的本地克隆是 <code>v5.0.0</code>(HEAD/unreleased,<b>比 GitHub Latest Release v4.0.0 还新</b>)。
+含了 v5 的 ACS(策略层)、NonoSandboxProvider、RingEnforcer 命令黑名单等 4.x 没有的东西。
+研读以本地为准,但要 aware 在线用户装的稳定版可能还是 4.x。
+</div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    讲解基于本地源码树 <code>agent-governance-toolkit/</code>(v5.0.0)实证生成 ·
+    参考 <a class="lk" href="https://github.com/microsoft/agent-governance-toolkit">GitHub 上游</a> ·
+    配套深度报告 <code>devdocs/A0_AGT_deep_read.md</code> 与 <code>devdocs/A0b_AGT_supplement.md</code>
+  </div>
+</footer>
+
+</body>
+</html>

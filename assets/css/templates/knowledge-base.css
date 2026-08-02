@@ -1,0 +1,1142 @@
+/* 适配 PaperMod：原 #wemd 容器 → .post-content；补浅色可读背景，使浅色排版在深色主题下可读 */
+.post-content {
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 28px 32px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.08);
+}
+.post-content a { color: #1f6feb; }
+.post-content code { background: rgba(0,0,0,.06); }
+.post-content pre { background: #1f2428 !important; }
+.post-content pre code { background: transparent; }
+
+/* 知识库 */
+/* 默认样式，最佳实践 */
+
+/* 全局属性 */
+.post-content {
+  font-size: 16px;
+  color: #000000;
+  padding: 0 8px;
+  line-height: 1.6;
+  word-spacing: 0px;
+  letter-spacing: 0px;
+  word-break: break-word;
+  word-wrap: break-word;
+  text-align: left;
+  font-family: Optima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', 'Microsoft YaHei', '微软雅黑', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* 段落 */
+.post-content p {
+  font-size: 16px;
+  margin: 0;
+  line-height: 26px;
+  color: #000000;
+}
+
+/* 标题 */
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  margin-top: 30px;
+  margin-bottom: 15px;
+  padding: 0px;
+  font-weight: bold;
+  color: #000000;
+}
+.post-content h1 {
+  font-size: 24px;
+}
+.post-content h2 {
+  font-size: 22px;
+}
+.post-content h3 {
+  font-size: 20px;
+}
+.post-content h4 {
+  font-size: 18px;
+}
+.post-content h5 {
+  font-size: 16px;
+}
+.post-content h6 {
+  font-size: 16px;
+}
+
+.post-content h1 .prefix,
+.post-content h2 .prefix,
+.post-content h3 .prefix,
+.post-content h4 .prefix,
+.post-content h5 .prefix,
+.post-content h6 .prefix {
+  display: none;
+}
+
+.post-content h1 .suffix,
+.post-content h2 .suffix,
+.post-content h3 .suffix,
+.post-content h4 .suffix,
+.post-content h5 .suffix,
+.post-content h6 .suffix {
+  display: none;
+}
+
+/* 列表 */
+.post-content ul,
+.post-content ol {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  padding-left: 25px;
+  color: #000000;
+}
+.post-content ul {
+  list-style-type: disc;
+}
+.post-content ul ul {
+  list-style-type: square;
+}
+
+.post-content ol {
+  list-style-type: decimal;
+}
+
+.post-content li section {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  line-height: 26px;
+  text-align: left;
+  color: #010101; /* 使用接近黑色的 HEX，避免微信吞掉纯黑色 */
+  font-weight: 500;
+}
+
+/* 引用 */
+.post-content blockquote {
+  border: none;
+}
+
+.post-content .multiquote-1 {
+  display: block;
+  font-size: 0.9em;
+  overflow: auto;
+  overflow-scrolling: touch;
+  border-left: 3px solid rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.05);
+  color: #6a737d;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  padding-right: 10px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.post-content .multiquote-1 p {
+  margin: 0px;
+  color: #000000;
+  line-height: 26px;
+}
+
+.post-content .multiquote-2 {
+  box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.post-content .multiquote-3 {
+  box-shadow: 1px 1px 10px rgba(0,0,0,0.2);
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.post-content .multiquote-3 p {
+  text-align: center;
+}
+
+.post-content .multiquote-3 h3 {
+  text-align: center;
+}
+
+.post-content .table-of-contents a {
+  border: none;
+  color: #000000;
+  font-weight: normal;
+}
+
+/* 链接 */
+.post-content a {
+  text-decoration: none;
+  color: #1e6bb8;
+  word-wrap: break-word;
+  font-weight: bold;
+  border-bottom: 1px solid #1e6bb8;
+}
+
+/* 加粗 */
+.post-content strong {
+  font-weight: bold;
+  color: #000000;
+}
+
+/* 斜体 */
+.post-content em {
+  font-style: italic;
+  color: #000000;
+}
+
+/* 加粗斜体 */
+.post-content em strong {
+  font-weight: bold;
+  color: #000000;
+}
+
+/* 删除线 */
+.post-content del {
+  font-style: italic;
+  color: #000000;
+}
+
+/* 下划线 */
+.post-content u {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-thickness: 1px;
+}
+
+/* 分隔线 */
+.post-content hr {
+  height: 1px;
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-top: 1px solid black;
+}
+
+/* 代码块容器 */
+.post-content pre {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content pre.custom {
+  padding: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.post-content pre code {
+  display: block;
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  border-radius: 0px;
+  font-size: 12px;
+  white-space: pre;
+  min-width: max-content;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content pre code span {
+  line-height: 26px;
+}
+
+/* 行内代码 */
+.post-content p code,
+.post-content li code {
+  font-size: 14px;
+  word-wrap: break-word;
+  padding: 2px 4px;
+  border-radius: 4px;
+  margin: 0 2px;
+  color: #1e6bb8;
+  background-color: rgba(27,31,35,.05);
+  font-family: Operator Mono, Consolas, Monaco, Menlo, monospace;
+  word-break: break-all;
+}
+
+/* 图片 */
+.post-content img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* 图片 */
+.post-content figure {
+  margin: 0;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* 图片描述文字 */
+.post-content figcaption {
+  margin-top: 5px;
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+}
+
+
+/* 表格容器 */
+.post-content .table-container{
+  overflow-x: auto;
+}
+
+/* 表格 */
+.post-content table {
+  display: table;
+  text-align: left;
+}
+.post-content tbody {
+  border: 0;
+}
+
+.post-content table tr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  background-color: #ffffff;
+}
+
+.post-content table tr:nth-child(2n) {
+  background-color: #F8F8F8;
+}
+
+.post-content table tr th,
+.post-content table tr td {
+  font-size: 16px;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  text-align: left;
+}
+
+.post-content table tr th {
+  font-weight: bold;
+  background-color: #f0f0f0;
+}
+
+/* 表格最小列宽4个汉字 */
+.post-content table tr th:nth-of-type(n),
+.post-content table tr td:nth-of-type(n){
+  min-width:85px;
+}
+
+.post-content .footnote-word {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+.post-content .footnote-ref {
+  color: #1e6bb8;
+  font-weight: bold;
+}
+
+.post-content .footnote-item {
+  display: flex;
+}
+
+.post-content .footnote-num {
+  display: inline;
+  width: 10%; /*神奇，50px就不可以*/
+  background: none;
+  font-size: 80%;
+  opacity: 0.6;
+  line-height: 26px;
+  font-family: ptima-Regular, Optima, PingFangSC-light, PingFangTC-light, 'PingFang SC', Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.post-content .footnote-item p {
+  display: inline;
+  font-size: 14px;
+  width: 90%;
+  padding: 0px;
+  margin: 0;
+  line-height: 26px;
+  color: #000000;
+  word-break:break-all;
+  width: calc(100%-50)
+}
+
+.post-content sub, sup {
+  line-height: 0;
+}
+
+.post-content .footnotes-sep:before {
+  content: "参考资料";
+  display: block;
+}
+
+/* 解决公式问题 */
+.post-content .block-equation {
+  display:block;
+  text-align: center;
+  overflow: auto;
+  display: block;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .block-equation > svg {
+  max-width: 300% !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+.post-content .inline-equation {
+}
+
+.post-content .inline-equation > svg {
+}
+
+.post-content .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  white-space: normal;
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+.post-content .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.post-content .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: top;
+  width: 80%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.post-content .imageflow-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.post-content .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+.post-content .nice-suffix-juejin-container {
+  margin-top: 20px !important;
+}
+
+.post-content figure a {
+  border: none;
+}
+
+.post-content figure a img {
+  margin: 0px;
+}
+
+.post-content figure {
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套 */
+.post-content figure a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 图片链接嵌套，图片解释 */
+.post-content figure a + figcaption {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: -35px;
+  background: rgba(0,0,0,0.7);
+  color: #ffffff;
+  line-height: 35px;
+  z-index: 20;
+}
+
+.post-content .callout {
+  margin: 24px 0;
+  padding: 18px 20px;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  background: #ffffff;
+  box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+}
+
+.post-content .callout-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  letter-spacing: 0.05em;
+}
+
+.post-content .callout-icon { margin-right: 8px;
+  font-size: 18px;
+}
+
+.post-content .callout-note { border-left: 4px solid #6366f1; background: #f5f5ff; }
+.post-content .callout-tip { border-left: 4px solid #10b981; background: #ecfdf5; }
+.post-content .callout-important { border-left: 4px solid #8b5cf6; background: #f5f3ff; }
+.post-content .callout-warning { border-left: 4px solid #f59e0b; background: #fffbeb; }
+.post-content .callout-caution { border-left: 4px solid #ef4444; background: #fff5f5; }
+
+
+.post-content .task-list-item {
+  list-style: none;
+  margin-left: -1.2em;
+  margin-bottom: 6px;
+  display: flex;
+  gap: 0;
+  align-items: flex-start;
+}
+
+.post-content .task-list-item input[type='checkbox'] {
+  margin-top: 4px;
+  pointer-events: none;
+}
+
+/* 知识库风格 */
+.post-content {
+    padding: 5px 24px;
+    max-width: 677px;
+    margin: 0 auto;
+    /* 使用系统无衬线字体，保持干净利落 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "PingFang SC", sans-serif;
+    color: #37352F;
+    /* 经典的笔记深灰色 */
+    background-color: transparent;
+    /* 透明背景，兼容微信深色模式 */
+    word-break: break-word;
+}
+
+/* 段落 - 紧凑但舒适 */
+.post-content p {
+    margin-top: 16px;
+    margin-bottom: 16px;
+    line-height: 1.75;
+    letter-spacing: 0.2px;
+    text-align: justify;
+    color: #37352F;
+    font-size: 16px;
+}
+
+/* 
+ * 一级标题 - 页面标题感
+ * 就像笔记页面的最顶端标题
+ */
+.post-content h1 {
+    margin-top: 50px;
+    margin-bottom: 40px;
+    text-align: left;
+    border-bottom: 1px solid #E3E2E0;
+    /* 极细的分割线 */
+    padding-bottom: 20px;
+}
+
+.post-content h1 .content {
+    font-size: 28px;
+    font-weight: 700;
+    color: #37352F;
+    display: inline-block;
+    line-height: 1.2;
+}
+
+.post-content h1 .prefix,
+.post-content h1 .suffix {
+    display: none;
+}
+
+/* 
+ * 二级标题 - 区块分割
+ * 带有浅灰色背景条，类似 Notion 的 H1 block
+ */
+.post-content h2 {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.post-content h2 .content {
+    display: block;
+    /* 占满整行 */
+    font-size: 22px;
+    font-weight: 600;
+    color: #37352F;
+    padding: 8px 12px;
+    background-color: #F7F6F3;
+    /* 经典的浅灰底色 */
+    border-radius: 4px;
+    line-height: 1.3;
+}
+
+.post-content h2 .prefix,
+.post-content h2 .suffix {
+    display: none;
+}
+
+/* 
+ * 三级标题 - 重点标记
+ * 像是给文字加了颜色标记
+ */
+.post-content h3 {
+    margin-top: 30px;
+    margin-bottom: 12px;
+}
+
+.post-content h3 .content {
+    font-size: 18px;
+    font-weight: 600;
+    color: #37352F;
+    display: inline-block;
+    /* 底部局部高亮 */
+    border-bottom: 3px solid #FDECC8;
+    /* 奶黄色 */
+    padding-bottom: 2px;
+}
+
+.post-content h3 .prefix,
+.post-content h3 .suffix {
+    display: none;
+}
+
+/* 四级标题 - 小节 */
+.post-content h4 {
+    margin-top: 24px;
+    margin-bottom: 8px;
+    text-align: left;
+}
+
+.post-content h4 .content {
+    display: inline-block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #EB5757;
+    /* 醒目的红色，用于警示或强调 */
+    line-height: 1.4;
+}
+
+.post-content h4 .prefix,
+.post-content h4 .suffix {
+    display: none;
+}
+
+/* 
+ * 列表 - 结构化缩进
+ */
+.post-content ul {
+    list-style-type: disc;
+    padding-left: 24px;
+    margin: 16px 0;
+    color: #37352F;
+}
+
+.post-content ul li {
+    margin-bottom: 8px;
+    line-height: 1.7;
+}
+
+.post-content li section {
+    color: #37352F;
+    font-size: 16px;
+}
+
+/* 有序列表 */
+.post-content ol {
+    list-style-type: decimal;
+    padding-left: 24px;
+    margin: 16px 0;
+    color: #37352F;
+    font-weight: 600;
+}
+
+.post-content ul ul {
+    list-style-type: circle;
+    margin-top: 6px;
+}
+
+.post-content ol ol {
+    list-style-type: lower-alpha;
+}
+
+.post-content ol li {
+    margin-bottom: 8px;
+    line-height: 1.7;
+}
+
+.post-content ol li section {
+    color: #37352F;
+    font-weight: normal;
+    font-size: 16px;
+}
+
+/* 
+ * 引用 - Callout 提示框风格
+ * 这是这款主题的灵魂
+ */
+.post-content .multiquote-1,
+.post-content .multiquote-2,
+.post-content .multiquote-3 {
+    margin: 24px 0;
+    padding: 16px 16px 16px 20px;
+    background-color: #F1F1EF;
+    /* 默认浅灰背景 */
+    border: none;
+    /* 无边框 */
+    border-radius: 4px;
+    border-left: 4px solid #37352F;
+    /* 左侧深色强提示 */
+    overflow: visible !important;
+}
+
+/* 针对不同层级引用，给予不同颜色，模拟 Info/Warning */
+.post-content .multiquote-2 {
+    background-color: #E7F3F8;
+    /* 浅蓝背景 (Info) */
+    border-left-color: #2D9CDB;
+}
+
+.post-content .multiquote-3 {
+    background-color: #FDF5F2;
+    /* 浅橙背景 (Warning) */
+    border-left-color: #F2994A;
+}
+
+.post-content .multiquote-1 p,
+.post-content .multiquote-2 p,
+.post-content .multiquote-3 p {
+    margin: 0;
+    color: #37352F;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* 链接 - 简洁下划线 */
+.post-content a {
+    color: #37352F;
+    text-decoration: none;
+    border-bottom: 1px solid #999;
+    /* 灰色下划线 */
+    font-weight: 500;
+    transition: border-color 0.2s;
+}
+
+/* 
+ * 加粗 - 黄色高光笔
+ * 完全复刻 Notion 的 Highlight 效果
+ */
+.post-content strong {
+    color: #37352F;
+    font-weight: 600;
+    background-color: #FDECC8;
+    /* 高亮黄 */
+    padding: 2px 4px;
+    margin: 0 2px;
+    border-radius: 3px;
+}
+
+/* 斜体 */
+.post-content em {
+    color: #37352F;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+.post-content em strong {
+    color: #37352F;
+    opacity: 1;
+}
+
+/* 高亮 - 黄色标记 */
+.post-content mark {
+    background: #FDECC8;
+    color: #37352F;
+    padding: 2px 4px;
+    border-radius: 3px;
+}
+
+/* 删除线 */
+.post-content del {
+    text-decoration: line-through;
+    color: #999;
+}
+
+/* 分隔线 */
+.post-content hr {
+    margin: 40px auto;
+    border: 0;
+    height: 1px;
+    background-color: #E3E2E0;
+    /* 极浅灰 */
+    width: 100%;
+}
+
+/* 图片 - 干净无阴影 */
+.post-content img {
+    display: block;
+    margin: 30px auto;
+    width: 100%;
+    border-radius: 4px;
+    box-shadow: none;
+    /* 笔记风格通常不需要阴影 */
+    border: 1px solid #E3E2E0;
+    /* 只有一圈细线 */
+}
+
+.post-content figcaption {
+    margin-top: 8px;
+    text-align: center;
+    color: #999;
+    font-size: 14px;
+}
+
+/* 
+ * 行内代码 - 经典的红字灰底
+ */
+.post-content p code,
+.post-content li code {
+    color: #EB5757;
+    /* 红色文字 */
+    background: rgba(135, 131, 120, 0.15);
+    /* 半透明灰底 */
+    border: none;
+    padding: 3px 6px;
+    margin: 0 4px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+/* 代码块 - 极简灰 */
+/* 代码块 - 注意：不要设置 color，让语法高亮主题控制文字颜色 */
+.post-content pre code.hljs {
+    display: block;
+    padding: 20px;
+    background: #F7F6F3;
+    /* color 由 .hljs 语法高亮主题控制 */
+    font-size: 13px;
+    line-height: 1.6;
+    border-radius: 4px;
+    font-family: "SFMono-Regular", Consolas, Menlo, monospace;
+    overflow-x: auto;
+    white-space: pre;
+  min-width: max-content;
+    border: none;
+}
+
+/* 如果没有语法高亮，设置默认深灰色 */
+.post-content pre code:not(.hljs) {
+    color: #37352F;
+    background: #F7F6F3;
+}
+
+/* 表格 - 数据库风格 (Database) */
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 30px 0;
+    font-size: 14px;
+    border: 1px solid #E3E2E0;
+    border-radius: 0;
+}
+
+.post-content table tr th {
+    background: #F7F6F3;
+    color: #37352F;
+    font-weight: 600;
+    border: 1px solid #E3E2E0;
+    padding: 10px 12px;
+    text-align: left;
+}
+
+.post-content table tr td {
+    border: 1px solid #E3E2E0;
+    padding: 10px 12px;
+    color: #37352F;
+    background: #fff;
+}
+
+/* 脚注 */
+.post-content .footnote-word,
+.post-content .footnote-ref {
+    color: #37352F;
+    text-decoration: underline;
+}
+
+.post-content .footnotes-sep {
+    border-top: 1px solid #E3E2E0;
+    padding-top: 20px;
+    margin-top: 50px;
+    font-size: 12px;
+    color: #999;
+}
+
+.post-content .footnote-num {
+    font-weight: bold;
+    color: #37352F;
+    margin-right: 4px;
+}
+
+.post-content .footnote-item p {
+    color: #666;
+    font-size: 12px;
+    margin: 4px 0;
+}
+
+/* 公式 */
+.post-content .block-equation > svg {
+    max-width: 100% !important;
+}
+
+.post-content .inline-equation > svg {
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+
+/* 提示块 - 知识库风格 */
+.post-content .callout {
+    margin: 24px 0;
+    padding: 16px 16px 16px 20px;
+    border-radius: 4px;
+    border-left: 4px solid #37352F;
+}
+
+.post-content .callout-title {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #37352F;
+    font-size: 15px;
+}
+
+.post-content .callout-icon { margin-right: 8px;
+    margin-right: 6px;
+}
+
+.post-content .callout-note { 
+    background: #F1F1EF;
+    border-left-color: #37352F;
+}
+
+.post-content .callout-tip { 
+    background: #FDF5F2;
+    border-left-color: #F2994A;
+}
+
+.post-content .callout-important { 
+    background: #E7F3F8;
+    border-left-color: #2D9CDB;
+}
+
+.post-content .callout-warning { 
+    background: #FFF4E5;
+    border-left-color: #FF9800;
+}
+
+.post-content .callout-caution { 
+    background: #FFEBEE;
+    border-left-color: #F44336;
+}
+
+/* Imageflow CSS */
+.post-content .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  /* white-space: normal; */
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+.post-content .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.post-content .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: top;
+  width: 80%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.post-content .imageflow-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.post-content .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
+
+/*
+github.com style (c) Vasily Polovnyov <vast@whiteants.net>
+*/
+
+/* 代码块样式 - 需要添加 .post-content 前缀以匹配包装后的 HTML */
+.post-content .hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 16px;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.post-content .hljs-comment,
+.post-content .hljs-quote {
+  color: #998;
+  font-style: italic;
+}
+
+.post-content .hljs-keyword,
+.post-content .hljs-selector-tag,
+.post-content .hljs-subst {
+  color: #333;
+  font-weight: bold;
+}
+
+.post-content .hljs-number,
+.post-content .hljs-literal,
+.post-content .hljs-variable,
+.post-content .hljs-template-variable,
+.post-content .hljs-tag .hljs-attr {
+  color: #008080;
+}
+
+.post-content .hljs-string,
+.post-content .hljs-doctag {
+  color: #d14;
+}
+
+.post-content .hljs-title,
+.post-content .hljs-section,
+.post-content .hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.post-content .hljs-subst {
+  font-weight: normal;
+}
+
+.post-content .hljs-type,
+.post-content .hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.post-content .hljs-tag,
+.post-content .hljs-name,
+.post-content .hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.post-content .hljs-regexp,
+.post-content .hljs-link {
+  color: #009926;
+}
+
+.post-content .hljs-symbol,
+.post-content .hljs-bullet {
+  color: #990073;
+}
+
+.post-content .hljs-built_in,
+.post-content .hljs-builtin-name {
+  color: #0086b3;
+}
+
+.post-content .hljs-meta {
+  color: #999;
+  font-weight: bold;
+}
+
+.post-content .hljs-deletion {
+  background: #fdd;
+}
+
+.post-content .hljs-addition {
+  background: #dfd;
+}
+
+.post-content .hljs-emphasis {
+  font-style: italic;
+}
+
+.post-content .hljs-strong {
+  font-weight: bold;
+}
+
+/* Imageflow CSS */
+.post-content .imageflow-layer1 {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  /* white-space: normal; */
+  border: 0px none;
+  padding: 0px;
+  overflow: hidden;
+}
+
+.post-content .imageflow-layer2 {
+  white-space: nowrap;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+.post-content .imageflow-layer3 {
+  display: inline-block;
+  word-wrap: break-word;
+  white-space: normal;
+  vertical-align: top;
+  width: 80%;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.post-content .imageflow-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 4px;
+}
+
+.post-content .imageflow-caption {
+  text-align: center;
+  margin-top: 0px;
+  padding-top: 0px;
+  color: #888;
+}
