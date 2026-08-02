@@ -3,6 +3,9 @@ title: "Reverse OpenRouter"
 slug: iy7k17ehlduoblsm
 date: 2026-04-26T12:10:14+08:00
 source: yuque/penetration
+tags:
+  - Agent
+  - 红队
 ---
 
 通过境外服务器反向代理 OpenRouter AI API，解决区域访问限制问题。

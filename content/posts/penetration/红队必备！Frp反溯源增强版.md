@@ -3,6 +3,8 @@ title: "红队必备！Frp反溯源增强版"
 slug: np5v8tglxw95ztmk
 date: 2025-04-14T21:03:41+08:00
 source: yuque/penetration
+tags:
+  - 红队
 ---
 
 frp 是个很棒的工具，高性能、稳定，值得使用。

@@ -3,6 +3,9 @@ title: "把 OpenAI 的隐私过滤模型，塞进红队的工具链"
 slug: openai-privacyfilter-into-redteam
 date: 2026-04-25T11:11:28+08:00
 source: yuque/penetration
+tags:
+  - Agent
+  - 红队
 ---
 
 ![](https://cdn.nlark.com/yuque/0/2026/png/166008/1777302701535-625c20f6-3b1b-4d69-8060-c6cfaca61d29.png)

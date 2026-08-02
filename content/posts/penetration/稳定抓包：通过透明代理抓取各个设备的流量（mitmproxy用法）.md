@@ -3,6 +3,8 @@ title: "稳定抓包：通过透明代理抓取各个设备的流量（mitmproxy
 slug: lsqvp3qo4b2z8ro6
 date: 2023-11-24T23:20:13+08:00
 source: yuque/penetration
+tags:
+  - 红队
 ---
 
 教程参考

@@ -3,6 +3,8 @@ title: "GEO备忘录：给 AI 投毒的人"
 slug: geo-note
 date: 2026-04-06T09:02:24+08:00
 source: yuque/penetration
+tags:
+  - Agent
 ---
 
 # GEO备忘录：9.9 元，给 AI 下一剂毒

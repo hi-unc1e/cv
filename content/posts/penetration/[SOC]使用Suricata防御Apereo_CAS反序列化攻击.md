@@ -3,6 +3,8 @@ title: "[SOC]使用Suricata防御Apereo CAS反序列化攻击"
 slug: bisq5a5zs2oarfkk
 date: 2023-08-08T19:33:47+08:00
 source: yuque/penetration
+tags:
+  - 运行时安全
 ---
 
 # 一、漏洞的攻击特征

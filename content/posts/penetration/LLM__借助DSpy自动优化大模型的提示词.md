@@ -3,6 +3,8 @@ title: "LLM| 借助DSpy自动优化大模型的提示词"
 slug: mguyyoocikdmzldf
 date: 2025-08-07T22:53:22+08:00
 source: yuque/penetration
+tags:
+  - Agent
 ---
 
 推荐阅读——让LLM自动微调模型：

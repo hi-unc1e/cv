@@ -3,6 +3,8 @@ title: "[SOC]流量防护有效性：如何验证内网 IDS 是否在正常工�
 slug: cdmhil5gbt5bocw3
 date: 2024-09-16T23:16:22+08:00
 source: yuque/penetration
+tags:
+  - 运行时安全
 ---
 
 :::info
