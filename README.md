@@ -57,11 +57,24 @@ hugo new content posts/my-post.md
 Front matter 约定：
 
 - `title`、`date`、`lastmod`：标题与时间。
+- `slug`：**强制英文 URL 安全**，`^[a-z0-9][a-z0-9._-]*$`（小写、数字、`.` `_` `-`）。中文标题可以，但 `slug` 与新建文章文件名应使用英文。示例：`agents-next-problem-is-action-boundary`。
 - `description`：用于列表摘要和 SEO。
 - `tags`、`categories`：站内分类。
 - `source_url`：原文来自语雀时记录原文 URL；本站原创可留空。
 - `source`：批量导出的语雀来源标识，例如 `yuque/penetration`；迁移内容保留该字段。
 - `draft`：发布前保持 `true`，确认后改为 `false`。
+
+Git hook 会在 commit 时校验 staged 文章的 `slug`（含中文 / 大写 / 空格会直接失败）。克隆后执行一次：
+
+```bash
+git config core.hooksPath .githooks
+```
+
+手动全量检查：
+
+```bash
+node scripts/check-content-slugs.mjs
+```
 
 语雀同步的最低原则是：语雀正文为内容真相源，Git 保留公开 Markdown 副本；同步器不会删除博客中已有但本次导出未包含的文章。
 

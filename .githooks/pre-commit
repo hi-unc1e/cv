@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Enforce English URL-safe slugs on staged Hugo content.
+# Enable once per clone:
+#   git config core.hooksPath .githooks
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+cd "$ROOT"
+
+if ! command -v node >/dev/null 2>&1; then
+  echo "pre-commit: node is required to validate content slugs" >&2
+  exit 1
+fi
+
+exec node scripts/check-content-slugs.mjs --staged
