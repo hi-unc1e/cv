@@ -1,6 +1,8 @@
 ---
 title: "字有脾气 · 汉字字体调性与屏幕科学"
-slug: font-mood
+slug: mood-of-fonts
+aliases:
+  - /posts/thoughts/font-mood/
 date: 2026-08-08T10:40:00+08:00
 lastmod: 2026-08-08T10:40:00+08:00
 description: "一页关于字体调性、屏幕渲染与阅读舒适度的交互式小抄。"
