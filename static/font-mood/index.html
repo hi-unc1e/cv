@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>字有脾气 · 汉字字体调性与屏幕科学</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;900&family=Noto+Sans+SC:wght@300;400;700;900&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&family=Long+Cang&family=Liu+Jian+Mao+Cao&family=Zhi+Mang+Xing&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f3ea; --ink:#26231f; --ink-soft:#6b655c;
+  --cinnabar:#c0392b; --gold:#b8860b; --card:#fffdf7;
+  --line:#e3dccb; --accent:#2f5d50;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  line-height:1.9; font-size:17px; font-weight:300;
+  transition:font-family .3s;
+}
+.serif{font-family:"Noto Serif SC","Songti SC","STSong","SimSun",serif;}
+.kai{font-family:"Ma Shan Zheng","Kaiti SC","KaiTi",cursive;}
+.wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+section{padding:88px 0;}
+h2{font-family:"Noto Serif SC","Songti SC",serif;font-weight:900;font-size:2rem;margin-bottom:8px;}
+.sub{color:var(--ink-soft);margin-bottom:44px;font-size:.95rem;}
+.tag{display:inline-block;background:var(--ink);color:var(--paper);font-size:.72rem;
+  padding:3px 12px;border-radius:99px;letter-spacing:.2em;margin-bottom:14px;}
+
+/* ---------- 顶部 ---------- */
+nav{position:sticky;top:0;z-index:50;background:rgba(247,243,234,.88);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);}
+nav .wrap{display:flex;justify-content:space-between;align-items:center;height:56px;}
+nav .logo{font-family:"Noto Serif SC",serif;font-weight:900;font-size:1.05rem;letter-spacing:.15em;}
+nav a{color:var(--ink-soft);text-decoration:none;font-size:.85rem;margin-left:22px;transition:color .2s;}
+nav a:hover{color:var(--cinnabar);}
+
+/* ---------- Hero ---------- */
+.hero{padding:110px 0 90px;text-align:center;position:relative;}
+.hero .chars{font-size:clamp(3.2rem,9vw,6.5rem);line-height:1.25;font-weight:900;}
+.hero .chars span{display:inline-block;margin:0 .06em;transition:transform .3s;}
+.hero .chars span:hover{transform:translateY(-10px) rotate(-3deg);}
+.c-song{font-family:"Noto Serif SC","Songti SC",serif;color:var(--cinnabar);}
+.c-hei{font-family:"Noto Sans SC","PingFang SC",sans-serif;color:var(--ink);}
+.c-kai{font-family:"Ma Shan Zheng","Kaiti SC",cursive;color:var(--accent);}
+.c-wild{font-family:"Zhi Mang Xing","Liu Jian Mao Cao",cursive;color:var(--gold);}
+.hero p.lead{max-width:640px;margin:30px auto 0;color:var(--ink-soft);font-size:1.05rem;}
+.seal{position:absolute;top:56px;right:6%;width:58px;height:58px;background:var(--cinnabar);
+  color:#fff;font-family:"Noto Serif SC",serif;font-weight:900;display:flex;align-items:center;
+  justify-content:center;border-radius:8px;transform:rotate(6deg);font-size:.8rem;line-height:1.3;
+  text-align:center;box-shadow:2px 3px 0 rgba(0,0,0,.15);}
+
+/* ---------- 字体性格卡 ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:22px;}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:30px;
+  transition:transform .25s, box-shadow .25s;position:relative;overflow:hidden;}
+.card:hover{transform:translateY(-6px);box-shadow:0 14px 34px rgba(60,50,30,.12);}
+.card .demo{font-size:3.4rem;line-height:1.2;margin-bottom:16px;}
+.card h3{font-size:1.15rem;font-weight:700;margin-bottom:4px;}
+.card .mood{color:var(--cinnabar);font-size:.85rem;letter-spacing:.1em;margin-bottom:12px;}
+.card p{font-size:.92rem;color:var(--ink-soft);}
+.card .use{margin-top:14px;font-size:.8rem;color:var(--accent);border-top:1px dashed var(--line);padding-top:12px;}
+
+/* ---------- 实验台 ---------- */
+.lab{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:36px;}
+.lab .row{display:grid;grid-template-columns:1fr 1fr;gap:26px;margin-top:22px;}
+.lab .pane{border:1px solid var(--line);border-radius:12px;padding:22px;background:var(--paper);}
+.lab .pane h4{font-size:.85rem;color:var(--ink-soft);margin-bottom:10px;font-weight:400;}
+.lab .sentence{font-weight:400;}
+.lab .song-s{font-family:"Noto Serif SC","Songti SC","SimSun",serif;}
+.lab .hei-s{font-family:"Noto Sans SC","PingFang SC",sans-serif;}
+.slider-row{display:flex;align-items:center;gap:18px;margin-top:8px;}
+.slider-row output{font-family:monospace;font-size:1.1rem;min-width:76px;color:var(--cinnabar);font-weight:700;}
+input[type=range]{flex:1;accent-color:var(--cinnabar);height:32px;}
+.hint{font-size:.82rem;color:var(--ink-soft);margin-top:18px;padding-left:14px;border-left:3px solid var(--cinnabar);}
+
+/* ---------- 科学卡片 ---------- */
+.sci{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:22px;}
+.sci .card h3{font-weight:900;font-family:"Noto Serif SC",serif;}
+.pixel-demo{display:flex;gap:4px;margin:14px 0 6px;}
+.pixel-demo .px{width:22px;height:22px;background:#d9d2c0;border-radius:3px;}
+.pixel-demo .px.on{background:var(--ink);}
+.subpixel{display:flex;height:46px;border-radius:6px;overflow:hidden;margin:14px 0 6px;border:1px solid var(--line);}
+.subpixel div{flex:1;}
+.subpixel .r{background:#e74c3c;}.subpixel .g{background:#27ae60;}.subpixel .b{background:#2980b9;}
+.subpixel .off{background:#3a3733;}
+.dpi-bars{margin:14px 0 4px;}
+.dpi-bars .bar{display:flex;align-items:center;gap:10px;margin-bottom:8px;font-size:.8rem;color:var(--ink-soft);}
+.dpi-bars .track{flex:1;height:10px;background:var(--line);border-radius:99px;overflow:hidden;}
+.dpi-bars .fill{height:100%;background:var(--accent);border-radius:99px;}
+
+/* ---------- 人因实验 ---------- */
+.ergo .lab p.read{max-width:100%;font-size:1.02rem;background:var(--paper);
+  border:1px solid var(--line);border-radius:12px;padding:24px;margin-top:20px;
+  font-family:"Noto Serif SC","Songti SC",serif;}
+.ergo .btns{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;}
+.ergo .btns button{border:1px solid var(--line);background:var(--paper);color:var(--ink);
+  padding:8px 18px;border-radius:99px;cursor:pointer;font-size:.85rem;transition:all .2s;font-family:inherit;}
+.ergo .btns button.active,.ergo .btns button:hover{background:var(--ink);color:var(--paper);}
+
+/* ---------- Takeaway ---------- */
+.take{background:#26231f;color:#efe9dc;margin:88px 0;border-radius:0;}
+.take h2{color:#fff;}
+.take .sub{color:#a79f90;}
+.take .cards .card{background:#33302a;border-color:#4a463d;color:#efe9dc;}
+.take .cards .card p{color:#b7afa0;}
+.take .cards .card .use{border-top-color:#4a463d;color:#d9c98a;}
+.take .cards .card .mood{color:#e0a39a;}
+.take .rec{margin-top:14px;font-size:.85rem;color:#efe9dc;}
+.take .rec b{color:#fff;}
+
+/* ---------- 彩蛋 ---------- */
+.fun{text-align:center;padding-bottom:60px;}
+.fun p{color:var(--ink-soft);margin-bottom:18px;}
+.fun .btns button{margin:0 6px;border:1px solid var(--line);background:var(--card);padding:10px 22px;
+  border-radius:99px;cursor:pointer;font-size:.95rem;transition:all .2s;}
+.fun .btns button:hover{background:var(--cinnabar);color:#fff;border-color:var(--cinnabar);}
+/* 一键换魂：强制覆盖全站字体 */
+body.force-hei *{font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif !important;font-weight:400;}
+body.force-song *{font-family:"Noto Serif SC","Songti SC","STSong","SimSun",serif !important;}
+body.force-hand *{font-family:"Ma Shan Zheng","Kaiti SC","KaiTi",cursive !important;}
+footer{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--ink-soft);font-size:.82rem;}
+@media(max-width:640px){.lab .row{grid-template-columns:1fr;}.seal{display:none;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">字有脾气</div>
+    <div>
+      <a href="#fonts">四种性格</a>
+      <a href="#lab">小实验</a>
+      <a href="#science">屏幕科学</a>
+      <a href="#ergo">人因学</a>
+      <a href="#takeaway">带走</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="seal">字体<br>图鉴</div>
+  <div class="wrap">
+    <div class="chars">
+      <span class="c-song">字</span><span class="c-hei">体</span><span class="c-kai">也</span><span class="c-wild">有</span><span class="c-song">脾</span><span class="c-hei">气</span>
+    </div>
+    <p class="lead">同样的四个字，用宋体写像公文，用黑体写像路牌，用手写体写像朋友递来的纸条。<br>
+    字体不只是“好不好看”，它在开口之前，就已经替你定了语气。</p>
+  </div>
+</header>
+
+<section id="fonts">
+  <div class="wrap">
+    <span class="tag">第一幕</span>
+    <h2>四种最常见的性格</h2>
+    <p class="sub">你每天都在见它们，只是没跟它们打过招呼。</p>
+    <div class="cards">
+      <div class="card">
+        <div class="demo serif">爱、美、智慧</div>
+        <h3>宋体 / 明朝体</h3>
+        <div class="mood">文雅 · 庄重 · 有书卷气</div>
+        <p>横细竖粗、收笔带个小三角，那是毛笔顿笔留下的遗迹。它从雕版印刷的年代走来，天生适合长篇正文——古籍、论文、法律文书都爱用它，因为“看着就像正经东西”。</p>
+        <div class="use">代表场景：古书、正文长文、证书、葬礼与婚礼（奇怪的兼容）</div>
+      </div>
+      <div class="card">
+        <div class="demo" style="font-weight:700;">爱、美、智慧</div>
+        <h3>黑体 / 无衬线</h3>
+        <div class="mood">现代 · 中性 · 直给</div>
+        <p>笔画粗细均匀，没有装饰，像穿着纯色T恤的人——不表达态度，所以什么场合都不出错。它受西方无衬线字体影响，二十世纪才流行开来，是所有操作系统的默认选择。</p>
+        <div class="use">代表场景：系统界面、App、路牌、PPT 标题</div>
+      </div>
+      <div class="card">
+        <div class="demo kai">爱、美、智慧</div>
+        <h3>楷体</h3>
+        <div class="mood">温和 · 教养 · 慢一点</div>
+        <p>一笔一画都是手写的骨架，像小学老师在黑板上的板书。它自带“教导”和“亲切”的气场，所以教科书、儿童读物、公文里的批注常用它。</p>
+        <div class="use">代表场景：教科书、引用段落、温柔的通知</div>
+      </div>
+      <div class="card">
+        <div class="demo c-wild" style="font-weight:400;">爱、美、智慧</div>
+        <h3>手写 / 书法体</h3>
+        <div class="mood">个性 · 情绪 · Smart &amp; Wild</div>
+        <p>微信读书在你读完一本书时，盖一个狂草般的“45 本”徽章——它故意的。规整的字体传达信息，潦草的字体传达心跳。成就、祝福、限量感，都要靠这点“不完美”来点火。</p>
+        <div class="use">代表场景：徽章、海报大字、邀请函、任何需要“人味”的地方</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="lab" style="background:#efe9da;">
+  <div class="wrap">
+    <span class="tag">第二幕</span>
+    <h2>小实验：把字越缩越小</h2>
+    <p class="sub">拖动滑块，盯着宋体的横画看——它会先“消失”。</p>
+    <div class="lab">
+      <div class="slider-row">
+        <span style="font-size:.85rem;color:var(--ink-soft);">字号</span>
+        <input type="range" id="sizeSlider" min="12" max="48" value="26">
+        <output id="sizeOut">26 px</output>
+      </div>
+      <div class="row">
+        <div class="pane">
+          <h4>宋体（横细竖粗）</h4>
+          <div class="sentence song-s" id="songDemo" style="font-size:26px;">愿你的心中也住着一只独角兽。</div>
+        </div>
+        <div class="pane">
+          <h4>黑体（笔画均匀）</h4>
+          <div class="sentence hei-s" id="heiDemo" style="font-size:26px;">愿你的心中也住着一只独角兽。</div>
+        </div>
+      </div>
+      <p class="hint">缩到 14px 以下时，宋体的细横画已经不足一个物理像素，屏幕只能“四舍五入”——要么消失，要么变灰。黑体因为横竖一样粗，反而挺得住。<b>这就是为什么小字号正文在屏幕上，黑体往往比宋体清楚。</b></p>
+    </div>
+  </div>
+</section>
+
+<section id="science">
+  <div class="wrap">
+    <span class="tag">第三幕</span>
+    <h2>屏幕上的科学：字是怎么被“画”出来的</h2>
+    <p class="sub">几个藏在像素背后的冷知识。</p>
+    <div class="sci">
+      <div class="card">
+        <h3>① 屏幕是一张方格纸</h3>
+        <div class="pixel-demo">
+          <div class="px"></div><div class="px on"></div><div class="px on"></div><div class="px"></div>
+          <div class="px"></div><div class="px"></div><div class="px on"></div><div class="px"></div>
+          <div class="px"></div><div class="px"></div><div class="px on"></div><div class="px"></div>
+          <div class="px"></div><div class="px on"></div><div class="px on"></div><div class="px"></div>
+        </div>
+        <p>字体文件里存的是平滑的曲线，但屏幕只有一格一格的像素。每个像素只能决定“亮”或“不亮”（以及亮多少）。曲线对不上格子时，渲染引擎会做<b>灰阶抗锯齿</b>：让边缘的像素半亮，骗过你的眼睛。更讲究的还会做 <b>hinting（微调）</b>——故意把笔画掰歪一点点，对齐到像素网格上。</p>
+      </div>
+      <div class="card">
+        <h3>② 一个像素，其实是三盏灯</h3>
+        <div class="subpixel">
+          <div class="r"></div><div class="g"></div><div class="b"></div>
+          <div class="off"></div><div class="off"></div><div class="off"></div>
+          <div class="r"></div><div class="g"></div><div class="b"></div>
+        </div>
+        <p>用放大镜看屏幕：每个像素由红、绿、蓝三个竖条组成。Windows 的 <b>ClearType</b> 等次像素渲染技术，会把每个小灯条当成独立的点来用，相当于把水平方向的分辨率偷偷提高了三倍。代价是凑近看，字的边缘会有淡淡的彩色镶边。</p>
+      </div>
+      <div class="card">
+        <h3>③ 纸和屏幕，分辨率差着一百倍</h3>
+        <div class="dpi-bars">
+          <div class="bar"><span style="min-width:120px;">激光印刷 ~1200dpi</span><div class="track"><div class="fill" style="width:100%;"></div></div></div>
+          <div class="bar"><span style="min-width:120px;">普通显示器 ~110ppi</span><div class="track"><div class="fill" style="width:12%;background:var(--gold);"></div></div></div>
+          <div class="bar"><span style="min-width:120px;">视网膜屏 ~220-460ppi</span><div class="track"><div class="fill" style="width:38%;background:var(--cinnabar);"></div></div></div>
+        </div>
+        <p>印刷品上，宋体 0.1 毫米的细横画清清楚楚；在老显示器上，它直接不够一个像素。所以屏幕时代的默认字体几乎全是黑体。<b>但视网膜屏改变了一切</b>——像素密到肉眼不可见之后，宋体在手机上“复活”了，Kindle 和微信读书才敢把正文设回宋体。</p>
+      </div>
+      <div class="card">
+        <h3>④ 眼睛也有脾气</h3>
+        <p style="margin-top:10px;">阅读时眼睛不是平滑移动，而是不断“跳跃—停顿”（跳视，saccade）。宋体那些横画和衬线，在纸上能像轨道一样引导视线连成一行；但在低分辨率屏幕上轨道断断续续，反而增加负担。另外，纯黑配纯白对比度太刺激，长时间阅读更舒服的组合是<b>深灰字配米白底</b>——就像你现在看到的这个页面。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="ergo" class="ergo" style="background:#efe9da;">
+  <div class="wrap">
+    <span class="tag">第四幕</span>
+    <h2>人因学实验：行距的呼吸感</h2>
+    <p class="sub">点下面的按钮，同一段字，三种行距。感受一下眼睛什么时候最省力。</p>
+    <div class="lab">
+      <div class="btns">
+        <button data-lh="1.3">行距 1.3（挤）</button>
+        <button data-lh="1.75" class="active">行距 1.75（舒服）</button>
+        <button data-lh="2.4">行距 2.4（散）</button>
+      </div>
+      <p class="read" id="ergoText" style="line-height:1.75;">爱、美、智慧、无限和永恒。愿你的心中也住着一只独角兽。当行距太小时，你的眼睛换行时容易“串行”，读到下一行发现还是刚才那句；行距太大时，视线又要在行间长途跋涉，段落碎成一盘散沙。经验法则是正文的行距落在字号的 1.5 到 1.8 倍之间，每行 25 到 40 个汉字——这正是排版工几百年试出来的“人体工学”。</p>
+      <p class="hint">顺便：行长也很关键。报纸为什么分栏？因为一行太长，眼睛从左跑到右会累，回来时还容易找不到下一行的开头。</p>
+    </div>
+  </div>
+</section>
+
+<section id="takeaway" class="take">
+  <div class="wrap">
+    <span class="tag" style="background:#c0392b;">带走</span>
+    <h2>小结论：三种人，三套字体方案</h2>
+    <p class="sub">道理听够了，下面是能直接抄的作业。</p>
+    <div class="cards">
+      <div class="card">
+        <div class="demo" style="font-weight:900;color:#fff;">做 PPT 的人</div>
+        <div class="mood">关键词：投影仪是分辨率杀手</div>
+        <p>投影仪和老会议室屏幕分辨率都很低，宋体的细横画必糊。标题用<b>粗黑体</b>，正文用常规黑体，一页一种字体就够了，字号别小于 18pt。</p>
+        <div class="rec">推荐：<b>思源黑体 / 阿里巴巴普惠体 / 微软雅黑</b>，均免费可商用（雅黑限 Windows 场景）。</div>
+        <div class="use">一句话：PPT 上没有“精致”，只有“看得清”。</div>
+      </div>
+      <div class="card">
+        <div class="demo serif" style="color:#fff;">读电子书的人</div>
+        <div class="mood">关键词：好屏幕配宋体，差屏幕配黑体</div>
+        <p>视网膜屏手机、Kindle 上，长文用<b>宋体/明朝体</b>，衬线引导视线，读两小时不累；老设备或小字号时果断换黑体。行距调到 1.5–1.8 倍，背景用米白或浅灰，别用纯白。</p>
+        <div class="rec">推荐：<b>思源宋体 / 方正书宋 / 霞鹜文楷</b>（屏幕优化过的楷体，温柔又清晰）。</div>
+        <div class="use">一句话：宋体是纸上的轿子， retina 屏让它在手机上也能坐。</div>
+      </div>
+      <div class="card">
+        <div class="demo c-wild" style="font-weight:400;">做平面设计的人</div>
+        <div class="mood">关键词：字体是语气，也是版权</div>
+        <p>文化感用宋体，现代感用黑体，情绪和“人味”用手写/书法体——就像微信读书那个狂草“45 本”，信息用黑体，心跳用草书。另外记住：<b>字体是软件，商用要授权</b>，方正字体维权的故事在设计圈可不是传说。</p>
+        <div class="rec">推荐：<b>思源系列</b>（Adobe 与 Google 联合，免费商用）打底，风格字体单独购买授权。</div>
+        <div class="use">一句话：先定语气，再选字体；先看授权，再交稿子。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="fun">
+  <div class="wrap">
+    <span class="tag">彩蛋</span>
+    <h2>不信？一键换魂</h2>
+    <p>把这一整页换一种字体，感受一下“语气”的变化有多离谱。</p>
+    <div class="btns">
+      <button data-font="force-hei">整页黑体</button>
+      <button data-font="force-song">整页宋体</button>
+      <button data-font="force-hand">整页手写</button>
+      <button data-font="">恢复原样</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    字有脾气 · 一页关于字体调性的小抄<br>
+    <span style="font-size:.75rem;">灵感来自那个读完书的深夜：「已读完」三个字用宋体，45 本的徽章用狂草。</span>
+  </div>
+</footer>
+
+<script>
+// 字号实验
+const slider = document.getElementById('sizeSlider');
+const out = document.getElementById('sizeOut');
+const song = document.getElementById('songDemo');
+const hei = document.getElementById('heiDemo');
+slider.addEventListener('input', e => {
+  const v = e.target.value;
+  out.textContent = v + ' px';
+  song.style.fontSize = v + 'px';
+  hei.style.fontSize = v + 'px';
+});
+
+// 行距实验
+const ergoText = document.getElementById('ergoText');
+document.querySelectorAll('.ergo .btns button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.ergo .btns button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    ergoText.style.lineHeight = btn.dataset.lh;
+  });
+});
+
+// 整页换字体彩蛋：通过给 body 加类，用 !important 强制覆盖所有元素的字体
+document.querySelectorAll('.fun .btns button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.body.classList.remove('force-hei', 'force-song', 'force-hand');
+    if (btn.dataset.font) document.body.classList.add(btn.dataset.font);
+    document.querySelectorAll('.fun .btns button').forEach(b => {
+      b.style.background = ''; b.style.color = ''; b.style.borderColor = '';
+    });
+    if (btn.dataset.font) {
+      btn.style.background = 'var(--cinnabar)'; btn.style.color = '#fff'; btn.style.borderColor = 'var(--cinnabar)';
+    }
+  });
+});
+</script>
+</body>
+</html>
