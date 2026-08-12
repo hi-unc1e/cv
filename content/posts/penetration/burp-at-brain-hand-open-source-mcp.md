@@ -18,6 +18,7 @@ draft: false
 <style>
 .burp .callout{ border-left:3px solid var(--uncle-blue,#2457d6); background:var(--uncle-soft-blue,#e9efff); padding:10px 14px; margin:16px 0; border-radius:0 4px 4px 0; font-size:.96em; }
 .burp svg{ max-width:100%; height:auto; border-radius:6px; margin:14px 0; }
+.burp img{ max-width:100%; height:auto; border-radius:6px; margin:14px 0; }
 .burp .cap{ font-size:.86em; color:var(--secondary,#657086); margin:-6px 0 18px; }
 </style>
 
@@ -33,9 +34,10 @@ draft: false
 
 ## 先说清楚：Burp AT 是什么
 
-<!-- 截图占位：在此处插入 Burp AT 界面截图。建议放到 static/img/burp-at/ 下，正文用 <img src="/img/burp-at/xxx.png" alt="Burp AT 界面"> 引用。 -->
+<img src="/img/burp-at/burp-at-overview.jpg" alt="Burp AT 官方介绍页（PortSwigger）">
+<p class="cap">图 · Burp AT 官方介绍页（PortSwigger）</p>
 
-没碰过 Burp AT 的师傅，我用一句话给你说明白：它是 PortSwigger 官方给 Burp Suite Pro 加的 AI 自动化测试能力——你给个目标，它自己爬站、发包、跑审计、归档问题，相当于多了一个不睡觉的实习生在帮你点 Burp。
+没碰过 Burp AT 的师傅，我用一句话给你说明白：它是 PortSwigger 官方给 Burp Suite Pro 加的 AI 自动化测试能力（[官网](https://portswigger.net/burp/burp-at)）——你给个目标，它自己爬站、发包、跑审计、归档问题，相当于多了一个不睡觉的实习生在帮你点 Burp。
 
 拆开看，它干了三件事：
 
