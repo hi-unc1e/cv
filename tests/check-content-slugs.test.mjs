@@ -13,14 +13,14 @@ test("ROUTING_START is 2026-08-14 Asia/Shanghai", () => {
 
 test("expectedPostUrl formats zh and en URLs from the post date", () => {
   const date = new Date("2026-08-20T10:00:00+08:00");
-  assert.equal(expectedPostUrl("zh", "my-post", date), "/web/26/08/my-post/");
-  assert.equal(expectedPostUrl("en", "my-post", date), "/en/web/26/08/my-post/");
+  assert.equal(expectedPostUrl("zh", "my-post", date), "/26/08/my-post/");
+  assert.equal(expectedPostUrl("en", "my-post", date), "/en/26/08/my-post/");
 });
 
 test("expectedPostUrl uses Asia/Shanghai even for adjacent-timezone dates", () => {
   // 2026-09-01T00:30+09:00 (Tokyo) is still 2026-08-31T23:30 in Shanghai.
   const date = new Date("2026-09-01T00:30:00+09:00");
-  assert.equal(expectedPostUrl("zh", "x", date), "/web/26/08/x/");
+  assert.equal(expectedPostUrl("zh", "x", date), "/26/08/x/");
 });
 
 test("new zh post without url is rejected", () => {
@@ -29,7 +29,7 @@ test("new zh post without url is rejected", () => {
     post(['title: "T"', "slug: new-no-url", "translationKey: new-no-url", "date: 2026-08-14T08:00:00+08:00"].join("\n")),
   );
   assert.equal(errors.length, 1);
-  assert.match(errors[0], /must declare `url: \/web\/26\/08\/new-no-url\/`/);
+  assert.match(errors[0], /must declare `url: \/26\/08\/new-no-url\/`/);
 });
 
 test("new en post without url is rejected", () => {
@@ -37,30 +37,30 @@ test("new en post without url is rejected", () => {
     "content/en/posts/penetration/new-en-no-url.md",
     post(['title: "T"', "slug: new-en-no-url", "date: 2026-08-15T08:00:00+08:00"].join("\n")),
   );
-  assert.match(errors[0], /must declare `url: \/en\/web\/26\/08\/new-en-no-url\/`/);
+  assert.match(errors[0], /must declare `url: \/en\/26\/08\/new-en-no-url\/`/);
 });
 
 test("new post with mismatched url is rejected", () => {
   const errors = checkMarkdown(
     "content/zh/posts/thoughts/wrong-month.md",
-    post(['title: "T"', "slug: wrong-month", "date: 2026-08-20T08:00:00+08:00", "url: /web/26/09/wrong-month/"].join("\n")),
+    post(['title: "T"', "slug: wrong-month", "date: 2026-08-20T08:00:00+08:00", "url: /26/09/wrong-month/"].join("\n")),
   );
   assert.equal(errors.length, 1);
-  assert.match(errors[0], /expected \/web\/26\/08\/wrong-month\//);
+  assert.match(errors[0], /expected \/26\/08\/wrong-month\//);
 });
 
 test("new post with correct url passes (trailing slash optional)", () => {
   assert.deepEqual(
     checkMarkdown(
       "content/zh/posts/penetration/good-post.md",
-      post(['title: "T"', "slug: good-post", "date: 2026-08-14T00:00:00+08:00", "url: /web/26/08/good-post"].join("\n")),
+      post(['title: "T"', "slug: good-post", "date: 2026-08-14T00:00:00+08:00", "url: /26/08/good-post"].join("\n")),
     ),
     [],
   );
   assert.deepEqual(
     checkMarkdown(
       "content/en/posts/penetration/good-post.md",
-      post(['title: "T"', "slug: good-post", "date: 2026-08-14T00:00:00+08:00", "url: /en/web/26/08/good-post/"].join("\n")),
+      post(['title: "T"', "slug: good-post", "date: 2026-08-14T00:00:00+08:00", "url: /en/26/08/good-post/"].join("\n")),
     ),
     [],
   );

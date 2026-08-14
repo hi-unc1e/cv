@@ -6,8 +6,8 @@
  * - slug must match /^[a-z0-9][a-z0-9._-]*$/ (no uppercase, spaces, CJK)
  * - posts under content/{zh,en}/posts/** (except _index.md) must declare slug
  * - posts dated on/after ROUTING_START must declare a date-based URL:
- *     zh: /web/<YY>/<MM>/<slug>/
- *     en: /en/web/<YY>/<MM>/<slug>/
+ *     zh: /<YY>/<MM>/<slug>/
+ *     en: /en/<YY>/<MM>/<slug>/
  *   where YY/MM come from the post's own `date` (Asia/Shanghai).
  *   Posts dated before ROUTING_START keep their legacy URLs (compatibility).
  *
@@ -25,7 +25,7 @@ import { fileURLToPath } from "node:url";
 const SAFE_SLUG = /^[a-z0-9][a-z0-9._-]*$/;
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-// The /web/<YY>/<MM>/<slug>/ routing convention applies to posts published
+// The /<YY>/<MM>/<slug>/ routing convention applies to posts published
 // from this date on. Older posts keep their legacy URLs untouched.
 export const ROUTING_START = new Date("2026-08-14T00:00:00+08:00");
 
@@ -101,7 +101,7 @@ export function expectedPostUrl(lang, slug, date) {
   const yy = parts.find((p) => p.type === "year").value;
   const mm = parts.find((p) => p.type === "month").value;
   const prefix = lang === "en" ? "/en" : "";
-  return `${prefix}/web/${yy}/${mm}/${slug}/`;
+  return `${prefix}/${yy}/${mm}/${slug}/`;
 }
 
 export function checkMarkdown(relPath, markdown) {
@@ -135,7 +135,7 @@ export function checkMarkdown(relPath, markdown) {
     return errors;
   }
 
-  // Routing convention: /web/<YY>/<MM>/<slug>/ for posts published since ROUTING_START.
+  // Routing convention: /<YY>/<MM>/<slug>/ for posts published since ROUTING_START.
   if (isPostPage(rel)) {
     const date = readDate(frontMatter);
     if (date !== undefined && date >= ROUTING_START) {
@@ -143,7 +143,7 @@ export function checkMarkdown(relPath, markdown) {
       const expected = expectedPostUrl(languageOfPost(rel), slug, date);
       if (url === undefined || url === "") {
         errors.push(
-          `${rel}: dated ${date.toISOString().slice(0, 10)} — new posts must declare \`url: ${expected}\` (/web/<YY>/<MM>/<slug>/ convention)`,
+          `${rel}: dated ${date.toISOString().slice(0, 10)} — new posts must declare \`url: ${expected}\` (/<YY>/<MM>/<slug>/ convention)`,
         );
       } else if (typeof url === "string" && url.replace(/\/?$/, "/") !== expected) {
         errors.push(
@@ -237,8 +237,8 @@ Rule: front matter slug must match /^[a-z0-9][a-z0-9._-]*$/
   ✗ (missing slug on content/{zh,en}/posts/** pages)
 
 Posts dated on/after ${ROUTING_START.toISOString().slice(0, 10)} must set
-  zh: url: /web/<YY>/<MM>/<slug>/   (YY/MM from the post's own date)
-  en: url: /en/web/<YY>/<MM>/<slug>/
+  zh: url: /<YY>/<MM>/<slug>/        (YY/MM from the post's own date)
+  en: url: /en/<YY>/<MM>/<slug>/
 
 Fix the front matter, then re-stage and commit.
 `);

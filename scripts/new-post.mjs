@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * Scaffold a new blog post with the /web/<YY>/<MM>/<slug>/ routing convention.
+ * Scaffold a new blog post with the /<YY>/<MM>/<slug>/ routing convention.
  *
  * The URL path segments come from the publish date (Asia/Shanghai):
- *   zh post -> content/zh/posts/<section>/<slug>.md   with url: /web/YY/MM/<slug>/
- *   en post -> content/en/posts/<section>/<slug>.md   with url: /en/web/YY/MM/<slug>/
+ *   zh post -> content/zh/posts/<section>/<slug>.md   with url: /YY/MM/<slug>/
+ *   en post -> content/en/posts/<section>/<slug>.md   with url: /en/YY/MM/<slug>/
  *
  * Usage:
  *   node scripts/new-post.mjs <slug> [options]
@@ -87,7 +87,7 @@ function shanghaiParts(date) {
 
 function postUrl(lang, slug, parts) {
   const prefix = lang === "en" ? "/en" : "";
-  return `${prefix}/web/${parts.yy}/${parts.mm}/${slug}/`;
+  return `${prefix}/${parts.yy}/${parts.mm}/${slug}/`;
 }
 
 function frontMatter(opts, lang, parts) {
