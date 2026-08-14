@@ -85,6 +85,7 @@ params:
 languages:
   zh-cn:
     label: 中文
+    contentDir: content/zh
     title: "@Unc1e"
     weight: 1
     params:
@@ -122,6 +123,7 @@ languages:
           weight: 50
   en:
     label: English
+    contentDir: content/en
     title: "@Unc1e"
     weight: 2
     params:
