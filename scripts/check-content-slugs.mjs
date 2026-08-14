@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 /**
- * Enforce English URL-safe slugs on Hugo content Markdown.
+ * Enforce content routing rules on Hugo content Markdown.
  *
- * Rules (aligned with scripts/import-yuque.mjs SAFE_SLUG):
- * - slug must match /^[a-z0-9][a-z0-9._-]*$/
- * - no uppercase, no spaces, no CJK / fullwidth punctuation
- * - posts under content/posts/** (except _index.md) must declare slug in front matter
+ * Rules:
+ * - slug must match /^[a-z0-9][a-z0-9._-]*$/ (no uppercase, spaces, CJK)
+ * - posts under content/{zh,en}/posts/** (except _index.md) must declare slug
+ * - posts dated on/after ROUTING_START must declare a date-based URL:
+ *     zh: /web/<YY>/<MM>/<slug>/
+ *     en: /en/web/<YY>/<MM>/<slug>/
+ *   where YY/MM come from the post's own `date` (Asia/Shanghai).
+ *   Posts dated before ROUTING_START keep their legacy URLs (compatibility).
  *
  * Usage:
  *   node scripts/check-content-slugs.mjs              # scan all content Markdown
@@ -20,6 +24,10 @@ import { fileURLToPath } from "node:url";
 
 const SAFE_SLUG = /^[a-z0-9][a-z0-9._-]*$/;
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+
+// The /web/<YY>/<MM>/<slug>/ routing convention applies to posts published
+// from this date on. Older posts keep their legacy URLs untouched.
+export const ROUTING_START = new Date("2026-08-14T00:00:00+08:00");
 
 function decodeScalar(value) {
   const trimmed = value.trim();
@@ -43,10 +51,22 @@ function readFrontMatter(markdown) {
   return match ? match[1] : null;
 }
 
-function readSlug(frontMatter) {
-  const match = frontMatter.match(/^slug:\s*(.*)$/m);
+function readScalar(frontMatter, key) {
+  const match = frontMatter.match(new RegExp(`^${key}:\\s*(.*)$`, "m"));
   if (!match) return undefined;
   return decodeScalar(match[1]);
+}
+
+function readSlug(frontMatter) {
+  const slug = readScalar(frontMatter, "slug");
+  return slug === "" ? undefined : slug;
+}
+
+function readDate(frontMatter) {
+  const raw = readScalar(frontMatter, "date");
+  if (typeof raw !== "string" || raw === "") return undefined;
+  const date = new Date(raw);
+  return Number.isNaN(date.getTime()) ? undefined : date;
 }
 
 function isContentMarkdown(relPath) {
@@ -62,10 +82,89 @@ function isContentMarkdown(relPath) {
 function isPostPage(relPath) {
   const normalized = relPath.split(path.sep).join("/");
   return (
-    normalized.startsWith("content/posts/") &&
-    normalized.endsWith(".md") &&
+    /^content\/(zh|en)\/posts\/.+\.(md|markdown)$/i.test(normalized) &&
     !normalized.endsWith("/_index.md")
   );
+}
+
+function languageOfPost(relPath) {
+  return relPath.split(path.sep).join("/").startsWith("content/en/") ? "en" : "zh";
+}
+
+export function expectedPostUrl(lang, slug, date) {
+  // Format in Asia/Shanghai regardless of host timezone.
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Shanghai",
+    year: "2-digit",
+    month: "2-digit",
+  }).formatToParts(date);
+  const yy = parts.find((p) => p.type === "year").value;
+  const mm = parts.find((p) => p.type === "month").value;
+  const prefix = lang === "en" ? "/en" : "";
+  return `${prefix}/web/${yy}/${mm}/${slug}/`;
+}
+
+export function checkMarkdown(relPath, markdown) {
+  const rel = relPath.split(path.sep).join("/");
+  const errors = [];
+
+  const frontMatter = readFrontMatter(markdown);
+  if (frontMatter === null) {
+    if (isPostPage(rel)) {
+      errors.push(`${rel}: missing YAML front matter (posts require English slug)`);
+    }
+    return errors;
+  }
+
+  const slug = readSlug(frontMatter);
+  if (slug === undefined) {
+    if (isPostPage(rel)) {
+      errors.push(
+        `${rel}: missing front matter \`slug\` — posts must set an English URL-safe slug (e.g. my-post-name)`,
+      );
+    }
+    return errors;
+  }
+
+  if (typeof slug !== "string" || !SAFE_SLUG.test(slug)) {
+    const hasCjk = /[\u3400-\u9fff\uf900-\ufaff]/.test(String(slug));
+    const hint = hasCjk
+      ? "contains Chinese/CJK characters"
+      : "must be lowercase English URL-safe: start with [a-z0-9], then only [a-z0-9._-]";
+    errors.push(`${rel}: invalid slug ${JSON.stringify(slug)} — ${hint}`);
+    return errors;
+  }
+
+  // Routing convention: /web/<YY>/<MM>/<slug>/ for posts published since ROUTING_START.
+  if (isPostPage(rel)) {
+    const date = readDate(frontMatter);
+    if (date !== undefined && date >= ROUTING_START) {
+      const url = readScalar(frontMatter, "url");
+      const expected = expectedPostUrl(languageOfPost(rel), slug, date);
+      if (url === undefined || url === "") {
+        errors.push(
+          `${rel}: dated ${date.toISOString().slice(0, 10)} — new posts must declare \`url: ${expected}\` (/web/<YY>/<MM>/<slug>/ convention)`,
+        );
+      } else if (typeof url === "string" && url.replace(/\/?$/, "/") !== expected) {
+        errors.push(
+          `${rel}: url ${JSON.stringify(url)} does not match routing convention — expected ${expected}`,
+        );
+      }
+    }
+  }
+
+  return errors;
+}
+
+export function checkFile(absPath) {
+  const rel = path.relative(ROOT, absPath);
+  let markdown;
+  try {
+    markdown = fs.readFileSync(absPath, "utf8");
+  } catch (err) {
+    return [`${rel}: cannot read file (${err.message})`];
+  }
+  return checkMarkdown(rel, markdown);
 }
 
 function walkMarkdown(dir, out = []) {
@@ -93,47 +192,6 @@ function listStagedContentFiles() {
     .filter(Boolean)
     .filter((p) => isContentMarkdown(p))
     .map((p) => path.join(ROOT, p));
-}
-
-function checkFile(absPath) {
-  const rel = path.relative(ROOT, absPath).split(path.sep).join("/");
-  const errors = [];
-
-  let markdown;
-  try {
-    markdown = fs.readFileSync(absPath, "utf8");
-  } catch (err) {
-    errors.push(`${rel}: cannot read file (${err.message})`);
-    return errors;
-  }
-
-  const frontMatter = readFrontMatter(markdown);
-  if (frontMatter === null) {
-    if (isPostPage(rel)) {
-      errors.push(`${rel}: missing YAML front matter (posts require English slug)`);
-    }
-    return errors;
-  }
-
-  const slug = readSlug(frontMatter);
-  if (slug === undefined || slug === "") {
-    if (isPostPage(rel)) {
-      errors.push(
-        `${rel}: missing front matter \`slug\` — posts must set an English URL-safe slug (e.g. my-post-name)`,
-      );
-    }
-    return errors;
-  }
-
-  if (typeof slug !== "string" || !SAFE_SLUG.test(slug)) {
-    const hasCjk = /[\u3400-\u9fff\uf900-\ufaff]/.test(slug);
-    const hint = hasCjk
-      ? "contains Chinese/CJK characters"
-      : "must be lowercase English URL-safe: start with [a-z0-9], then only [a-z0-9._-]";
-    errors.push(`${rel}: invalid slug ${JSON.stringify(slug)} — ${hint}`);
-  }
-
-  return errors;
 }
 
 function main(argv) {
@@ -167,7 +225,7 @@ function main(argv) {
   }
 
   if (allErrors.length > 0) {
-    console.error("✖ English slug check failed:\n");
+    console.error("✖ Content routing check failed:\n");
     for (const err of allErrors) {
       console.error(`  - ${err}`);
     }
@@ -176,15 +234,21 @@ Rule: front matter slug must match /^[a-z0-9][a-z0-9._-]*$/
   ✓ slug: agents-next-problem-is-action-boundary
   ✗ slug: Agent运行时防护
   ✗ slug: My Post
-  ✗ (missing slug on content/posts/** pages)
+  ✗ (missing slug on content/{zh,en}/posts/** pages)
 
-Fix the slug field, then re-stage and commit.
+Posts dated on/after ${ROUTING_START.toISOString().slice(0, 10)} must set
+  zh: url: /web/<YY>/<MM>/<slug>/   (YY/MM from the post's own date)
+  en: url: /en/web/<YY>/<MM>/<slug>/
+
+Fix the front matter, then re-stage and commit.
 `);
     process.exit(1);
   }
 
   const label = staged ? "staged" : "checked";
-  console.log(`✓ English slug OK (${files.length} ${label} file${files.length === 1 ? "" : "s"})`);
+  console.log(`✓ Content routing OK (${files.length} ${label} file${files.length === 1 ? "" : "s"})`);
 }
 
-main(process.argv);
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main(process.argv);
+}
