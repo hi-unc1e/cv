@@ -1,6 +1,7 @@
 ---
 title: "你买的是手，不是脑：拆开 Burp AT 之后，我分析协议开源了一个自己的 Burp MCP"
 slug: burp-at-brain-hand-open-source-mcp
+translationKey: burp-at-mcp
 date: 2026-08-12T00:20:00+08:00
 lastmod: 2026-08-12T00:20:00+08:00
 description: "Burp AT 证明渗透能力可以交给 AI，但它把模型锁在云端、生产场景审批疲劳。我分析了它的协议，照官方正门做了一套开源 burp-mcp-server，还补齐了红队闭环缺的脊椎——把手交还给你的 Agent。"

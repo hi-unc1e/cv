@@ -1,6 +1,7 @@
 baseURL: https://www.unc.la/
 locale: zh-CN
 defaultContentLanguage: zh-cn
+defaultContentLanguageInSubdir: false
 hasCJKLanguage: true
 title: "@Unc1e"
 theme:
@@ -43,13 +44,6 @@ minify:
 
 params:
   env: production
-  title: "@Unc1e"
-  description: "@Unc1e 的个人主页：网络安全、工程实践与生活记录。"
-  keywords:
-    - 安全研究
-    - 软件工程
-    - 系统思考
-    - 个人作品集
   author: "@Unc1e"
   mainSections:
     - posts
@@ -88,29 +82,78 @@ params:
     theme_color: "#10141d"
     msapplication_TileColor: "#10141d"
 
-menu:
-  main:
-    - identifier: posts
-      name: 文章
-      url: /posts/
-      weight: 10
-    - identifier: archives
-      name: 归档
-      url: /archives/
-      weight: 20
-    - identifier: projects
-      name: 项目
-      url: /projects/
-      weight: 30
-    - identifier: funny
-      name: 小玩意
-      url: /funny/work-checkin/
-      weight: 35
-    - identifier: about
-      name: 关于
-      url: /about/
-      weight: 40
-    - identifier: search
-      name: 搜索
-      url: /search/
-      weight: 50
+languages:
+  zh-cn:
+    label: 中文
+    title: "@Unc1e"
+    weight: 1
+    params:
+      description: "@Unc1e 的个人主页：网络安全、工程实践与生活记录。"
+      keywords:
+        - 安全研究
+        - 软件工程
+        - 系统思考
+        - 个人作品集
+    menu:
+      main:
+        - identifier: posts
+          name: 文章
+          url: /posts/
+          weight: 10
+        - identifier: archives
+          name: 归档
+          url: /archives/
+          weight: 20
+        - identifier: projects
+          name: 项目
+          url: /projects/
+          weight: 30
+        - identifier: funny
+          name: 小玩意
+          url: /funny/work-checkin/
+          weight: 35
+        - identifier: about
+          name: 关于
+          url: /about/
+          weight: 40
+        - identifier: search
+          name: 搜索
+          url: /search/
+          weight: 50
+  en:
+    label: English
+    title: "@Unc1e"
+    weight: 2
+    params:
+      description: "@Unc1e's personal site: security research, engineering, and life."
+      keywords:
+        - security research
+        - software engineering
+        - systems thinking
+        - portfolio
+    menu:
+      main:
+        - identifier: posts
+          name: Posts
+          url: /posts/
+          weight: 10
+        - identifier: archives
+          name: Archives
+          url: /archives/
+          weight: 20
+        - identifier: projects
+          name: Projects
+          url: /projects/
+          weight: 30
+        - identifier: funny
+          name: Fun
+          url: /funny/work-checkin/
+          weight: 35
+        - identifier: about
+          name: About
+          url: /about/
+          weight: 40
+        - identifier: search
+          name: Search
+          url: /search/
+          weight: 50
