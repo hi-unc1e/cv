@@ -26,7 +26,7 @@ Claude Code 的 auto 模式从 8 月 14 日起成了 Pro、Max、Team 新会话�
 
 每次工具调用前有一层独立的、故障即拦截（fail-closed）的判断层，是 Agent 安全部署的关键。Anthropic 把它做成了产品级。这套设计值得抄，所以我把作业摊开了。文章给出逆向出来的防线设计、一份跑通 38 个测试的复现，和一条接上公开基准测试（benchmark）的评估路径。CISO、安全架构师、红队、AI 研究者，各能拿走一件东西。
 
-提示词原文（Stage 1 流量提取 + Stage 2 工程推断）放在 [gist](https://gist.github.com/hi-unc1e/2f47cb37d9e273d23bf5f80a699bdf78) 上，可直接对照。
+提示词原文（Stage 1 系统提示词提取 + Stage 2 工程推断）放在 [gist](https://gist.github.com/hi-unc1e/2f47cb37d9e273d23bf5f80a699bdf78) 上，可直接对照。
 
 ## 架构：一次工具调用前发生了什么
 
@@ -142,7 +142,7 @@ HARD 只有一条，数据外泄（Data Exfiltration），也是唯一一条用�
 
 ## 评估：怎么知道判断层真的有用
 
-光复现不算完，得能测。仓库里 `auto-mode-classifier/` 是完整 Python 复现。提示词原文（[gist](https://gist.github.com/hi-unc1e/2f47cb37d9e273d23bf5f80a699bdf78)），机器可读的 `rules.yaml`，must-name 字段化，加规则等于加一条数据，38 个测试。输入适配了 OTel GenAI 的 execute-tool span。LangChain、OpenAI Agents 这类按约定埋点的框架，JSONL 日志直接进 benchmark。判断模型可插拔，任何 Anthropic 兼容端点都行，LiteLLM 代理也行。
+光复现不算完，得能测。仓库里 `auto-mode-classifier/` 是完整 Python 复现。系统提示词原文（[gist](https://gist.github.com/hi-unc1e/2f47cb37d9e273d23bf5f80a699bdf78)），机器可读的 `rules.yaml`，must-name 字段化，加规则等于加一条数据，38 个测试。输入适配了 OTel GenAI 的 execute-tool span。LangChain、OpenAI Agents 这类按约定埋点的框架，JSONL 日志直接进 benchmark。判断模型可插拔，任何 Anthropic 兼容端点都行，LiteLLM 代理也行。
 
 报告的核心指标我选了误放行率，期望 deny 或 ask、实际 allow 的占比。安全分类器的失败模式不对称。误拒只是烦人，误放是事故。官方博客的数字印证了这个不对称有多难。真实流量误拦率 0.4%，激进动作集漏拦率 17%，外泄集 5.7%。官方自己承认主要失败模式是分类器看到了危险，却被「长得像批准的证据」（approval-shaped evidence）说服。这恰好是 consent bar 要堵的口，也是最难堵的口。
 
@@ -160,7 +160,7 @@ HARD 只有一条，数据外泄（Data Exfiltration），也是唯一一条用�
 
 **AI 研究者**。这是一份生产级的 LLM-as-security-judge 样本。输出契约压到 64 token，两段升级把成本摊薄。数据流按来源判敏感性，同意证据按八级可信度分层。ScopeJudge 的五档信息条件，从只给 rubric 到全量 transcript，是现成的消融实验框架。
 
-**所有人**。提示词原文、规则库、Python 复现全在 [gist](https://gist.github.com/hi-unc1e/2f47cb37d9e273d23bf5f80a699bdf78)。Stage 1 流量原文（32KB），Stage 2 工程推断，含请求体模板。直接对着看。
+**所有人**。系统提示词原文、规则库、Python 复现全在 [gist](https://gist.github.com/hi-unc1e/2f47cb37d9e273d23bf5f80a699bdf78)。Stage 1 系统提示词（32KB），Stage 2 工程推断，含请求体模板。直接对着看。
 
 最后交个底。整套逆向基于 `claude-cli/2.1.235`、beta `auto-mode-classifier-2026-07-16`，2026 年 8 月抓包。提示词随版本会变，架构层面的判断我敢说是稳的。
 

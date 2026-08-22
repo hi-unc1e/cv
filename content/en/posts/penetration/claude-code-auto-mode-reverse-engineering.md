@@ -162,7 +162,7 @@ The second number hits harder than the first. "Out of scope" is a concept that f
 
 **AI researcher**. This is a production-grade LLM-as-security-judge specimen. Output contract compressed to 64 tokens. Cost spread across two-stage escalation. Data flow model that judges sensitivity by provenance. Consent evidence stratified into eight credibility tiers. ScopeJudge's five information conditions — from rubric-only to full transcript — are a ready-made ablation experiment framework.
 
-**Everyone**. The full system prompt, rules.yaml, and Python reproduction are all on [gist](https://gist.github.com/hi-unc1e/2f47cb37d9e273d23bf5f80a699bdf78). Stage 1 traffic original (32KB). Stage 2 engineering inference. Request body template included. Read it directly.
+**Everyone**. The full system prompt, rules.yaml, and Python reproduction are all on [gist](https://gist.github.com/hi-unc1e/2f47cb37d9e273d23bf5f80a699bdf78). Stage 1 system prompt (32KB). Stage 2 engineering inference. Request body template included. Read it directly.
 
 One last disclosure. This entire reverse-engineering effort is based on `claude-cli/2.1.235`, beta `auto-mode-classifier-2026-07-16`, captured August 2026. The prompt will evolve with versions. The architectural judgment, I'm confident, is stable.
 
