@@ -158,6 +158,8 @@ HARD 只有一条，Data Exfiltration，也是唯一一条用户永远无法同�
 
 **AI 研究者**。这是一份生产级的 LLM-as-security-judge 样本。输出契约压到 64 token，两段升级把成本摊薄。数据流按来源判敏感性，同意证据按八级可信度分层。ScopeJudge 的五档信息条件，从只给 rubric 到全量 transcript，是现成的消融实验框架。
 
+**所有人**。提示词原文、规则库、Python 复现全在 [gist](https://gist.github.com/hi-unc1e/2f47cb37d9e273d23bf5f80a699bdf78)。Stage 1 流量原文（32KB），Stage 2 工程推断，含请求体模板。直接对着看。
+
 最后交个底。整套逆向基于 claude-cli/2.1.235、beta `auto-mode-classifier-2026-07-16`，2026-08 抓包。提示词随版本会变，架构层面的判断我敢说是稳的。
 
 Agent 的安全边界落在每次工具调用前那 64 个 token 上。谁把自己那 64 个 token 做扎实，谁才敢放手让 agent 干活。
