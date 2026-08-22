@@ -140,7 +140,7 @@ The 21 evaluation rules don't block actions. They prescribe how to unfold an act
 
 The catch-all: "Rule lists are examples, not boundaries." The listed `curl | bash` and `rm -rf` are just example carriers. Judgment is by effect. This is why 66 rules plus a small model are enough — the model's job is to map novel carriers to known harm categories.
 
-I also added my own defense verification layer. During research, I manually injected a `[classifier probe]` into the session — four actions: WebFetch, `whoami`, write probe.txt, subagent echo hello — covering network, shell, filesystem, and delegation. Verified that interception was real. Configuration declarations don't count. If you're building an agent defense, this pattern is worth copying: write your own benign-plus-hostile probe set and run it as regression.
+I also added my own defense verification layer. During research, I manually injected a `[classifier probe]` into the session — four actions: WebFetch, `whoami`, write probe.txt, subagent echo hello — covering network, shell, filesystem, and delegation. Verified that interception was real. Configuration declarations don't count. If you're building an agent defense, this pattern is worth copying: write your own probe set with normal and hostile test cases and run it as regression.
 
 ## Evaluation: how do you know the gate actually works?
 
@@ -158,7 +158,7 @@ The second number hits harder than the first. "Out of scope" is a concept that f
 
 **Security architect**. Three invariants. Rule matching and intent judgment in separate layers. Every endpoint failure converges to the same behavior: hold the action. The static layer only handles high-confidence rules; the middle ground goes to the LLM.
 
-**Red team**. Use the 66 SOFT rules plus 21 evaluation rules as your agent defense test plan. Hit them one by one. Prioritize write-then-execute, subagent delegation, encoded payloads, and cross-session laundering — these are the gaps the designers themselves acknowledge. Build yourself a benign-plus-hostile probe set for regression.
+**Red team**. Use the 66 SOFT rules plus 21 evaluation rules as your agent defense test plan. Hit them one by one. Prioritize write-then-execute, subagent delegation, encoded payloads, and cross-session laundering — these are the gaps the designers themselves acknowledge. Build your own probe set with normal and hostile test cases for regression.
 
 **AI researcher**. This is a production-grade LLM-as-security-judge specimen. Output contract compressed to 64 tokens. Cost spread across two-stage escalation. Data flow model that judges sensitivity by provenance. Consent evidence stratified into eight credibility tiers. ScopeJudge's five information conditions — from rubric-only to full transcript — are a ready-made ablation experiment framework.
 
