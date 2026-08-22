@@ -76,6 +76,12 @@ Stage 2 判断用户意图。同意门槛过没过，放行例外（ALLOW except
 
 *Figure 3，来源：[Anthropic Engineering「How we built Claude Code auto mode」](https://www.anthropic.com/engineering/claude-code-auto-mode)*
 
+实际界面长什么样？下面这张是真实运行时的截图。三个 curl 命令依次通过了分类器，每条前面都标着「Allowed by auto mode classifier」。底部状态栏显示 auto 模式已开启，按 shift+tab 可以循环切换权限档。
+
+![Claude Code auto 模式实际运行时的界面：每条工具调用前都会经过分类器判断并标注结果](/img/auto-mode-classifier-ui.jpg)
+
+*真实运行截图，版本 claude-cli/2.1.235*
+
 ## 规则：66 条软阻止，每条自带必具名（must-name）契约
 
 抓到的规则库我逐条核对过。1 条硬阻止（HARD BLOCK）+ 66 条软阻止（SOFT BLOCK）+ 17 条放行例外（ALLOW）+ 21 条评估规则 + 8 条意图原则。优先级从上到下是 HARD、SOFT、ALLOW、用户意图。官方博客的公开口径是「二十多条阻止规则、分四大类」。实际规则库比公开口径细得多。

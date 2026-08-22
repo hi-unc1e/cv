@@ -78,6 +78,12 @@ The classifier's input is also tightly constrained. Assistant prose, tool-call d
 
 *Figure 3, source: [Anthropic Engineering "How we built Claude Code auto mode"](https://www.anthropic.com/engineering/claude-code-auto-mode)*
 
+What does it actually look like in the UI? Below is a live runtime screenshot. Three curl commands passed the classifier in sequence, each labeled "Allowed by auto mode classifier." The status bar at the bottom shows auto mode is on — shift+tab cycles through permission modes.
+
+![Claude Code auto mode runtime: every tool call passes through the classifier and gets labeled](/img/auto-mode-classifier-ui.jpg)
+
+*Live screenshot, claude-cli/2.1.235*
+
 ## Rules: 66 SOFT, each with its own must-name contract
 
 I verified every rule against the prompt text. 1 HARD + 66 SOFT + 17 ALLOW + 21 evaluation rules + 8 intent principles. Priority runs top to bottom: HARD, SOFT, ALLOW, user intent. The public blog describes "more than twenty block rules in four categories." The actual rule set is a lot more granular.
