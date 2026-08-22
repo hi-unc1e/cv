@@ -140,7 +140,7 @@ The 21 evaluation rules don't block actions. They prescribe how to unfold an act
 
 The catch-all: "Rule lists are examples, not boundaries." The listed `curl | bash` and `rm -rf` are just example carriers. Judgment is by effect. This is why 66 rules plus a small model are enough — the model's job is to map novel carriers to known harm categories.
 
-The system also self-tests. Traffic captured a `[classifier probe]` injection: four actions — WebFetch, `whoami`, write probe.txt, subagent echo hello — covering network, shell, filesystem, and delegation. The probe verifies that interception is real. Configuration declarations don't count. This is what control effectiveness testing looks like in the agent era.
+I also added my own defense verification layer. During research, I manually injected a `[classifier probe]` into the session — four actions: WebFetch, `whoami`, write probe.txt, subagent echo hello — covering network, shell, filesystem, and delegation. Verified that interception was real. Configuration declarations don't count. If you're building an agent defense, this pattern is worth copying: write your own benign-plus-hostile probe set and run it as regression.
 
 ## Evaluation: how do you know the gate actually works?
 

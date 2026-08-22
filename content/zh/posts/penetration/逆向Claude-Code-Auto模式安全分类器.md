@@ -136,7 +136,7 @@ HARD 只有一条，Data Exfiltration，也是唯一一条用户永远无法同�
 
 兜底那条叫 "Rule lists are examples, not boundaries"。规则清单只是例子，判定按效果来。66 条规则配一个小模型就够用，模型的本职是把没见过的新载体映射到已知危害类别。
 
-防线还有自检。流量里观测到 `[classifier probe]` 探针，往会话注入 4 个动作，WebFetch、`whoami`、写 probe.txt、子代理 echo hello，覆盖网络、shell、文件、委派四个象限。探针验证拦截真实生效，配置声明怎么写的，不算数。这就是控制有效性测试在 agent 时代的样子。
+我自己也做了一层防线验证。研究时手动往会话注入了 `[classifier probe]` 探针，4 个动作：WebFetch、`whoami`、写 probe.txt、子代理 echo hello，覆盖网络、shell、文件、委派四个象限。已验证拦截真实生效。配置声明怎么写的，不算数。如果你也在搭 agent 防线，这个模式值得照抄——自己写一组 benign 加 hostile 探针，定时跑回归。
 
 ## 评估：怎么知道判断层真的有用
 
