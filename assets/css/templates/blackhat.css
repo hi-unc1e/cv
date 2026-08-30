@@ -1,0 +1,709 @@
+/*
+ * Black Hat research brief
+ *
+ * A reusable PaperMod pageStyle distilled from the article
+ * “批量 Fuzzing 攻破 RPKI：挖出 21 个高危漏洞”.
+ * Enable with front matter: pageStyle: blackhat
+ *
+ * Recommended article order (raw HTML is enabled in hugo.yaml):
+ * source intro -> interpretation -> original figures -> commentary -> original link
+ *
+ * <section class="blackhat-source" aria-label="研究来源">
+ *   <dl>
+ *     <div><dt>来源</dt><dd>Black Hat USA 2026 Briefings</dd></div>
+ *     <div><dt>标题</dt><dd>Original paper or talk title</dd></div>
+ *     <div><dt>作者</dt><dd>Author and affiliation</dd></div>
+ *     <div><dt>适合读者</dt><dd>Intended audience</dd></div>
+ *   </dl>
+ *   <p class="blackhat-abstract"><strong>简介</strong>One-paragraph abstract.</p>
+ * </section>
+ * <div class="blackhat-divider" aria-hidden="true"></div>
+ * <p class="blackhat-lede">Opening thesis.</p>
+ * <figure class="blackhat-source-figure">
+ *   <img src="/img/research/figure-01.jpg" alt="What the figure demonstrates">
+ *   <figcaption>
+ *     <span class="blackhat-figure-caption">What readers should notice.</span>
+ *     <span class="blackhat-figure-source">Black Hat USA 2026 Slides, p. 18</span>
+ *   </figcaption>
+ * </figure>
+ * <aside class="blackhat-comment"><p>Editorial analysis.</p></aside>
+ * <aside class="blackhat-comment" data-label="COMMENT"><p>English note.</p></aside>
+ * <section class="blackhat-commentary">
+ *   <h2>我的评论</h2>
+ *   <p class="blackhat-commentary-thesis">The most valuable independent judgment.</p>
+ *   <h3>成立的部分</h3><p>...</p>
+ *   <h3>仍需验证</h3><p>...</p>
+ *   <h3>对实践的意义</h3><p>...</p>
+ * </section>
+ * <p class="blackhat-reference"><strong>原文</strong><a href="...">Read the paper or slides</a></p>
+ */
+
+.post-single {
+  --blackhat-ink: #1a1a1a;
+  --blackhat-body: #333333;
+  --blackhat-muted: #777d86;
+  --blackhat-faint: #9a9fa7;
+  --blackhat-line: #e5e8eb;
+  --blackhat-paper: #ffffff;
+  --blackhat-panel: #f0f4f8;
+  --blackhat-panel-soft: #fafafa;
+  --blackhat-accent: #f08c28;
+  --blackhat-accent-deep: #c86612;
+  --blackhat-link: #315f90;
+  --blackhat-code: #20242b;
+  --blackhat-code-ink: #edf0f4;
+  background: var(--blackhat-paper);
+  color: var(--blackhat-body);
+  border: 1px solid var(--blackhat-line);
+  border-radius: 6px;
+  box-shadow: 0 10px 36px rgba(20, 31, 44, 0.06);
+  padding: clamp(24px, 5vw, 56px) clamp(20px, 6vw, 72px);
+}
+
+.post-header {
+  max-width: 760px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.post-header .breadcrumbs {
+  justify-content: center;
+  margin-bottom: 18px;
+  color: var(--blackhat-muted);
+}
+
+.post-title {
+  max-width: 18em;
+  margin: 0 auto;
+  color: var(--blackhat-ink);
+  font-family: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-size: clamp(24px, 3.4vw, 32px);
+  font-weight: 750;
+  letter-spacing: -0.02em;
+  line-height: 1.38;
+  text-wrap: balance;
+}
+
+.post-description {
+  max-width: 44em;
+  margin: 12px auto 0;
+  color: var(--blackhat-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.post-meta {
+  justify-content: center;
+  margin-top: 12px;
+  color: var(--blackhat-faint);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.post-meta a {
+  color: var(--blackhat-muted);
+  text-decoration-color: #c9ced4;
+}
+
+.post-content {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0;
+  color: var(--blackhat-body);
+  background: transparent;
+  font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.85;
+  overflow-wrap: anywhere;
+  text-align: left;
+  box-shadow: none;
+}
+
+.post-content p {
+  margin: 0 0 16px;
+  color: var(--blackhat-body);
+  font-size: 15px;
+  line-height: 1.85;
+}
+
+.post-content > p:first-child:not([class]),
+.post-content .blackhat-lede {
+  color: #252a31;
+  font-size: 16px;
+  line-height: 1.85;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  color: var(--blackhat-ink);
+  font-family: inherit;
+  font-weight: 750;
+  letter-spacing: -0.012em;
+  line-height: 1.5;
+}
+
+.post-content h1 {
+  margin: 34px 0 18px;
+  font-size: 22px;
+  text-align: center;
+}
+
+.post-content h2 {
+  position: relative;
+  margin: 36px 0 16px;
+  padding-top: 13px;
+  font-size: 18px;
+}
+
+.post-content h2::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 3px;
+  background: var(--blackhat-accent);
+  content: "";
+}
+
+.post-content h3 {
+  margin: 28px 0 12px;
+  font-size: 16px;
+}
+
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  margin: 24px 0 10px;
+  font-size: 15px;
+}
+
+.post-content .anchor {
+  color: var(--blackhat-faint);
+}
+
+.post-content strong {
+  color: var(--blackhat-ink);
+  font-weight: 700;
+}
+
+.post-content em {
+  color: #424951;
+}
+
+.post-content a:not(.anchor) {
+  color: var(--blackhat-link);
+  font-weight: 600;
+  text-decoration-color: rgba(49, 95, 144, 0.38);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+.post-content a:not(.anchor):hover {
+  color: var(--blackhat-accent-deep);
+  text-decoration-color: currentColor;
+}
+
+/* Source, original title, authors, audience, and abstract. */
+.post-content .blackhat-source {
+  margin: 0 0 22px;
+  padding: 15px 17px 16px;
+  color: #555b63;
+  background: var(--blackhat-panel);
+  border: 0;
+  border-left: 3px solid var(--blackhat-accent);
+  border-radius: 0 4px 4px 0;
+}
+
+.blackhat-source dl,
+.blackhat-source dl:not(:last-child) {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+}
+
+.blackhat-source dl > div {
+  display: grid;
+  grid-template-columns: 5.2em minmax(0, 1fr);
+  gap: 0.3em;
+}
+
+.blackhat-source dt,
+.blackhat-source dd {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.blackhat-source dt {
+  color: var(--blackhat-ink);
+  font-weight: 700;
+}
+
+.blackhat-source dd {
+  min-width: 0;
+}
+
+.blackhat-source .blackhat-abstract {
+  display: grid;
+  grid-template-columns: 5.2em minmax(0, 1fr);
+  gap: 0.3em;
+  margin: 4px 0 0;
+  color: #555b63;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.blackhat-source .blackhat-abstract strong {
+  color: var(--blackhat-accent-deep);
+}
+
+/* A quiet version for Markdown blockquotes used as research metadata. */
+.post-content blockquote.blackhat-source {
+  padding-inline-start: 17px;
+}
+
+.post-content blockquote.blackhat-source p {
+  margin: 0 0 4px;
+  color: #555b63;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.post-content blockquote.blackhat-source p:last-child {
+  margin-bottom: 0;
+}
+
+.blackhat-divider {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 22px 0 24px;
+  color: #c5c9ce;
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.blackhat-divider::before {
+  content: "◆  ◆  ◆";
+}
+
+.post-content hr {
+  width: 52px;
+  height: 1px;
+  margin: 28px auto;
+  background: var(--blackhat-line);
+  border: 0;
+}
+
+/* Figures preserve the article's restrained slide-and-caption treatment. */
+.post-content figure {
+  margin: 22px 0 24px;
+  text-align: center;
+}
+
+.post-content img,
+.post-content figure > img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+  background: #f7f8f9;
+  border: 1px solid var(--blackhat-line);
+  border-radius: 4px;
+}
+
+.post-content figure > figcaption,
+.post-content .blackhat-caption {
+  margin: 7px auto 0;
+  color: var(--blackhat-faint);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.post-content figure > figcaption::before,
+.post-content .blackhat-caption::before {
+  margin-right: 0.35em;
+  color: #b5bac0;
+  content: "▲";
+}
+
+.post-content figure > figcaption p {
+  display: inline;
+  margin: 0;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.post-content .blackhat-source-figure {
+  margin-block: 26px 30px;
+}
+
+.blackhat-source-figure .blackhat-figure-caption,
+.blackhat-source-figure .blackhat-figure-source {
+  display: block;
+}
+
+.blackhat-source-figure .blackhat-figure-caption {
+  color: #7f858d;
+}
+
+.blackhat-source-figure .blackhat-figure-source {
+  margin-top: 2px;
+  color: #a0a5ac;
+  font-size: 11px;
+}
+
+.blackhat-source-figure .blackhat-figure-source::before {
+  color: #b2b6bc;
+  content: "来源：";
+}
+
+/* {评论}: commentary is analysis, not quoted source material. */
+.post-content .blackhat-comment {
+  position: relative;
+  margin: 24px 0;
+  padding: 18px 18px 17px 20px;
+  color: #34383f;
+  background: #fffaf4;
+  border: 1px solid #f1ddc8;
+  border-left: 3px solid var(--blackhat-accent);
+  border-radius: 0 5px 5px 0;
+}
+
+.blackhat-comment::before {
+  display: block;
+  margin-bottom: 7px;
+  color: var(--blackhat-accent-deep);
+  content: "{评论}";
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.blackhat-comment[data-label]::before {
+  content: "{" attr(data-label) "}";
+}
+
+.post-content .blackhat-comment p,
+.post-content .blackhat-comment li {
+  color: inherit;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.post-content .blackhat-comment p:last-child,
+.post-content .blackhat-comment ul:last-child,
+.post-content .blackhat-comment ol:last-child {
+  margin-bottom: 0;
+}
+
+/*
+ * The article's main editorial contribution. Use once, after the research
+ * walkthrough. Inline .blackhat-comment notes can still appear earlier.
+ */
+.post-content .blackhat-commentary {
+  position: relative;
+  margin: 42px 0 34px;
+  padding: 28px 28px 26px;
+  color: #2c3036;
+  background: #fffaf4;
+  border: 1px solid #eedbc5;
+  border-top: 4px solid var(--blackhat-ink);
+  border-radius: 0 0 5px 5px;
+}
+
+.blackhat-commentary::before {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--blackhat-accent-deep);
+  content: "{评论}";
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  line-height: 1;
+}
+
+.blackhat-commentary[data-label]::before {
+  content: "{" attr(data-label) "}";
+}
+
+.post-content .blackhat-commentary > h2 {
+  margin: 0 0 14px;
+  padding: 0;
+  font-size: 24px;
+  line-height: 1.35;
+}
+
+.post-content .blackhat-commentary > h2::before {
+  display: none;
+}
+
+.post-content .blackhat-commentary > h3 {
+  margin: 24px 0 8px;
+  color: var(--blackhat-ink);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.post-content .blackhat-commentary p,
+.post-content .blackhat-commentary li {
+  color: #34383f;
+  font-size: 15px;
+  line-height: 1.9;
+}
+
+.post-content .blackhat-commentary-thesis {
+  margin: 0 0 22px;
+  padding-bottom: 18px;
+  color: var(--blackhat-ink);
+  border-bottom: 1px solid #eadac8;
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.75;
+}
+
+.post-content .blackhat-commentary > :last-child {
+  margin-bottom: 0;
+}
+
+/* Pull out a key result without turning the article into a dashboard. */
+.post-content .blackhat-finding {
+  margin: 24px 0;
+  padding: 16px 18px;
+  background: #f8f9fa;
+  border: 1px solid var(--blackhat-line);
+  border-radius: 4px;
+}
+
+.blackhat-finding strong:first-child {
+  color: var(--blackhat-accent-deep);
+}
+
+.post-content blockquote:not(.blackhat-source) {
+  margin: 22px 0;
+  padding: 12px 16px;
+  color: #5f656d;
+  background: var(--blackhat-panel-soft);
+  border: 0;
+  border-left: 3px solid #c8cdd2;
+  border-radius: 0 4px 4px 0;
+}
+
+.post-content blockquote:not(.blackhat-source) p {
+  color: inherit;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.post-content blockquote:not(.blackhat-source) p:last-child {
+  margin-bottom: 0;
+}
+
+.post-content .blackhat-reference {
+  display: grid;
+  grid-template-columns: 5.2em minmax(0, 1fr);
+  gap: 0.3em;
+  margin: 34px 0 0;
+  padding: 14px 16px;
+  color: #7f858d;
+  background: var(--blackhat-panel-soft);
+  border-left: 3px solid #c8cdd2;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.post-content .blackhat-reference strong {
+  color: var(--blackhat-ink);
+}
+
+.post-content .blackhat-reference a {
+  color: var(--blackhat-link);
+  font-weight: 600;
+}
+
+.post-content .blackhat-reference a::after {
+  margin-left: 0.35em;
+  color: #9aa0a7;
+  content: "↗";
+}
+
+.post-content ul,
+.post-content ol {
+  margin: 0 0 18px;
+  padding-inline-start: 1.45em;
+}
+
+.post-content li {
+  margin: 0.32em 0;
+  padding-inline-start: 0.2em;
+  line-height: 1.78;
+}
+
+.post-content li::marker {
+  color: var(--blackhat-accent-deep);
+  font-weight: 700;
+}
+
+.post-content table {
+  width: 100%;
+  margin: 24px 0;
+  border-collapse: collapse;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.post-content table th,
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
+  min-width: 0;
+  padding: 9px 11px;
+  border: 1px solid var(--blackhat-line);
+}
+
+.post-content table th {
+  color: var(--blackhat-ink);
+  background: var(--blackhat-panel);
+  font-weight: 700;
+}
+
+.post-content table tr:nth-child(even) td {
+  background: #fafbfc;
+}
+
+.post-content code {
+  padding: 0.14em 0.36em;
+  color: #9b4d0b;
+  background: #f6f1ec;
+  border-radius: 3px;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+  font-size: 0.84em;
+}
+
+.post-content pre,
+.post-content .highlight:not(table) {
+  margin: 22px 0;
+  background: var(--blackhat-code) !important;
+  border: 1px solid #343a43;
+  border-radius: 4px;
+}
+
+.post-content pre code,
+.post-content .highlight pre code {
+  padding: 15px 17px;
+  color: var(--blackhat-code-ink);
+  background: transparent !important;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.post-footer {
+  max-width: 760px;
+  margin: 38px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--blackhat-line);
+}
+
+.post-tags a,
+.share-buttons,
+.paginav {
+  color: var(--blackhat-muted);
+  background: #f7f8f9;
+  border-color: var(--blackhat-line);
+}
+
+@media (max-width: 720px) {
+  .main {
+    padding-inline: 10px;
+  }
+
+  .post-single {
+    padding: 28px 18px 34px;
+    border-inline: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .post-title {
+    font-size: 24px;
+  }
+
+  .post-content {
+    font-size: 15px;
+  }
+
+  .blackhat-source dl > div,
+  .blackhat-source .blackhat-abstract {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .blackhat-source dt,
+  .blackhat-source .blackhat-abstract strong {
+    margin-top: 3px;
+  }
+
+  .post-content .blackhat-comment {
+    padding: 16px 15px 15px 17px;
+  }
+
+  .post-content .blackhat-commentary {
+    margin-block: 34px 28px;
+    padding: 22px 18px 21px;
+  }
+
+  .post-content .blackhat-commentary > h2 {
+    font-size: 21px;
+  }
+
+  .post-content .blackhat-commentary-thesis {
+    font-size: 16px;
+  }
+
+  .post-content .blackhat-reference {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}
+
+@media print {
+  .post-single {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .post-content a {
+    color: var(--blackhat-ink);
+  }
+
+  .post-content .blackhat-source,
+  .post-content .blackhat-comment,
+  .post-content .blackhat-finding,
+  .post-content .blackhat-reference {
+    break-inside: avoid;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-content *,
+  .post-content *::before,
+  .post-content *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+  }
+}
