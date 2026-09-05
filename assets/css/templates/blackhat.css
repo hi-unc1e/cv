@@ -2,8 +2,10 @@
  * Black Hat research brief
  *
  * A reusable PaperMod pageStyle distilled from the article
- * “批量 Fuzzing 攻破 RPKI：挖出 21 个高危漏洞”.
+ * “批量 Fuzzing 攻破 RPKI：挖出 21 个高危漏洞”, then refined
+ * with the reading rhythm of the site's knowledge-base style.
  * Enable with front matter: pageStyle: blackhat
+ * Recommended code pairing: codeStyle: tokyonight-night
  *
  * Recommended article order (raw HTML is enabled in hugo.yaml):
  * source intro -> interpretation -> original figures -> commentary -> original link
@@ -39,24 +41,27 @@
  */
 
 .post-single {
-  --blackhat-ink: #1a1a1a;
-  --blackhat-body: #333333;
-  --blackhat-muted: #777d86;
-  --blackhat-faint: #9a9fa7;
-  --blackhat-line: #e5e8eb;
-  --blackhat-paper: #ffffff;
-  --blackhat-panel: #f0f4f8;
-  --blackhat-panel-soft: #fafafa;
-  --blackhat-accent: #f08c28;
-  --blackhat-accent-deep: #c86612;
-  --blackhat-link: #315f90;
-  --blackhat-code: #20242b;
-  --blackhat-code-ink: #edf0f4;
+  --blackhat-ink: #20242c;
+  --blackhat-body: #3b424c;
+  --blackhat-muted: #6f7782;
+  --blackhat-faint: #949ba5;
+  --blackhat-line: #e1e5ea;
+  --blackhat-paper: #fff;
+  --blackhat-panel: #f1f4f8;
+  --blackhat-panel-soft: #f8f9fb;
+  --blackhat-highlight: #fff0b8;
+  --blackhat-accent: #e58a2b;
+  --blackhat-accent-deep: #b95f0a;
+  --blackhat-link: #285d8f;
+  --blackhat-code: #1a1b26;
+  --blackhat-code-bar: #202231;
+  --blackhat-code-line: #34384d;
+  --blackhat-code-ink: #c0caf5;
   background: var(--blackhat-paper);
   color: var(--blackhat-body);
   border: 1px solid var(--blackhat-line);
-  border-radius: 6px;
-  box-shadow: 0 10px 36px rgba(20, 31, 44, 0.06);
+  border-radius: 8px;
+  box-shadow: 0 14px 42px rgba(20, 31, 44, 0.08);
   padding: clamp(24px, 5vw, 56px) clamp(20px, 6vw, 72px);
 }
 
@@ -112,20 +117,32 @@
   color: var(--blackhat-body);
   background: transparent;
   font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 1.85;
+  line-height: 1.82;
   overflow-wrap: anywhere;
   text-align: left;
   box-shadow: none;
 }
 
+/* PaperMod's dark-theme TOC sits inside this light research card. */
+.post-single .toc {
+  color: var(--blackhat-body) !important;
+  background: var(--blackhat-panel-soft) !important;
+  border-color: var(--blackhat-line) !important;
+}
+
+.post-single .toc summary,
+.post-single .toc a {
+  color: var(--blackhat-body) !important;
+}
+
 .post-content p {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
   color: var(--blackhat-body);
-  font-size: 15px;
-  line-height: 1.85;
+  font-size: 16px;
+  line-height: 1.82;
 }
 
 .post-content > p:first-child:not([class]),
@@ -155,25 +172,24 @@
 }
 
 .post-content h2 {
-  position: relative;
-  margin: 36px 0 16px;
-  padding-top: 13px;
-  font-size: 18px;
+  margin: 42px 0 20px;
+  padding: 10px 14px 11px;
+  font-size: 21px;
+  background: var(--blackhat-panel-soft);
+  border-left: 4px solid var(--blackhat-accent);
+  border-radius: 0 6px 6px 0;
 }
 
 .post-content h2::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 34px;
-  height: 3px;
-  background: var(--blackhat-accent);
-  content: "";
+  display: none;
 }
 
 .post-content h3 {
-  margin: 28px 0 12px;
-  font-size: 16px;
+  display: table;
+  margin: 32px 0 14px;
+  padding: 0 3px 3px;
+  font-size: 18px;
+  background: linear-gradient(transparent 64%, var(--blackhat-highlight) 64%);
 }
 
 .post-content h4,
@@ -190,6 +206,23 @@
 .post-content strong {
   color: var(--blackhat-ink);
   font-weight: 700;
+}
+
+/* Knowledge-base highlighter, limited to the reading flow so metadata stays quiet. */
+.post-content > p strong,
+.post-content li strong,
+.post-content table td strong {
+  padding: 0 0.12em;
+  background: linear-gradient(transparent 48%, var(--blackhat-highlight) 48%);
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.post-content mark {
+  padding: 0.08em 0.28em;
+  color: var(--blackhat-ink);
+  background: var(--blackhat-highlight);
+  border-radius: 3px;
 }
 
 .post-content em {
@@ -562,22 +595,31 @@
 
 .post-content table {
   width: 100%;
-  margin: 24px 0;
+  margin: 0;
   border-collapse: collapse;
-  font-size: 13px;
-  line-height: 1.65;
+  font-size: 14px;
+  line-height: 1.68;
+}
+
+.post-content .table-scroll {
+  margin: 28px 0;
+  background: #fff;
+  border: 1px solid var(--blackhat-line);
+  border-radius: 7px;
+  box-shadow: 0 7px 20px rgba(33, 45, 61, 0.06);
 }
 
 .post-content table th,
 .post-content table:not(.highlighttable, .highlight table, .gist .highlight) td {
   min-width: 0;
-  padding: 9px 11px;
+  padding: 11px 13px;
   border: 1px solid var(--blackhat-line);
 }
 
 .post-content table th {
   color: var(--blackhat-ink);
-  background: var(--blackhat-panel);
+  background: #edf2f7;
+  border-top: 2px solid var(--blackhat-accent);
   font-weight: 700;
 }
 
@@ -585,30 +627,132 @@
   background: #fafbfc;
 }
 
-.post-content code {
-  padding: 0.14em 0.36em;
-  color: #9b4d0b;
-  background: #f6f1ec;
-  border-radius: 3px;
+.post-content :not(pre) > code {
+  padding: 0.16em 0.42em;
+  color: #b34f58;
+  background: #f1eef0;
+  border: 1px solid #e7dfe2;
+  border-radius: 4px;
   font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
-  font-size: 0.84em;
+  font-size: 0.86em;
 }
 
 .post-content pre,
 .post-content .highlight:not(table) {
-  margin: 22px 0;
+  margin: 28px 0;
   background: var(--blackhat-code) !important;
-  border: 1px solid #343a43;
-  border-radius: 4px;
+  border: 1px solid var(--blackhat-code-line);
+  border-radius: 9px;
+  box-shadow: 0 12px 28px rgba(19, 22, 34, 0.2);
+}
+
+/* A restrained terminal rail makes code visually distinct from quoted prose. */
+.post-content .highlight:not(table) {
+  position: relative;
+  padding-top: 32px;
+  overflow: hidden;
+}
+
+.post-content .highlight:not(table)::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 32px;
+  background: var(--blackhat-code-bar);
+  border-bottom: 1px solid var(--blackhat-code-line);
+  content: "";
+}
+
+.post-content .highlight:not(table)::after {
+  position: absolute;
+  top: 12px;
+  left: 15px;
+  width: 8px;
+  height: 8px;
+  background: #f7768e;
+  border-radius: 50%;
+  box-shadow: 14px 0 #e0af68, 28px 0 #9ece6a;
+  content: "";
+}
+
+.post-content .highlight pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .post-content pre code,
 .post-content .highlight pre code {
-  padding: 15px 17px;
+  display: block;
+  min-width: max-content;
+  padding: 18px 20px;
   color: var(--blackhat-code-ink);
   background: transparent !important;
-  font-size: 12px;
-  line-height: 1.7;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  line-height: 1.72;
+  white-space: pre;
+}
+
+.post-content .chroma .hl {
+  display: block;
+  background: rgba(122, 162, 247, 0.15);
+}
+
+.post-content .chroma .ln,
+.post-content .chroma .lnt {
+  color: #565f89;
+}
+
+.post-content pre::-webkit-scrollbar,
+.post-content .highlight pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.post-content pre::-webkit-scrollbar-thumb,
+.post-content .highlight pre::-webkit-scrollbar-thumb {
+  background: #414868;
+  border-radius: 8px;
+}
+
+.post-content .callout {
+  margin: 26px 0;
+  padding: 16px 18px 16px 20px;
+  color: var(--blackhat-body);
+  background: var(--blackhat-panel-soft);
+  border-left: 4px solid #64748b;
+  border-radius: 0 6px 6px 0;
+}
+
+.post-content .callout p:last-child {
+  margin-bottom: 0;
+}
+
+.post-content .callout-title {
+  margin-bottom: 7px;
+  color: var(--blackhat-ink);
+  font-weight: 750;
+}
+
+.post-content .callout-note,
+.post-content .callout-important {
+  background: #edf5ff;
+  border-left-color: #3b82c4;
+}
+
+.post-content .callout-tip {
+  background: #eef9f2;
+  border-left-color: #2f8f58;
+}
+
+.post-content .callout-warning {
+  background: #fff7e8;
+  border-left-color: #db8b22;
+}
+
+.post-content .callout-caution {
+  background: #fff0f0;
+  border-left-color: #d34a4a;
 }
 
 .post-footer {
@@ -644,6 +788,27 @@
 
   .post-content {
     font-size: 15px;
+  }
+
+  .post-content p {
+    font-size: 15px;
+    line-height: 1.78;
+  }
+
+  .post-content h2 {
+    margin-top: 34px;
+    padding: 9px 11px 10px;
+    font-size: 19px;
+  }
+
+  .post-content h3 {
+    font-size: 17px;
+  }
+
+  .post-content pre code,
+  .post-content .highlight pre code {
+    padding: 16px;
+    font-size: 12px;
   }
 
   .blackhat-source dl > div,
