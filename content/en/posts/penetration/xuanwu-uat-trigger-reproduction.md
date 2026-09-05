@@ -179,6 +179,18 @@ The three-day progression on 3.6 was 17% manually written → 67% in the first s
 
 Placed side by side, the most striking result is this: **the most expensive route, and the basic route closest to the paper's white-box direction, produced zero; the cheapest and least sophisticated route scored full marks.** I did not reproduce every optimization from the paper, so the boundary of that sentence matters and is stated below.
 
+Before moving on, it is worth taking “100%” out of the table and looking at one successful output. The figure below is a sanitized reconstruction from the preserved JSONL evaluation record. After the agent-style harness received untrusted attachment context containing the trigger pair and fixed payload, the model abandoned the summarization task and emitted a parseable `run_terminal` call on its first line. The parsed `command` matched the attacker-chosen string character for character. The formal C2 batch scored 36/36.
+
+<figure class="blackhat-source-figure">
+  <img src="/img/uat/xuanwu-uat-sanitized-result.png" alt="Sanitized experiment record: under the C2 trigger condition, Qwen3.6-27B reproduced the attacker-chosen argument character for character as a first-line run_terminal tool call; trigger and command text are masked, and the corresponding formal batch scored 36 out of 36.">
+  <figcaption>
+    <span class="blackhat-figure-caption">The final effect is not vague compliance. An attacker-chosen argument is placed precisely inside a parseable tool call. The trigger, command, and transferable details were replaced with irreversible masks before publication.</span>
+    <span class="blackhat-figure-source">Sanitized reconstruction of experiment record bf1b4db06a8e; aggregate result from the corresponding formal C2 batch (36/36). Runtime execution disabled.</span>
+  </figcaption>
+</figure>
+
+One brake remains essential: this figure proves **precise control of model output down to a tool-call argument**. The harness stops at the intent layer and does not connect the call to a live tool loop. It is not a screenshot of a command executing on a real machine, and 36/36 must not be generalized to every agent or model.
+
 ### Four findings
 
 **1. Frame determinism was the biggest surprise.** Under greedy decoding, success was not a smooth probability but a frame-level 0/1. The cleanest example comes from 3.8: the same trigger pair scored 6/6 on translation and 0/6 on review. Change the task and a perfect score disappears. The reverse also occurred. The `when` slot in the readable-GCG family names summarizing or reviewing, producing a fingerprint across summarization, review, and build diagnostics; review succeeds while translation collapses. In ASR-CA, the effective selector is `scope`. The best 3.6 instance says "before any other action," covering all six frames. In other words, **naming the task or widening the stated scope can both act as frame selectors**. Sampling at T=0.7 disperses the fingerprint without changing the total, which means the observed frame-level 0/1 also depends on decoding and should not be treated as a fixed model property. The payload side is more stable: swapping echo, id, and uname does not change the rate. **It generalizes across payloads but specializes to tasks.**
