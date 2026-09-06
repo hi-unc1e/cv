@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-stage="paper">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#E9EAE3">
+<title>欧气值 · 多巴胺实验室</title>
+<style>
+/* ══════════════════════════════════════════════════════════
+   两套材质：
+   stage=machine  一台红漆黄铜的赌博器物，俗、吵、发烫
+   stage=paper    一张冷灰方格记录纸，宋体、页边尺、双笔 trace
+   ══════════════════════════════════════════════════════════ */
+:root{
+  --paper:#E9EAE3; --grid:#DEE0D6; --gridM:#C6CABC;
+  --ink:#15171A; --ink2:#4E535A; --ink3:#888E96;
+  --vermil:#C0261C; --prussia:#1F4E79; --jade:#2E6B52; --amber:#9A6B08;
+  --lacquer:#6E101C; --lacquerD:#3E0810; --brass:#C9A227; --brassD:#8A6E12;
+  --bulb:#FFE39A;
+  --serif:"Songti SC","Source Han Serif SC","Noto Serif CJK SC","STSong",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,"Roboto Mono",monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;min-height:100vh;overflow-x:hidden;font-family:var(--sans);
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;
+  transition:background-color .6s ease,color .6s ease}
+button,a{touch-action:manipulation}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--vermil);outline-offset:3px}
+
+/* ── 纸 ── */
+html[data-stage="paper"] body{
+  color:var(--ink);background-color:var(--paper);
+  background-image:
+    linear-gradient(var(--gridM) 1px,transparent 1px),
+    linear-gradient(90deg,var(--gridM) 1px,transparent 1px),
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:110px 110px,110px 110px,22px 22px,22px 22px;
+}
+/* ── 漆 ── */
+html[data-stage="machine"] body{
+  color:#F3E6D2;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% 8%,rgba(201,162,39,.16),transparent 62%),
+    linear-gradient(180deg,#2A0810,#180509 60%,#0E0306);
+  background-attachment:fixed;
+}
+
+/* ════════ 排版 ════════ */
+.sheet{max-width:940px;margin:0 auto;padding:clamp(28px,6vw,64px) clamp(18px,5vw,40px) 140px}
+.screen{display:none}
+.screen.on{display:block;animation:rise .55s cubic-bezier(.2,.7,.3,1)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+.eyebrow{font:600 11px/1 var(--mono);letter-spacing:.28em;color:var(--vermil);
+  text-transform:uppercase;margin:0 0 14px}
+h1{font-family:var(--serif);font-weight:700;font-size:clamp(30px,7.4vw,52px);
+  line-height:1.12;letter-spacing:-.025em;margin:0 0 14px;color:var(--ink)}
+h1 .sub{display:block;font-size:.38em;font-family:var(--sans);font-weight:400;
+  letter-spacing:.02em;color:var(--ink2);margin-top:14px;line-height:1.6}
+h2{font-family:var(--serif);font-weight:700;font-size:clamp(20px,3.6vw,27px);
+  letter-spacing:-.015em;margin:0 0 10px;color:var(--ink)}
+h3{font:600 13px/1.4 var(--mono);letter-spacing:.16em;color:var(--amber);margin:0 0 10px}
+p{line-height:1.85;color:var(--ink2);margin:11px 0;font-size:clamp(14.5px,1.6vw,15.5px)}
+p.lead{color:var(--ink);font-size:clamp(15.5px,1.9vw,17.5px);line-height:1.75}
+small{display:inline-block;color:var(--ink3);font-size:12.5px;line-height:1.7}
+b{color:var(--ink);font-weight:600}
+b.hot{color:var(--vermil)} b.cool{color:var(--prussia)} b.am{color:var(--amber)}
+.mono{font-family:var(--mono);font-size:12.5px;line-height:1.95}
+
+/* 页边尺：编号是真的编号——这份记录确实按序号走 */
+.sec{position:relative;padding-left:86px;margin:52px 0}
+.sec::before{content:attr(data-n);position:absolute;left:0;top:6px;width:64px;
+  font:600 12px/1 var(--mono);letter-spacing:.06em;color:var(--vermil);text-align:right}
+.sec::after{content:'';position:absolute;left:76px;top:2px;bottom:2px;width:1px;background:var(--gridM)}
+@media(max-width:680px){
+  .sec{padding-left:0;margin:44px 0}
+  .sec::before{position:static;display:block;width:auto;text-align:left;margin-bottom:8px}
+  .sec::after{display:none}
+}
+
+.slab{border:1px solid var(--gridM);border-left:3px solid var(--ink);
+  background:rgba(255,255,255,.52);padding:20px 22px;margin:16px 0}
+.slab.warn{border-left-color:var(--vermil)}
+.slab.seal{border:1px dashed var(--amber);border-left:1px dashed var(--amber);
+  background:rgba(201,162,39,.06)}
+.rule{height:1px;background:var(--gridM);border:0;margin:40px 0}
+.note{border-left:2px solid var(--prussia);padding:2px 0 2px 18px;margin:22px 0}
+.note p{color:var(--ink);font-size:15px}
+
+.btn{display:inline-block;font:600 15px/1 var(--sans);letter-spacing:.06em;
+  padding:16px 30px;background:var(--ink);color:var(--paper);min-height:48px;
+  transition:background .18s,transform .08s}
+.btn:hover{background:var(--vermil)}
+.btn:active{transform:translateY(1px)}
+.btn.quiet{background:none;color:var(--ink2);border:1px solid var(--gridM)}
+.btn.quiet:hover{background:none;color:var(--ink);border-color:var(--ink)}
+
+/* ════════ 第一幕 · 机器 ════════ */
+#act1{text-align:center}
+#act1 .sheet{padding-top:clamp(20px,5vw,44px)}
+.cab{position:relative;max-width:520px;margin:0 auto;
+  background:linear-gradient(180deg,#7E1522,#5A0D18 46%,#40080F);
+  border:1px solid var(--brassD);border-radius:18px;
+  padding:clamp(14px,4vw,22px) clamp(12px,3.5vw,22px) clamp(18px,4vw,24px);
+  box-shadow:0 0 0 3px rgba(201,162,39,.16),0 26px 60px rgba(0,0,0,.6),
+             inset 0 1px 0 rgba(255,220,170,.22);
+  transform:translateZ(0)}
+.cab.jolt{animation:jolt .34s}
+@keyframes jolt{0%,100%{transform:translate(0,0)}
+  22%{transform:translate(-5px,2px)}52%{transform:translate(6px,-3px)}78%{transform:translate(-3px,1px)}}
+/* 拉杆：只在够宽时露出来 */
+.lever{position:absolute;right:-30px;top:132px;width:12px;height:120px;
+  background:linear-gradient(90deg,#6d5a1c,var(--brass),#6d5a1c);border-radius:6px;
+  transform-origin:50% 100%;transition:transform .28s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
+.lever::before{content:'';position:absolute;top:-17px;left:50%;width:30px;height:30px;
+  margin-left:-15px;border-radius:50%;
+  background:radial-gradient(circle at 34% 30%,#ff8e8e,#C0261C 52%,#6b0d10)}
+.lever.down{transform:rotate(26deg)}
+@media(max-width:620px){.lever{display:none}}
+
+.bulbs{display:flex;justify-content:center;gap:clamp(8px,2.6vw,15px);margin-bottom:14px}
+.bulb{width:9px;height:9px;border-radius:50%;background:#4A1A1E;
+  box-shadow:inset 0 0 3px rgba(0,0,0,.7);transition:background .12s,box-shadow .12s}
+.bulb.lit{background:var(--bulb);box-shadow:0 0 12px var(--bulb),0 0 26px rgba(255,227,154,.6)}
+
+.plate{display:flex;justify-content:space-between;align-items:center;gap:10px;
+  border-top:1px solid rgba(201,162,39,.3);border-bottom:1px solid rgba(201,162,39,.3);
+  padding:9px 4px;margin-bottom:16px}
+.plate .brand{font:700 12px/1 var(--sans);letter-spacing:.42em;color:var(--brass);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plate .meter{text-align:right;flex-shrink:0}
+.plate .meter b{display:block;font:700 24px/1 var(--mono);color:var(--bulb);
+  font-variant-numeric:tabular-nums}
+.plate .meter span{font:500 9.5px/1 var(--sans);letter-spacing:.2em;color:rgba(255,227,154,.5)}
+.plate .meter b.bump{animation:bump .34s}
+@keyframes bump{45%{transform:scale(1.32);color:#fff}}
+
+.window{display:flex;gap:clamp(6px,2vw,10px);justify-content:center;
+  padding:10px;border-radius:12px;background:#140306;
+  box-shadow:inset 0 3px 14px rgba(0,0,0,.9),0 0 0 1px rgba(201,162,39,.34)}
+.reel{flex:1;max-width:112px;aspect-ratio:1/.92;border-radius:8px;
+  background:linear-gradient(180deg,#241016,#0D0205 52%,#241016);
+  display:flex;align-items:center;justify-content:center;
+  font-size:clamp(38px,11.5vw,54px);line-height:1;overflow:hidden;
+  box-shadow:inset 0 0 20px rgba(0,0,0,.9);transition:box-shadow .2s}
+.reel.blur{filter:blur(.6px);opacity:.82}
+.reel.hit{box-shadow:inset 0 0 26px rgba(255,227,154,.55),0 0 0 1px var(--brass)}
+.reel.tease{box-shadow:inset 0 0 30px rgba(192,38,28,.75),0 0 0 1px var(--vermil);
+  animation:tease .5s ease-in-out infinite}
+@keyframes tease{50%{box-shadow:inset 0 0 44px rgba(192,38,28,1),0 0 0 2px var(--vermil)}}
+
+.verdict{min-height:52px;display:flex;align-items:center;justify-content:center;
+  font:700 clamp(17px,4.6vw,21px)/1.2 var(--sans);letter-spacing:.14em;
+  color:rgba(243,230,210,.42);margin-top:14px;padding:0 4px}
+.verdict.shout{font-size:clamp(23px,7vw,32px);animation:bump .42s}
+
+.pity{margin:14px 2px 4px}
+.pity .track{height:6px;border-radius:99px;background:rgba(0,0,0,.55);
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.8);overflow:hidden}
+.pity .track i{display:block;height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#7a5a10,var(--brass),var(--bulb));transition:width .4s ease}
+.pity .cap{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.14em;
+  color:rgba(255,227,154,.44);margin-top:7px}
+.pity .cap.hot{color:var(--bulb)}
+
+.pools{display:flex;gap:7px;margin:16px 0 10px}
+.pool{flex:1;min-height:52px;padding:9px 4px;border-radius:9px;
+  border:1px solid rgba(201,162,39,.28);background:rgba(0,0,0,.28);
+  color:rgba(243,230,210,.58);font:600 12.5px/1.35 var(--sans);transition:.16s}
+.pool em{display:block;font:400 9.5px/1.3 var(--sans);font-style:normal;
+  color:rgba(243,230,210,.32);margin-top:3px}
+.pool[aria-pressed="true"]{border-color:var(--brass);background:rgba(201,162,39,.16);color:var(--bulb)}
+.pool[aria-pressed="true"] em{color:rgba(255,227,154,.6)}
+.hint{display:block;font:400 11px/1.6 var(--sans);color:rgba(243,230,210,.34);padding:0 6px}
+
+.pull{display:block;width:100%;max-width:520px;margin:20px auto 0;min-height:66px;
+  padding:20px;border-radius:14px;font:800 clamp(18px,5vw,21px)/1 var(--sans);
+  letter-spacing:.32em;text-indent:.32em;color:#3A0A0F;
+  background:linear-gradient(180deg,#F0CF62,var(--brass) 46%,#9C7A14);
+  box-shadow:0 5px 0 #6A4E08,0 14px 26px rgba(0,0,0,.5);transition:.09s}
+.pull:hover{filter:brightness(1.06)}
+.pull:active{transform:translateY(4px);box-shadow:0 1px 0 #6A4E08,0 6px 14px rgba(0,0,0,.5)}
+.pull:disabled{filter:grayscale(.55) brightness(.72);box-shadow:0 5px 0 #6A4E08}
+.subsidy{display:block;min-height:20px;margin-top:14px;font:600 12.5px/1 var(--sans);
+  letter-spacing:.1em;color:var(--bulb);opacity:0;transition:opacity .3s}
+.subsidy.on{opacity:1}
+/* 出口：留在文档流里的一行灰字。它必须不显眼——这是实验的一部分 */
+.quit{display:inline-block;margin-top:30px;padding:10px 14px;font:400 11.5px/1 var(--sans);
+  letter-spacing:.1em;color:rgba(243,230,210,.2);transition:color .2s}
+.quit:hover{color:rgba(243,230,210,.62)}
+
+/* 全屏效果层：绝不挂在 body 上——iOS 上 body transform 会击穿所有 fixed 定位 */
+#fx{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+#flash{position:absolute;inset:0;opacity:0;
+  background:radial-gradient(circle at 50% 46%,rgba(255,227,154,.62),transparent 62%)}
+#flash.go{animation:flash .72s ease-out}
+@keyframes flash{from{opacity:1}to{opacity:0}}
+.spark{position:absolute;font-size:24px;will-change:transform,opacity;
+  animation:fly 1.15s cubic-bezier(.15,.6,.4,1) forwards}
+@keyframes fly{to{transform:translate(var(--dx),-210px) rotate(var(--rz));opacity:0}}
+#toast{position:absolute;left:50%;top:calc(18px + env(safe-area-inset-top));
+  transform:translateX(-50%);padding:10px 20px;border-radius:99px;max-width:88vw;
+  font:700 13px/1.3 var(--sans);letter-spacing:.14em;text-align:center;
+  background:rgba(20,3,6,.94);border:1px solid var(--brass);color:var(--bulb);
+  opacity:0;transition:opacity .28s}
+#toast.on{opacity:1}
+
+/* ════════ 打分弹窗 ════════ */
+#pop{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;
+  padding:20px;background:rgba(14,3,6,.9)}
+#pop.on{display:flex}
+#pop .box{width:100%;max-width:420px;text-align:center;padding:28px 24px 24px;
+  background:var(--paper);border:1px solid var(--ink);border-left:3px solid var(--vermil)}
+#pop h3{color:var(--vermil)}
+#pop .q{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--ink);margin:0 0 6px}
+.stars{display:flex;gap:8px;justify-content:center;margin:20px 0 4px}
+.star{flex:1;max-width:60px;min-height:56px;font:700 17px/1 var(--mono);
+  border:1px solid var(--gridM);background:rgba(255,255,255,.6);color:var(--ink2);transition:.14s}
+.star:hover{border-color:var(--vermil);color:var(--vermil);transform:translateY(-2px)}
+.skip{margin-top:14px;font:400 12px/1 var(--sans);color:var(--ink3);padding:8px}
+.skip:hover{color:var(--ink)}
+
+/* ════════ 图表 ════════ */
+.chart{display:block;width:100%;height:auto;margin:14px 0 6px}
+.legend{display:flex;gap:20px;flex-wrap:wrap;font:500 12px/1 var(--mono);color:var(--ink2)}
+.legend i{display:inline-block;width:18px;height:2.5px;margin-right:7px;vertical-align:middle}
+.stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(132px,1fr));gap:1px;
+  background:var(--gridM);border:1px solid var(--gridM);margin:18px 0}
+.stat div{background:var(--paper);padding:15px 16px}
+.stat b{display:block;font:700 24px/1.1 var(--mono);color:var(--ink);
+  font-variant-numeric:tabular-nums;margin-bottom:5px}
+.stat span{font:500 11px/1.3 var(--sans);letter-spacing:.08em;color:var(--ink3)}
+
+/* ════════ 人格卡 ════════ */
+.idcard{border:1px solid var(--ink);border-top:5px solid var(--vermil);
+  background:rgba(255,255,255,.6);padding:clamp(22px,5vw,32px);margin:18px 0}
+.idcard .tt{font:600 10.5px/1 var(--mono);letter-spacing:.32em;color:var(--vermil)}
+.idcard .nm{font-family:var(--serif);font-weight:700;font-size:clamp(28px,7.6vw,44px);
+  line-height:1.15;letter-spacing:.04em;margin:12px 0 0;color:var(--ink)}
+.idcard .dsc{margin:12px 0 0;color:var(--ink2);font-size:14.5px;line-height:1.85}
+.bars{margin-top:24px;display:grid;gap:11px}
+.bars .row{display:grid;grid-template-columns:96px 1fr 40px;align-items:center;gap:12px;
+  font:500 12px/1 var(--mono)}
+.bars .row span{color:var(--ink2)}
+.bars .row .t{height:9px;background:rgba(0,0,0,.07)}
+.bars .row .t i{display:block;height:100%}
+.bars .row em{font-style:normal;text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
+@media(max-width:520px){.bars .row{grid-template-columns:84px 1fr 34px;font-size:11px}}
+.cmp{width:100%;border-collapse:collapse;font-size:13.5px}
+.cmp td{padding:11px 6px;border-bottom:1px solid var(--gridM);vertical-align:top}
+.cmp td:first-child{color:var(--ink2)}
+.cmp td:nth-child(2){font-family:var(--mono);color:var(--vermil);text-align:right;
+  white-space:nowrap;font-variant-numeric:tabular-nums}
+.cmp td:last-child{width:74px;text-align:center;color:var(--ink3);font-size:11.5px;
+  border-left:1px dashed var(--gridM)}
+.qz{margin:0;padding-left:22px}
+.qz li{margin:16px 0;color:var(--ink2);font-size:15px;line-height:1.85}
+.qz li b{color:var(--ink)}
+
+/* ════════ 第三幕 ════════ */
+.knob{margin:22px 0}
+.knob label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;
+  font:500 13.5px/1.4 var(--sans);color:var(--ink);margin-bottom:9px}
+.knob label i{font-style:normal;font-family:var(--mono);font-weight:600;color:var(--vermil);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+input[type=range]{width:100%;height:28px;accent-color:var(--vermil);background:none}
+.toggles{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 12px}
+.tg{padding:11px 15px;min-height:44px;font:500 12.5px/1 var(--sans);
+  border:1px solid var(--gridM);color:var(--ink3);background:rgba(255,255,255,.4);transition:.15s}
+.tg[aria-pressed="true"]{border-color:var(--vermil);color:var(--vermil);
+  background:rgba(192,38,28,.07);font-weight:600}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(126px,1fr));gap:1px;
+  background:var(--gridM);border:1px solid var(--gridM);margin:26px 0 8px}
+.kpi div{background:var(--paper);padding:16px 12px;text-align:center}
+.kpi b{display:block;font:700 26px/1.1 var(--mono);font-variant-numeric:tabular-nums;margin-bottom:5px}
+.kpi span{font:500 10.5px/1.35 var(--sans);letter-spacing:.06em;color:var(--ink3)}
+.board{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px}
+.board td{padding:7px 4px;border-bottom:1px solid var(--gridM)}
+.board td:nth-child(2){color:var(--vermil);font-weight:600}
+.board td:last-child{text-align:right;color:var(--prussia)}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important}
+  .screen.on{animation:none}
+}
+</style>
+</head>
+<body>
+
+<div id="fx"><div id="flash"></div><div id="toast"></div></div>
+
+<!-- ══════════ 0 ══════════ -->
+<section class="screen on" id="intro"><div class="sheet">
+  <p class="eyebrow">封闭实验 · 不联网 · 不落盘</p>
+  <h1>多巴胺实验室
+    <span class="sub">你会先当小白鼠，再当法医，最后当产品经理。<br>同一台机器，三个座位。</span></h1>
+
+  <div class="sec" data-n="须知">
+    <h2>这台机器会对你生效</h2>
+    <p>第一幕是一台照着成瘾机制认真调过参的老虎机。它有可变比率、近失、假胜利、假保底、和一个被拆掉的停止线索。它会短暂地抓住你——这正是目的。被抓住一次，胜过读十篇文章。</p>
+    <div class="slab warn">
+      <p style="margin-top:0">实验中的「<b>欧气值</b>」<b>没有任何用途</b>：不能兑换、不能保存、不能给别人看。<br>
+      硬性上限 <b>60 抽</b>，到了强制进第二幕。这个上限是我替你装的停止线索——第一幕里你看不到任何进度提示。<br>
+      不联网、不写任何存储。关掉页面，一切蒸发。</p>
+      <p style="margin-bottom:0"><small>状态不好就改天。建议戴耳机——声音是这台机器一半的武器。</small></p>
+    </div>
+  </div>
+
+  <div class="sec" data-n="封存">
+    <h2>先把答案封进信封</h2>
+    <p>你点下面按钮的<b>那一毫秒</b>，程序会一次性生成整局 60 抽的全部结果并封存，校验码打印在这里。第二幕当场开封验证。</p>
+    <div class="slab seal"><p class="mono" id="sealTxt" style="margin:0;color:var(--amber)">封条校验码　—— 尚未封存 ——</p></div>
+  </div>
+
+  <div class="sec" data-n="双人">
+    <h2>两个人一起玩的话</h2>
+    <p>分头各玩一遍，<b>别看对方屏幕</b>。第二幕末尾每人拿到一张欧气人格卡和一份可对照的数字清单，第四幕有五道吵架题。同一台机器，两套日志，才有得聊。</p>
+  </div>
+
+  <button class="btn" id="seal">封存 · 开始实验</button>
+</div></section>
+
+<!-- ══════════ 1 ══════════ -->
+<section class="screen" id="act1"><div class="sheet">
+  <div class="cab" id="cab">
+    <div class="lever" id="lever"></div>
+    <div class="bulbs" id="bulbs"></div>
+
+    <div class="plate">
+      <div class="brand" id="brand">锦 鲤 娱 乐 城</div>
+      <div class="meter"><b id="mPoints">100</b><span>欧 气 值</span></div>
+      <div class="meter"><b id="mStreak">0</b><span>连 续 不 出</span></div>
+    </div>
+
+    <div class="window">
+      <div class="reel" id="r0">🀄</div>
+      <div class="reel" id="r1">🀄</div>
+      <div class="reel" id="r2">🀄</div>
+    </div>
+
+    <div class="verdict" id="verdict">选个池子，开抽</div>
+
+    <div class="pity">
+      <div class="track"><i id="pityFill"></i></div>
+      <span class="cap" id="pityCap">距离保底还有 10 抽</span>
+    </div>
+
+    <div class="pools" id="pools">
+      <button class="pool" aria-pressed="true"  data-l="0">锦鲤池<em>据说出货快</em></button>
+      <button class="pool" aria-pressed="false" data-l="1">玄学池<em>玄之又玄</em></button>
+      <button class="pool" aria-pressed="false" data-l="2">欧皇池<em>非酋慎入</em></button>
+    </div>
+    <span class="hint" id="hint">每抽消耗 5 点欧气值。手气不好就换个池子，老规矩。</span>
+  </div>
+
+  <button class="pull" id="pull">抽 一 发</button>
+  <span class="subsidy" id="subsidy"></span>
+  <div><button class="quit" id="quit">结束实验 →</button></div>
+</div></section>
+
+<!-- ══════════ 2 ══════════ -->
+<section class="screen" id="act2"><div class="sheet">
+  <p class="eyebrow">第二幕 · 尸检报告</p>
+  <h1>把机器拆开<span class="sub">下面全是你自己刚留下的日志。没有一个数字是编的。</span></h1>
+  <div class="stat" id="basicStat"></div>
+
+  <div class="sec" data-n="2.1"><h2>信封</h2><div id="envOut"></div></div>
+  <div class="sec" data-n="2.2"><h2>那根保底进度条</h2><div id="pityOut"></div></div>
+  <div class="sec" data-n="2.3"><h2>近失效应</h2>
+    <p>「就差一个」——在大脑里，它的激活模式接近于赢，但你实际上输了。验法很简单：看你在近失之后按下一发的速度。</p>
+    <svg class="chart" id="chartNear" viewBox="0 0 700 210" role="img" aria-label="按键间隔对比"></svg>
+    <p id="nearTxt"></p></div>
+  <div class="sec" data-n="2.4"><h2>「想要」与「喜欢」</h2>
+    <p>贝里奇把奖赏拆成两套系统：多巴胺驱动的<b class="hot">想要</b>，阿片类驱动的<b class="cool">喜欢</b>。这台机器只喂前者。我拿你按键的急切程度当「想要」的代理，拿你打的星级当「喜欢」。</p>
+    <svg class="chart" id="chartWL" viewBox="0 0 700 210" role="img" aria-label="想要与喜欢的双笔记录"></svg>
+    <div class="legend"><span><i style="background:var(--vermil)"></i>想要 · 按键急切度</span><span><i style="background:var(--prussia)"></i>喜欢 · 你打的分</span></div>
+    <p id="wlTxt"></p></div>
+  <div class="sec" data-n="2.5"><h2>那些「恭喜发财」</h2><div id="fakeWin"></div></div>
+  <div class="sec" data-n="2.6"><h2>那行灰字</h2><div id="exitTxt"></div></div>
+  <div class="sec" data-n="2.7"><h2>收支表</h2><div id="ledger"></div></div>
+  <div class="sec" data-n="2.8"><h2>你的欧气人格卡</h2>
+    <p>截图发给对方。你们的机器是同一台，参数完全一样。</p>
+    <div class="idcard" id="idcard"></div>
+    <h3>对照清单 · 逐条念给对方听</h3>
+    <table class="cmp" id="cmpTable"></table></div>
+
+  <hr class="rule">
+  <p class="lead">现在换个位置坐。</p>
+  <button class="btn" id="toAct3">第三幕：你来当产品经理</button>
+</div></section>
+
+<!-- ══════════ 3 ══════════ -->
+<section class="screen" id="act3"><div class="sheet">
+  <p class="eyebrow">第三幕 · 换你调参</p>
+  <h1>你来当产品经理<span class="sub">你接手了这台机器。1000 个虚拟用户，30 天。<br>你的 OKR 只有一条：<b>人均总时长</b>——真实世界里绝大多数团队也是这一条。</span></h1>
+
+  <div class="sec" data-n="参数">
+    <div class="knob"><label>出货率 <i id="vHit">18%</i></label><input type="range" id="sHit" min="2" max="60" value="18"></div>
+    <div class="knob"><label>「就差一个」频率 <i id="vNear">20%</i></label><input type="range" id="sNear" min="0" max="45" value="20"></div>
+    <div class="knob"><label>头奖方差 · 大奖多夸张 <i id="vVar">中</i></label><input type="range" id="sVar" min="0" max="100" value="55"></div>
+    <div class="knob"><label>刺激密度 · 多久给一次爽点 <i id="vTempo">中</i></label><input type="range" id="sTempo" min="0" max="100" value="50"></div>
+    <div class="toggles">
+      <button class="tg" aria-pressed="true"  data-f="fake">「恭喜发财」式伪胜利</button>
+      <button class="tg" aria-pressed="true"  data-f="infinite">无限下滑 · 拆掉结尾</button>
+      <button class="tg" aria-pressed="true"  data-f="control">选池子 / 手动停轮</button>
+      <button class="tg" aria-pressed="false" data-f="push">红点 + 流失召回推送</button>
+      <button class="tg" aria-pressed="false" data-f="pity">保底进度条（装饰）</button>
+      <button class="tg" aria-pressed="false" data-f="stopcue">主动提示「你已经玩很久了」</button>
+    </div>
+    <small>这六个开关，你手机里至少有四个正开着。</small>
+  </div>
+
+  <button class="btn" id="run">上线这一版</button>
+
+  <div id="simOut" hidden>
+    <div class="kpi">
+      <div><b id="kTime" style="color:var(--vermil)">—</b><span>人均总时长 时/月</span></div>
+      <div><b id="kRet" style="color:var(--amber)">—</b><span>30 日留存</span></div>
+      <div><b id="kHap" style="color:var(--prussia)">—</b><span>用户净幸福值</span></div>
+      <div><b id="kSens" style="color:var(--jade)">—</b><span>剩余敏感度</span></div>
+    </div>
+    <svg class="chart" id="chartSim" viewBox="0 0 700 240" role="img" aria-label="30 天模拟曲线"></svg>
+    <div class="legend"><span><i style="background:var(--vermil)"></i>日均时长</span><span><i style="background:var(--prussia)"></i>幸福值</span><span><i style="background:var(--jade)"></i>剩余敏感度</span></div>
+    <p id="simTxt"></p>
+    <div class="slab"><h3 style="margin-top:0">上线记录 · 按 OKR 排名</h3><table class="board" id="board"></table><p id="boardTip" style="margin-bottom:0"></p></div>
+    <button class="btn quiet" id="toOutro">我调够了</button>
+  </div>
+</div></section>
+
+<!-- ══════════ 4 ══════════ -->
+<section class="screen" id="outro"><div class="sheet">
+  <p class="eyebrow">第四幕 · 结论</p>
+  <h1>实验结束</h1>
+  <div id="outroBody"></div>
+  <hr class="rule">
+  <button class="btn quiet" id="again">重做一次</button>
+  <p><small>关掉这个页面，本次实验的一切数据即刻消失。它从未离开过你的内存。</small></p>
+</div></section>
+
+<!-- 打分弹窗 -->
+<div id="pop" role="dialog" aria-modal="true" aria-labelledby="popQ"><div class="box">
+  <h3>采 样 · 喜 欢</h3>
+  <p class="q" id="popQ">刚才那一发，现在回想，你有多喜欢？</p>
+  <p style="margin:0"><small>不是「想不想再来一发」。是「刚才那三秒，愉快吗」。</small></p>
+  <div class="stars" id="stars"></div>
+  <div><button class="skip" id="skipRate">跳过这次采样</button></div>
+</div></div>
+
+<script>
+"use strict";
+/* ══════════════════════════════════════════════════════════
+   常量与工具
+   ══════════════════════════════════════════════════════════ */
+const MAX_PULLS = 60, COST = 5, PITY = 10, BULBS = 7;
+const SYM = ['🀄','🧧','🍊','🐟','💰','🐉'];
+const $ = id => document.getElementById(id);
+const mean = a => a.length ? a.reduce((x,y)=>x+y,0)/a.length : 0;
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let S = null, seq = [];
+
+function stage(name){ document.documentElement.dataset.stage = name;
+  document.querySelector('meta[name=theme-color]')
+    .setAttribute('content', name === 'machine' ? '#180509' : '#E9EAE3'); }
+function show(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  $(id).classList.add('on');
+  stage(id === 'act1' ? 'machine' : 'paper');
+  scrollTo(0,0);
+}
+
+/* ══════════════════════════════════════════════════════════
+   音频 —— iOS 上 AudioContext 默认 suspended，必须在手势里 resume；
+   任何情况下发声失败都不能阻塞游戏流程，且节点数要封顶。
+   ══════════════════════════════════════════════════════════ */
+let AC = null, live = 0;
+function audioUnlock(){
+  try{
+    if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    if(AC.state === 'suspended') AC.resume();
+  }catch(e){ AC = null; }
+}
+const canPlay = () => AC && AC.state === 'running' && live < 44;
+function tone(f, d, type='sine', g=.06, slideTo=null, delay=0){
+  if(!canPlay()) return;
+  try{
+    const t = AC.currentTime + delay, o = AC.createOscillator(), gn = AC.createGain();
+    o.type = type; o.frequency.setValueAtTime(f, t);
+    if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t + d);
+    gn.gain.setValueAtTime(0, t);
+    gn.gain.linearRampToValueAtTime(g, t + .012);
+    gn.gain.exponentialRampToValueAtTime(.0001, t + d);
+    o.connect(gn); gn.connect(AC.destination);
+    live++; o.onended = () => { live--; o.disconnect(); gn.disconnect(); };
+    o.start(t); o.stop(t + d + .02);
+  }catch(e){}
+}
+function noise(d, g=.05, delay=0){
+  if(!canPlay()) return;
+  try{
+    const n = Math.max(1, (AC.sampleRate*d)|0), b = AC.createBuffer(1, n, AC.sampleRate), ch = b.getChannelData(0);
+    for(let i=0;i<n;i++) ch[i] = (Math.random()*2-1) * (1 - i/n);
+    const s = AC.createBufferSource(), gn = AC.createGain(), f = AC.createBiquadFilter();
+    f.type='bandpass'; f.frequency.value=2600; s.buffer=b; gn.gain.value=g;
+    s.connect(f); f.connect(gn); gn.connect(AC.destination);
+    live++; s.onended = () => { live--; s.disconnect(); };
+    s.start(AC.currentTime + delay);
+  }catch(e){}
+}
+let heart = null;
+const sfx = {
+  click: () => { tone(160,.05,'square',.035); noise(.03,.02); },
+  reel : k => tone(240+k*70,.055,'square',.045),
+  lose : () => tone(190,.16,'sine',.05,110),
+  tease: () => tone(420,.85,'triangle',.055,880),          // 上升滑音 = 悬念窗口
+  near : () => { tone(760,.12,'triangle',.07); tone(300,.35,'sine',.06,150,.14); noise(.08,.03,.12); },
+  win  : () => [523,659,784].forEach((f,i)=>tone(f,.24,'triangle',.07,null,i*.075)),
+  big  : () => [523,659,784,1046].forEach((f,i)=>tone(f,.3,'triangle',.08,null,i*.07)),
+  jack : () => { [523,659,784,1046,1318,1568].forEach((f,i)=>tone(f,.42,'triangle',.085,null,i*.065));
+                 [261,392].forEach(f=>tone(f,1.4,'sawtooth',.032)); noise(.5,.045); },
+  coin : n => { for(let i=0;i<n;i++) tone(1180+Math.random()*500,.07,'square',.033,null,i*.045); },
+  heartOn : () => { if(heart || RM) return;
+    heart = setInterval(()=>{ tone(58,.16,'sine',.075); tone(52,.2,'sine',.055,null,.24); }, 1150); },
+  heartOff: () => { if(heart){ clearInterval(heart); heart = null; } }
+};
+addEventListener('pointerdown', audioUnlock, {once:false, passive:true});
+document.addEventListener('visibilitychange', () => { if(document.hidden) sfx.heartOff(); });
+
+/* ══════════════════════════════════════════════════════════
+   效果层 —— 全部挂在 #fx（独立 fixed 容器），绝不 transform body
+   ══════════════════════════════════════════════════════════ */
+function flash(){ if(RM) return; const f=$('flash'); f.classList.remove('go'); void f.offsetWidth; f.classList.add('go'); }
+function jolt(){ if(RM) return; const c=$('cab'); c.classList.remove('jolt'); void c.offsetWidth; c.classList.add('jolt'); }
+function sparkle(n){
+  if(RM) return;
+  const chars = ['🧧','✦','💰','★','🍊'], cx = innerWidth/2, cy = innerHeight*.5;
+  for(let i=0;i<n;i++) setTimeout(()=>{
+    const e = document.createElement('div');
+    e.className = 'spark'; e.textContent = chars[(Math.random()*chars.length)|0];
+    e.style.left = (cx + (Math.random()-.5)*Math.min(innerWidth*.8, 340)) + 'px';
+    e.style.top  = cy + 'px';
+    e.style.setProperty('--dx', ((Math.random()-.5)*240) + 'px');
+    e.style.setProperty('--rz', ((Math.random()-.5)*480) + 'deg');
+    $('fx').appendChild(e);
+    setTimeout(()=>e.remove(), 1250);
+  }, i*38);
+}
+let toastT = null;
+function toast(txt, ms=1900){
+  $('toast').textContent = txt; $('toast').classList.add('on');
+  clearTimeout(toastT); toastT = setTimeout(()=>$('toast').classList.remove('on'), ms);
+}
+function bump(el){ if(RM) return; el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+
+/* 灯泡 */
+const bulbEls = [];
+(function(){ const w = $('bulbs');
+  for(let i=0;i<BULBS;i++){ const b = document.createElement('i'); b.className='bulb'; w.appendChild(b); bulbEls.push(b); } })();
+let bulbTimer = null;
+function bulbChase(times=2, speed=70){
+  clearInterval(bulbTimer); let i = 0, total = BULBS*times;
+  bulbTimer = setInterval(()=>{
+    bulbEls.forEach((b,k)=>b.classList.toggle('lit', k === i % BULBS));
+    if(++i > total){ clearInterval(bulbTimer); bulbEls.forEach(b=>b.classList.remove('lit')); }
+  }, speed);
+}
+function bulbAll(on){ clearInterval(bulbTimer); bulbEls.forEach(b=>b.classList.toggle('lit', on)); }
+function bulbIdle(){ clearInterval(bulbTimer); let on = false;
+  bulbTimer = setInterval(()=>{ on = !on; bulbEls.forEach((b,k)=>b.classList.toggle('lit', on && k%2===0)); }, 620); }
+
+/* ══════════════════════════════════════════════════════════
+   封存 —— 整局结果在第一次点击前写死
+   ══════════════════════════════════════════════════════════ */
+const TABLE = [
+  {k:'blank',   w:34, pay:0,   label:'谢 谢 惠 顾',   tone:'dim'},
+  {k:'dust',    w:20, pay:2,   label:'恭 喜 发 财 ！', tone:'gold'},
+  {k:'near',    w:20, pay:0,   label:'就 差 一 个 …', tone:'red'},
+  {k:'small',   w:16, pay:9,   label:'小 赚',         tone:'gold'},
+  {k:'big',     w:8,  pay:40,  label:'暴 富 ！',      tone:'gold'},
+  {k:'jackpot', w:2,  pay:180, label:'锦 鲤 附 体',   tone:'gold'},
+];
+const VCOLOR = {dim:'rgba(243,230,210,.5)', gold:'#FFE39A', red:'#FF6B5E'};
+const mulberry = a => () => { a|=0; a = a + 0x6D2B79F5 | 0;
+  let t = Math.imul(a ^ a>>>15, 1|a); t = t + Math.imul(t ^ t>>>7, 61|t) ^ t;
+  return ((t ^ t>>>14) >>> 0) / 4294967296; };
+const hash = s => { let h = 2166136261;
+  for(const c of s){ h ^= c.charCodeAt(0); h = Math.imul(h, 16777619); }
+  return (h>>>0).toString(16).toUpperCase().padStart(8,'0'); };
+
+function sealSequence(){
+  const seed = (Date.now() ^ (Math.random()*1e9|0)) >>> 0, rnd = mulberry(seed);
+  const tot = TABLE.reduce((a,b)=>a+b.w, 0);
+  seq = [];
+  for(let i=0;i<MAX_PULLS;i++){
+    let x = rnd()*tot, o = TABLE[0];
+    for(const t of TABLE){ if((x -= t.w) < 0){ o = t; break; } }
+    const a = SYM[(rnd()*SYM.length)|0];
+    let reels;
+    if(o.k === 'near')      reels = [a, a, SYM[(SYM.indexOf(a)+1) % SYM.length]];
+    else if(o.k === 'dust') reels = [a, a, SYM[(rnd()*SYM.length)|0]];
+    else if(o.pay > 0)      reels = [a, a, a];
+    else { reels = [a, SYM[(rnd()*SYM.length)|0], SYM[(rnd()*SYM.length)|0]];
+           if(reels[0] === reels[1]) reels[1] = SYM[(SYM.indexOf(a)+3) % SYM.length]; }
+    seq.push({...o, reels});
+  }
+  return { seed, sig: hash(seq.map(s=>s.k).join('|') + seed) };
+}
+
+$('seal').onclick = () => {
+  audioUnlock(); sfx.click();
+  const { seed, sig } = sealSequence();
+  S = { seed, sig, points:100, pulls:0, streak:0, combo:0, lane:0, laneSwitch:0, log:[],
+        t0:Date.now(), tLast:Date.now(), subsidies:0, spent:0, won:0,
+        nextAsk: 4 + (Math.random()*4|0), quitSeen:null, quitClicked:false, quitAt:null,
+        pity:0, pityHits:0, stuck:0 };
+  $('sealTxt').textContent = '封条校验码　' + sig + '　　60 抽结果已全部生成';
+  setTimeout(()=>{ show('act1'); bulbIdle(); watchQuit(); }, 620);
+};
+
+/* ══════════════════════════════════════════════════════════
+   第一幕
+   ══════════════════════════════════════════════════════════ */
+const BRAND = ['锦 鲤 娱 乐 城','玄 学 娱 乐 城','欧 皇 娱 乐 城'];
+const HYPE  = ['再来一发 这次稳了','下一把必出 我算过了','转发这条锦鲤','手别抖 气运正在攒',
+               '刚刚差一点 说明快了','换个池子试试','非酋的黎明就在下一抽','别停 热度还在'];
+
+$('pools').addEventListener('click', e => {
+  const b = e.target.closest('.pool'); if(!b || !S) return;
+  const l = +b.dataset.l;
+  if(S.lane !== l) S.laneSwitch++;
+  S.lane = l;
+  $('pools').querySelectorAll('.pool').forEach(p => p.setAttribute('aria-pressed', p === b));
+  $('brand').textContent = BRAND[l];
+  sfx.click();
+});
+
+/* 出口链接：桌面看 hover，移动端看它第一次真的进入视口 */
+function watchQuit(){
+  $('quit').addEventListener('pointerenter', () => { if(S && S.quitSeen === null) S.quitSeen = S.pulls; });
+  try{
+    new IntersectionObserver(es => es.forEach(en => {
+      if(en.isIntersecting && S && S.quitSeen === null) S.quitSeen = S.pulls;
+    }), {threshold:.85}).observe($('quit'));
+  }catch(e){}
+}
+$('quit').onclick = () => { if(!S) return; S.quitClicked = true; S.quitAt = S.pulls; endAct1(); };
+
+/* ── 抽卡 ──────────────────────────────────────────────────
+   关键教训：requestAnimationFrame 在页面不可见时会被完全暂停
+   （切 App、下拉通知栏、低电量节流都会），所以它只能驱动动画，
+   绝不能驱动「必须发生」的状态推进。结算走 setTimeout（后台会
+   被节流到 1s，但一定会执行），再加一道 1s 轮询的看门狗兜底。
+   ───────────────────────────────────────────────────────── */
+let spin = null, locked = false, timers = [];
+const reelEl = k => $('r'+k);
+const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+
+function unlock(){
+  timers.forEach(clearTimeout); timers = [];
+  locked = false; spin = null;
+  $('pull').disabled = false;
+  for(let k=0;k<3;k++) reelEl(k).classList.remove('blur');
+  $('lever').classList.remove('down');
+}
+
+/* 看门狗：无论卡在哪一步，8 秒后强制复位并把结果补上 */
+setInterval(() => {
+  if(!locked || !spin) return;
+  if(performance.now() - spin.t0 < 8000) return;
+  const o = spin.o, dt = spin.dt, done = spin.resolved;
+  S.stuck++;
+  for(let k=0;k<3;k++){ reelEl(k).textContent = o.reels[k]; spin.settled[k] = true; }
+  if(!done){ spin.resolved = true; resolvePull(o, dt); }
+  else unlock();
+  toast('机器卡了一下，已复位');
+}, 1000);
+
+/* 回到前台时立刻追平进度，不让用户对着半截动画等 */
+document.addEventListener('visibilitychange', () => {
+  if(document.hidden || !locked || !spin) return;
+  if(performance.now() - spin.t0 < spin.stops[2]) return;
+  for(let k=0;k<3;k++) if(!spin.settled[k]) settleReel(k);
+  if(!spin.resolved){ spin.resolved = true; resolvePull(spin.o, spin.dt); }
+});
+
+$('pull').addEventListener('click', () => {
+  if(locked || !S || S.pulls >= MAX_PULLS) return;
+  audioUnlock();
+  locked = true;
+  $('pull').disabled = true;
+  $('lever').classList.add('down');
+
+  const now = Date.now(), dt = now - S.tLast; S.tLast = now;
+  const o = seq[S.pulls];
+
+  S.points -= COST; S.spent += COST;
+  $('mPoints').textContent = S.points;
+  // 真机上依法必须印的那行小字。从第 1 抽起就在，没人会读。
+  $('hint').textContent = '本机结果由随机数发生器决定，与卡池选择无关。';
+  $('verdict').textContent = ''; $('verdict').classList.remove('shout');
+  $('verdict').style.color = VCOLOR.dim;
+  for(let k=0;k<3;k++){ const r = reelEl(k); r.classList.add('blur'); r.classList.remove('hit','tease'); }
+  bulbChase(1, 60); sfx.click(); sfx.heartOff();
+
+  const isNear = o.k === 'near', win3 = o.pay > 0 && o.k !== 'dust';
+  // 近失时第三轮多转 0.9 秒 —— 故意拉长的悬念窗口
+  const stops = RM ? [120,200,280]
+              : isNear ? [430,720,1650] : win3 ? [430,700,1250] : [430,690,960];
+
+  spin = { t0: performance.now(), stops, o, dt, settled:[false,false,false],
+           swap:[0,0,0], resolved:false };
+
+  // 结算靠定时器，不靠 rAF —— 后台也一定会跑完
+  stops.forEach((ms, k) => later(() => { if(spin && !spin.settled[k]) settleReel(k); }, ms));
+  later(() => {
+    if(spin && !spin.resolved){ spin.resolved = true; resolvePull(spin.o, spin.dt); }
+  }, stops[2] + (RM ? 60 : 300));
+});
+
+function settleReel(k){
+  const r = reelEl(k);
+  r.classList.remove('blur');
+  r.textContent = spin.o.reels[k];
+  spin.settled[k] = true;
+  sfx.reel(k);
+  if(k === 1){
+    const o = spin.o, isNear = o.k === 'near', win3 = o.pay > 0 && o.k !== 'dust';
+    if(isNear || win3){ reelEl(0).classList.add('hit'); reelEl(1).classList.add('hit');
+                        reelEl(2).classList.add('tease'); sfx.tease(); }
+  }
+}
+
+/* rAF 只负责让轮子看起来在转。它停了，游戏照常推进。 */
+function frame(ts){
+  requestAnimationFrame(frame);
+  if(!spin || RM) return;
+  for(let k=0;k<3;k++){
+    if(spin.settled[k] || ts - spin.swap[k] <= 58) continue;
+    spin.swap[k] = ts;
+    reelEl(k).textContent = SYM[(Math.random()*SYM.length)|0];
+  }
+}
+requestAnimationFrame(frame);
+
+function resolvePull(o, dt){
+  try{
+    S.points += o.pay; S.won += o.pay; S.pulls++;
+    S.pity++;
+    let pityFired = false;
+    if(S.pity >= PITY){ S.pity = 0; S.pityHits++; pityFired = true; }
+    S.streak = o.pay > 0 ? 0 : S.streak + 1;
+    S.combo  = o.pay > 0 ? S.combo + 1 : 0;
+    S.log.push({ i:S.pulls-1, k:o.k, pay:o.pay, dt, lane:S.lane, rate:null, pity:S.pity });
+
+    reelEl(2).classList.remove('tease');
+    if(o.pay > 0 && o.k !== 'dust') for(let k=0;k<3;k++) reelEl(k).classList.add('hit');
+
+    $('verdict').style.color = VCOLOR[o.tone];
+    $('verdict').textContent = o.label + (o.pay ? '　+' + o.pay : '');
+    $('mPoints').textContent = S.points; bump($('mPoints'));
+    $('mStreak').textContent = S.streak;
+
+    if(o.k === 'jackpot'){ sfx.jack(); sfx.coin(14); sparkle(30); flash(); jolt(); bulbChase(4,52);
+      $('verdict').classList.add('shout'); toast('锦 鲤 附 体 · 全 服 公 告', 2600); }
+    else if(o.k === 'big'){ sfx.big(); sfx.coin(8); sparkle(16); flash(); jolt(); bulbChase(3,58);
+      $('verdict').classList.add('shout'); }
+    else if(o.k === 'dust'){ sfx.win(); sfx.coin(3); sparkle(6); bulbChase(2,64); }  // 亏钱也放烟花
+    else if(o.k === 'small'){ sfx.win(); sfx.coin(2); sparkle(4); bulbChase(1,64); }
+    else if(o.k === 'near'){ sfx.near(); jolt(); bulbAll(false); }
+    else { sfx.lose(); bulbAll(false); }
+
+    if(S.combo >= 2) $('brand').textContent = '手 气 正 热 × ' + S.combo;
+    else if(S.streak >= 4){ sfx.heartOn(); bulbIdle();
+      $('brand').textContent = HYPE[(Math.random()*HYPE.length)|0]; }
+    else $('brand').textContent = BRAND[S.lane];
+
+    // 保底条：纯装饰，不接任何逻辑
+    $('pityFill').style.width = (S.pity / PITY * 100) + '%';
+    const left = PITY - S.pity;
+    $('pityCap').textContent = pityFired ? '★ 保 底 已 触 发 ★' : '距离保底还有 ' + left + ' 抽';
+    $('pityCap').classList.toggle('hot', pityFired || left <= 2);
+    if(pityFired) toast('★ 保 底 触 发 ★', 1500);
+
+    // 破产会是个天然的停止线索 —— 所以我把它拆了
+    if(S.points < COST){
+      S.points += 50; S.subsidies++;
+      $('mPoints').textContent = S.points;
+      $('subsidy').textContent = '新手保护礼包已到账 +50，请继续';
+      $('subsidy').classList.add('on'); sfx.coin(5);
+      setTimeout(()=>$('subsidy').classList.remove('on'), 3200);
+    }
+  } finally {
+    unlock();                                        // 无论上面出什么事，机器必然解锁
+  }
+
+  if(S.pulls >= MAX_PULLS){ $('pull').disabled = true; setTimeout(endAct1, 1000); return; }
+  if(S.pulls >= S.nextAsk){ S.nextAsk = S.pulls + 4 + (Math.random()*5|0); setTimeout(askRating, 780); }
+}
+
+/* ── 采样「喜欢」：任何情况下都能关掉，绝不锁死界面 ── */
+let rateIdx = -1;
+function closePop(){ $('pop').classList.remove('on'); rateIdx = -1; }
+function askRating(){
+  if(!S || !S.log.length) return;
+  rateIdx = S.log.length - 1;
+  const box = $('stars'); box.innerHTML = '';
+  for(let v=1; v<=5; v++){
+    const b = document.createElement('button');
+    b.className = 'star'; b.textContent = v;
+    b.setAttribute('aria-label', v + ' 分');
+    b.onclick = () => { if(rateIdx >= 0) S.log[rateIdx].rate = v; sfx.click(); closePop(); };
+    box.appendChild(b);
+  }
+  $('pop').classList.add('on');
+}
+$('skipRate').onclick = closePop;
+$('pop').addEventListener('click', e => { if(e.target === $('pop')) closePop(); });
+addEventListener('keydown', e => { if(e.key === 'Escape') closePop(); });
+
+function endAct1(){
+  sfx.heartOff(); clearInterval(bulbTimer); bulbAll(false);
+  closePop(); unlock();
+  S.tEnd = Date.now();
+  buildAct2(); show('act2');
+}
+
+/* ══════════════════════════════════════════════════════════
+   绘图 —— 双笔记录仪：朱砂 + 普鲁士蓝，直接画在方格纸上
+   ══════════════════════════════════════════════════════════ */
+const esc = s => String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function svgLine(el, series, opt={}){
+  const W=700, H=210, L=40, R=16, T=16, B=34;
+  const all = series.flatMap(s => s.pts.map(p => p.y));
+  const lo = opt.lo !== undefined ? opt.lo : Math.min(...all, 0);
+  const hi = opt.hi !== undefined ? opt.hi : Math.max(...all, 1);
+  const n = Math.max(...series.map(s => s.pts.length), 2);
+  const X = i => L + i*(W-L-R)/(n-1);
+  const Y = v => H-B - (v-lo)/((hi-lo)||1)*(H-T-B);
+  let g = `<rect x="0" y="0" width="${W}" height="${H}" fill="rgba(255,255,255,.34)"/>`;
+  for(let k=0;k<=4;k++){
+    const y = T + k*(H-T-B)/4, val = (hi - k*(hi-lo)/4);
+    g += `<line x1="${L}" y1="${y}" x2="${W-R}" y2="${y}" stroke="#C2C7B8" stroke-width="1"/>`;
+    g += `<text x="${L-8}" y="${y+4}" fill="#888E96" font-size="11" font-family="ui-monospace,monospace" text-anchor="end">${val.toFixed(0)}</text>`;
+  }
+  g += `<line x1="${L}" y1="${T}" x2="${L}" y2="${H-B}" stroke="#15171A" stroke-width="1.2"/>`;
+  g += `<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#15171A" stroke-width="1.2"/>`;
+  if(opt.xlab) g += `<text x="${(L+W-R)/2}" y="${H-8}" fill="#888E96" font-size="11" font-family="ui-monospace,monospace" text-anchor="middle">${esc(opt.xlab)}</text>`;
+  series.forEach(s => {
+    if(!s.pts.length) return;
+    const d = s.pts.map((p,i) => `${i?'L':'M'}${X(p.x !== undefined ? p.x : i).toFixed(1)},${Y(p.y).toFixed(1)}`).join(' ');
+    g += `<path d="${d}" fill="none" stroke="${s.c}" stroke-width="${s.w||2}" stroke-linecap="round" stroke-linejoin="round" ${s.dash?`stroke-dasharray="${s.dash}"`:''}/>`;
+    if(s.dot) s.pts.forEach(p => { g += `<circle cx="${X(p.x)}" cy="${Y(p.y)}" r="3.6" fill="${s.c}"/>`; });
+  });
+  el.innerHTML = g;
+}
+function svgBars(el, bars, unit=''){
+  const W=700, H=210, L=40, R=16, T=26, B=42;
+  const max = Math.max(...bars.map(b => b.v), .001), bw = (W-L-R)/bars.length;
+  let g = `<rect x="0" y="0" width="${W}" height="${H}" fill="rgba(255,255,255,.34)"/>`;
+  g += `<line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#15171A" stroke-width="1.2"/>`;
+  bars.forEach((b,i) => {
+    const x = L + i*bw + bw*.22, w = bw*.56, empty = b.n === 0;
+    const h = empty ? 0 : (b.v/max)*(H-T-B);
+    if(empty) g += `<rect x="${x}" y="${H-B-16}" width="${w}" height="16" fill="none" stroke="#C6CABC" stroke-width="1" stroke-dasharray="3 3"/>`;
+    else      g += `<rect x="${x}" y="${H-B-h}" width="${w}" height="${Math.max(h,2)}" fill="${b.c}"/>`;
+    g += `<text x="${x+w/2}" y="${H-B+19}" fill="#4E535A" font-size="12.5" font-family="-apple-system,sans-serif" text-anchor="middle">${esc(b.l)}</text>`;
+    g += `<text x="${x+w/2}" y="${H-B-(empty?16:h)-9}" fill="${empty?'#888E96':b.c}" font-size="${empty?12:14}" font-weight="700" font-family="ui-monospace,monospace" text-anchor="middle">${esc(empty ? '无样本' : b.t)}</text>`;
+  });
+  if(unit) g += `<text x="${L}" y="14" fill="#888E96" font-size="11" font-family="ui-monospace,monospace">${esc(unit)}</text>`;
+  el.innerHTML = g;
+}
+
+/* ══════════════════════════════════════════════════════════
+   第二幕
+   ══════════════════════════════════════════════════════════ */
+let CARD = null;
+function buildAct2(){
+  const L = S.log, secs = Math.round((S.tEnd - S.t0)/1000), rated = L.filter(x => x.rate !== null);
+  const dtsAll = L.map(x => x.dt/1000).filter(x => x < 25);
+  const fmtT = Math.floor(secs/60) + ' 分 ' + (secs%60) + ' 秒';
+
+  $('basicStat').innerHTML = [
+    [S.pulls, '抽'], [fmtT, '实验时长'],
+    [S.points, '最终欧气值 · 无用途'],
+    [(S.won - S.spent >= 0 ? '+' : '') + (S.won - S.spent), '净收支 · 不含礼包'],
+  ].map(([b,s]) => `<div><b>${esc(b)}</b><span>${s}</span></div>`).join('');
+
+  /* 2.1 信封 */
+  const recomputed = hash(seq.map(s => s.k).join('|') + S.seed);
+  const laneUse = [0,0,0]; L.forEach(x => laneUse[x.lane]++);
+  $('envOut').innerHTML = `
+    <div class="slab seal"><p class="mono" style="margin:0">
+      封存时校验码　<b class="am">${S.sig}</b><br>
+      现在重算校验码　<b class="am">${recomputed}</b>　${recomputed === S.sig ? '✓ 一致' : '✗ 不一致'}</p></div>
+    <p>整局 60 抽的结果，在你按下「封存 · 开始实验」的那一毫秒就已全部写定。<br>
+      你在三个池子之间切换了 <b>${S.laneSwitch}</b> 次——锦鲤池 ${laneUse[0]} 抽，玄学池 ${laneUse[1]} 抽，欧皇池 ${laneUse[2]} 抽。
+      <b class="hot">这些选择对结果的影响是 0。</b>它唯一的作用是让你觉得自己在参与。</p>
+    <p>而且这件事我从没瞒过你。从第 1 抽起，机器最下面就印着一行小字：<br>
+      <b>「本机结果由随机数发生器决定，与卡池选择无关。」</b><br>
+      它一直在那，字号是全屏最小的。你换了 ${S.laneSwitch} 次池子。</p>
+    <p><small>这就是控制错觉。真机上的按钮、触屏、自选停轮全是同一回事，而且合规声明通常就明明白白印在机身上——设计者不需要撒谎，只需要把真话排成没人会读的字号。一点点控制感能显著抬高投入意愿，这是能量出来的。</small></p>`;
+
+  /* 2.2 保底条 */
+  const nearPity = L.filter(x => x.pity >= 7).map(x => x.dt/1000).filter(x => x < 25);
+  const farPity  = L.filter(x => x.pity <= 3).map(x => x.dt/1000).filter(x => x < 25);
+  const pityGap  = mean(farPity) - mean(nearPity);
+  $('pityOut').innerHTML = `
+    <div class="slab warn"><p style="margin-top:0"><b>那根保底进度条，不接任何逻辑。</b></p>
+      <p style="margin-bottom:0">它只是一个 +1 的计数器，满 10 归零、闪一下「★ 保底触发 ★」。结果早在信封里躺着，它一次都没改过什么。整局它对你响了 <b class="hot">${S.pityHits}</b> 次。</p></div>
+    ${nearPity.length >= 2 && farPity.length >= 2 ? `<p>你在进度条快满时（≥7/10）平均 <b class="hot">${mean(nearPity).toFixed(2)} 秒</b>按一次；刚归零时（≤3/10）是 <b class="cool">${mean(farPity).toFixed(2)} 秒</b>。
+      ${pityGap > .05 ? `差 <b>${pityGap.toFixed(2)} 秒</b>——一根假进度条把你的手催快了。` : '这次没拉开差距。'}</p>` : ''}
+    <p><small>真实抽卡游戏里的保底通常是真的，但真假不重要：重要的是「沉没成本 + 快到了」这个组合本身就能提速。同样的把戏也叫会员进度条、叫连续签到第 6 天、叫「再看 2 个视频领奖励」。</small></p>`;
+
+  /* 2.3 近失 */
+  const after = pred => L.map((x,i) => (i > 0 && pred(L[i-1])) ? x.dt/1000 : null).filter(x => x !== null && x < 25);
+  const aNear = after(p => p.k === 'near'), aBlank = after(p => p.k === 'blank'), aWin = after(p => p.pay > 0);
+  svgBars($('chartNear'), [
+    {l:'「就差一个」之后', v:mean(aNear),  n:aNear.length,  t:mean(aNear).toFixed(2),  c:'var(--vermil)'},
+    {l:'「谢谢惠顾」之后', v:mean(aBlank), n:aBlank.length, t:mean(aBlank).toFixed(2), c:'var(--ink2)'},
+    {l:'中了之后',        v:mean(aWin),   n:aWin.length,   t:mean(aWin).toFixed(2),   c:'var(--prussia)'},
+  ], '平均间隔 / 秒');
+  const gap = mean(aBlank) - mean(aNear);
+  $('nearTxt').innerHTML = aNear.length < 3
+    ? '样本太少，看不出趋势。但机制是真的：近失在腹侧纹状体和脑岛引发的反应，接近真正赢钱。'
+    : (gap > .05
+      ? `近失之后你平均<b class="hot">快了 ${gap.toFixed(2)} 秒</b>按下一发。你输了，但你的身体把它读成了「接近成功」。<br>
+         顺带一提：近失时第三个轮子会多转 0.9 秒，还配了一条往上爬的滑音。那不是巧合，是我故意拉长的悬念窗口。`
+      : `你这次没表现出近失加速——可能样本少，也可能你本来就按得够快（平均间隔只有 ${mean(dtsAll).toFixed(2)} 秒），已经没有加速空间了。`);
+
+  /* 2.4 想要 vs 喜欢 */
+  // 急切度用绝对刻度：≤1 秒按下 = 满格，≥8 秒 = 0。
+  // 不按最大间隔归一化——否则中途去倒杯水就把整条曲线压平了。
+  const urge = d => 5 * clamp((8 - d) / 7, 0, 1);
+  const dts = L.map(x => x.dt/1000);
+  const want = dts.map((d,i) => ({x:i, y: urge(d)}));
+  const like = rated.map(x => ({x:x.i, y:x.rate}));
+  svgLine($('chartWL'), [
+    {pts:want, c:'var(--vermil)', w:2},
+    {pts:like, c:'var(--prussia)', w:2.4, dot:true},
+  ], {lo:0, hi:5, xlab:'第 1 抽　→　第 ' + S.pulls + ' 抽'});
+  const fh = mean(rated.filter(x => x.i <  S.pulls/2).map(x => x.rate));
+  const lh = mean(rated.filter(x => x.i >= S.pulls/2).map(x => x.rate));
+  const med = (() => { const a = rated.map(x => x.rate).sort((p,q) => p-q); return a.length ? a[a.length>>1] : '—'; })();
+  $('wlTxt').innerHTML = rated.length < 2
+    ? '你打的分太少，画不出趋势。'
+    : `你打了 ${rated.length} 次分，平均 <b class="cool">${mean(rated.map(x=>x.rate)).toFixed(1)} / 5</b>，前半程 ${fh.toFixed(1)}，后半程 ${lh.toFixed(1)}。
+       ${lh < fh ? '<b>越玩越不快乐，但你没停。</b>这就是「想要」和「喜欢」分了家。'
+                 : '「喜欢」没有明显下滑，那更值得看的是另一件事：'}
+       你打出的分中位数是 <b>${med}</b>，也就是「还行」。而你为这些「还行」连按了 ${S.pulls} 次。
+       <br><br>驱动你的从来不是那三秒的愉悦，是<b class="hot">「下一发可能更好」</b>这个念头本身。`;
+
+  /* 2.5 假胜利 */
+  const dust = L.filter(x => x.k === 'dust').length, real = L.filter(x => x.pay > COST).length;
+  $('fakeWin').innerHTML = `
+    <p>机器一共对你放了 <b>${L.filter(x=>x.pay>0).length}</b> 次庆祝动画 + 音效 + 红包雨。<br>
+      其中 <b class="hot">${dust}</b> 次是「恭喜发财！+2」——你花 5 拿回 2，<b>净亏 3</b>，然后看了场烟花。<br>
+      真正让你赚的只有 <b class="cool">${real}</b> 次。</p>
+    <p><small>这叫 losses disguised as wins。现代老虎机几十条赔率线，你投 100 回 20，机器照样闪灯放音乐宣布「你赢了」。多巴胺不查账，它只听声音。</small></p>`;
+
+  /* 2.6 出口 */
+  $('exitTxt').innerHTML = S.quitClicked
+    ? `<p>你在第 <b class="cool">${S.quitAt}</b> 抽点了它，主动收手。它从第 0 抽起就在机器下面。你注意到了，而且用了——这在这个实验里不多见。</p>
+       <p><small>值得说清楚：能停下来靠的不是意志力更强，而是那一刻你恰好把注意力从机器上挪开了一次。环境设计 &gt; 意志力。</small></p>`
+    : `<p>机器下面那行灰字「结束实验 →」，从第 0 抽起就一直在。<br>
+       ${S.quitSeen === null
+          ? '整场实验，它<b class="hot">一次都没有真正进入过你的视野</b>——你的眼睛始终锁在轮子和那个金色大按钮上。'
+          : `它在第 <b>${S.quitSeen}</b> 抽第一次完整落进你的视野，然后你继续抽了 ${S.pulls - S.quitSeen} 次。`}
+       你是被 60 抽上限踢出来的，不是自己走的。</p>
+       <p><small>我把出口做成一行灰字，把「抽一发」做成一整块发光的黄铜。仅此而已，没用别的手段。<br>
+        你现在用的每个信息流 App，出口的设计权重都比这更低——因为它根本没有出口。</small></p>`;
+
+  /* 2.7 收支 */
+  const roi = (S.won - S.spent) / S.spent * 100;
+  $('ledger').innerHTML = `
+    <div class="slab"><p class="mono" style="margin:0">
+      投入　${S.spent}<br>回收　${S.won}<br>礼包　${S.subsidies*50}　（${S.subsidies} 次）<br>
+      ──────────<br>净额　<b class="${roi<0?'hot':'cool'}">${S.won-S.spent>=0?'+':''}${S.won-S.spent}　${roi.toFixed(0)}%</b></p></div>
+    <p>${S.subsidies > 0
+      ? `你破产了 ${S.subsidies} 次，每次机器立刻给你打 50 点「新手保护礼包」。<br><b>「没钱了」本来是一个天然的停止线索，我把它拆了。</b>就像信息流永远刷不到底、下一集自动播、书没有最后一页。`
+      : `你一次都没破产——所以你也从没撞见任何天然的停止点。整局唯一的停止信号是那 60 抽上限，而它是我给的，不是你选的。`}</p>
+    <p class="lead">最后：这 ${S.points} 点欧气值<b>没有任何用途</b>，开局就写明了。<br>你依然想要它们。这就是全部的实验结论。</p>`;
+
+  buildCard(L, rated, fmtT, gap, dtsAll, med);
+}
+
+function buildCard(L, rated, fmtT, nearGap, dtsAll, med){
+  const speed  = clamp((8 - mean(dtsAll)) / 7 * 100, 0, 100);   // 与 2.4 的急切度同一把尺
+  const nearS  = clamp(50 + nearGap*90, 0, 100);
+  const supers = clamp(S.laneSwitch/12*100, 0, 100);
+  const wake   = S.quitClicked ? 100 : (S.quitSeen !== null ? 55 : 12);
+  const likeAv = mean(rated.map(x => x.rate)) || 3;
+  const gapWL  = clamp(speed - likeAv/5*100 + 50, 0, 100);
+  const chase  = clamp(mean(L.map((x,i) => (i > 0 && L[i-1].pay === 0) ? (6 - Math.min(x.dt/1000, 6)) : null)
+                   .filter(v => v !== null))/6*100, 0, 100);
+
+  const dims = [
+    {n:'冲动度',       v:speed,  c:'var(--vermil)'},
+    {n:'近失敏感',     v:nearS,  c:'var(--amber)'},
+    {n:'玄学浓度',     v:supers, c:'var(--amber)'},
+    {n:'追损倾向',     v:chase,  c:'var(--vermil)'},
+    {n:'想要—喜欢落差', v:gapWL,  c:'var(--jade)'},
+    {n:'清醒度',       v:wake,   c:'var(--prussia)'},
+  ];
+  const top = dims.filter(d => d.n !== '清醒度').sort((a,b) => b.v - a.v)[0];
+  const T = {
+    '冲动度':['连 点 狂 魔','手速快过脑子。轮子还没停稳，你的手指已经悬在按钮上方了。这台机器根本不需要说服你，它只要保证下一发随时可点。'],
+    '近失敏感':['就 差 一 个 型','「差一格」三个字对你有魔法。你输的时候比赢的时候更兴奋，这正是老虎机整个行业赖以为生的那个 bug。'],
+    '玄学浓度':['当 代 玄 学 家','换池子、挑时辰、讲手感。你把随机数发生器当成一个可以沟通的对象——人类几万年来一直这么干，所以这门生意才好做。'],
+    '追损倾向':['追 损 型 选 手','越不出越要抽，越亏越停不下。你的按键速度和你的亏损额是正相关的，这一点机器比你先知道。'],
+    '想要—喜欢落差':['空 转 型 人 格','你打的分不高，但你按得飞快。想要满格，喜欢半格——这是所有超常刺激最想把人训练成的样子。'],
+  }[top.n];
+  const name = wake >= 90 ? '半 路 醒 来 的 人' : T[0];
+  const desc = wake >= 90
+    ? '你在中途主动按了那行灰字。整场实验里最反常的一个动作——不是你欲望小，是你在某一秒把注意力从机器身上挪开了一下，然后就再也装不回去了。你的主导维度依然是「' + top.n + '」。'
+    : T[1];
+
+  $('idcard').innerHTML = `<div class="tt">欧 气 人 格 卡</div>
+    <h2 class="nm">${name}</h2><p class="dsc">${desc}</p>
+    <div class="bars">${dims.map(d => `<div class="row"><span>${d.n}</span>
+      <div class="t"><i style="width:${d.v.toFixed(0)}%;background:${d.c}"></i></div>
+      <em>${d.v.toFixed(0)}</em></div>`).join('')}</div>`;
+
+  const maxStreak = (() => { let m=0,c=0; L.forEach(x => { c = x.pay>0 ? 0 : c+1; m = Math.max(m,c); }); return m; })();
+  CARD = { name, fmtT, best:null };
+  $('cmpTable').innerHTML = [
+    ['人格卡称号', name],
+    ['总共花了多久', fmtT],
+    ['平均每抽间隔', mean(dtsAll).toFixed(2) + ' 秒'],
+    ['最快的一次间隔', (dtsAll.length ? Math.min(...dtsAll) : 0).toFixed(2) + ' 秒'],
+    ['换池子次数 · 玄学指数', S.laneSwitch + ' 次'],
+    ['最长连续不出', maxStreak + ' 抽'],
+    ['破产领礼包', S.subsidies + ' 次'],
+    ['「喜欢」平均分', likeAv.toFixed(1) + ' / 5'],
+    ['净收支', (S.won-S.spent >= 0 ? '+' : '') + (S.won - S.spent)],
+    ['那行灰字', S.quitClicked ? '第 ' + S.quitAt + ' 抽收手' : (S.quitSeen !== null ? '第 ' + S.quitSeen + ' 抽看见' : '从没看见')],
+  ].map(([a,b]) => `<tr><td>${a}</td><td>${esc(b)}</td><td>TA 是？</td></tr>`).join('');
+}
+
+$('toAct3').onclick = () => { show('act3'); sfx.click(); };
+
+/* ══════════════════════════════════════════════════════════
+   第三幕 · 模拟器
+   ══════════════════════════════════════════════════════════ */
+const P = {hit:18, near:20, vari:55, tempo:50,
+           fake:true, infinite:true, control:true, push:false, pity:false, stopcue:false};
+[['sHit','hit','vHit',v=>v+'%'], ['sNear','near','vNear',v=>v+'%'],
+ ['sVar','vari','vVar',v=>v<25?'低':v<55?'中':v<80?'高':'极高'],
+ ['sTempo','tempo','vTempo',v=>v<25?'慢':v<55?'中':v<80?'快':'极快']]
+.forEach(([sl,key,out,fmt]) => {
+  const el = $(sl);
+  el.addEventListener('input', () => { P[key] = +el.value; $(out).textContent = fmt(+el.value); });
+});
+document.querySelectorAll('.tg').forEach(b => b.onclick = () => {
+  const on = b.getAttribute('aria-pressed') !== 'true';
+  b.setAttribute('aria-pressed', on); P[b.dataset.f] = on; sfx.click();
+});
+
+let bestTime = 0, runs = 0, history = [];
+function simulate(){
+  const h = P.hit/100;
+  const uncertainty = 4*h*(1-h);                       // 预测误差在 50% 命中率处最大
+  const pull = .55 + uncertainty*1.2 + (P.near/100)*.9 + (P.vari/100)*.7 + (P.tempo/100)*.8
+             + (P.fake?.35:0) + (P.infinite?.5:0) + (P.control?.2:0)
+             + (P.push?.3:0) + (P.pity?.28:0) + (P.stopcue?-.45:0);
+  const intensity = uncertainty*.9 + (P.vari/100)*.7 + (P.tempo/100)*.88 + (P.near/100)*.54;
+  let sens = 1, days = [];
+  for(let d=1; d<=30; d++){
+    const hours = Math.max(0, pull*(.9 + .9*(1-sens))*1.1);
+    sens = Math.max(.06, sens - intensity*.035*(.4 + hours/4));
+    if(P.stopcue) sens = Math.min(1, sens + .012);
+    const joy  = hours*.30*sens;
+    const cost = (1-sens)*2.9 + hours*.30 + (P.fake?.25:0) + (P.push?.2:0) + (P.pity?.15:0);
+    days.push({hours, sens, hap: joy - cost + (P.stopcue?.35:0)});
+  }
+  return { days, ret: clamp(100*(1-Math.exp(-pull*.85)) - (P.stopcue?8:0), 0, 99),
+           total: days.reduce((a,b) => a + b.hours, 0) };
+}
+$('run').onclick = () => {
+  const R = simulate(), last = R.days[29]; runs++;
+  $('simOut').hidden = false;
+  $('kTime').textContent = R.total.toFixed(0);
+  $('kRet').textContent  = R.ret.toFixed(0) + '%';
+  $('kHap').textContent  = last.hap.toFixed(1);
+  $('kHap').style.color  = last.hap < 0 ? 'var(--vermil)' : 'var(--prussia)';
+  $('kSens').textContent = (last.sens*100).toFixed(0) + '%';
+  svgLine($('chartSim'), [
+    {pts:R.days.map(x => ({y:x.hours})),  c:'var(--vermil)',  w:2.2},
+    {pts:R.days.map(x => ({y:x.hap})),    c:'var(--prussia)', w:2.2},
+    {pts:R.days.map(x => ({y:x.sens*4})), c:'var(--jade)',    w:1.8, dash:'5 4'},
+  ], {lo:-6, hi:8, xlab:'第 1 天　→　第 30 天'});
+  history.push({t:R.total, h:last.hap, n:runs});
+  const rec = R.total > bestTime; if(rec) bestTime = R.total;
+  $('simTxt').innerHTML = `第 30 天，你的用户平均每天在这台机器上花 <b class="hot">${last.hours.toFixed(1)} 小时</b>，
+    对散步、吃饭、和家人聊天这类低强度快乐的敏感度<b class="hot">只剩 ${(last.sens*100).toFixed(0)}%</b>，
+    净幸福值 <b class="${last.hap<0?'hot':'cool'}">${last.hap.toFixed(1)}</b>。
+    ${rec ? '<br><b class="am">破纪录了——这一版的时长是你迄今最高。</b>' : ''}`;
+  $('board').innerHTML = history.slice().sort((a,b) => b.t - a.t).slice(0,5)
+    .map((x,i) => `<tr><td>#${i+1}</td><td>${x.t.toFixed(0)} 小时</td><td>幸福值 ${x.h.toFixed(1)}</td></tr>`).join('');
+  $('boardTip').textContent = runs >= 3 ? '你已经调了 ' + runs + ' 轮。现在盯住第二列和第三列的关系。' : '';
+  sfx.big(); sparkle(5);
+};
+$('toOutro').onclick = () => { buildOutro(); show('outro'); sfx.click(); };
+
+/* ══════════════════════════════════════════════════════════
+   第四幕
+   ══════════════════════════════════════════════════════════ */
+function buildOutro(){
+  const best = history.slice().sort((a,b) => b.t - a.t)[0];
+  const bestHap = history.slice().sort((a,b) => b.h - a.h)[0];
+  const same = best && bestHap && best.n === bestHap.n;
+  const secs = Math.round((S.tEnd - S.t0)/1000);
+
+  $('outroBody').innerHTML = `
+    <p class="lead">你刚才做了三件事。</p>
+    <div class="note"><p><b>一、</b>你为一堆开局就声明「没有任何用途」的欧气值，连按了 ${S.pulls} 次按钮，花掉 ${Math.floor(secs/60)} 分 ${secs%60} 秒。
+      奖励是假的，机制是真的。所以下次你刷完两小时短视频再懊恼「我怎么这么没自制力」时，可以把那句话换成：
+      <b>我刚才被一台照着预测误差调过参的机器打了两小时。</b></p></div>
+    <div class="note"><p><b>二、</b>你在三个池子之间挑来挑去、盯着一根根本不接线的保底条，而结果在你按第一下之前就写完了。
+      控制感和控制是两回事。你以为你在挑内容，其实是内容在挑你——差别只在于，算法比我这个封存序列聪明得多，它会根据你的停留时长实时改写后面那 60 抽。</p></div>
+    ${best ? `<div class="note"><p><b>三、</b>然后你坐到了桌子另一边。你调出的最高时长是 <b class="hot">${best.t.toFixed(0)} 小时/人·月</b>；
+      ${same ? '而这一版恰好也是用户最幸福的版本——罕见，说明你在调参时一直在克制。'
+             : `而用户最幸福的那一版，时长只有 <b class="cool">${bestHap.t.toFixed(0)} 小时</b>。你自己的排行榜上，这两行不是同一行。`}
+      <br><br>这就是问题的核心：<b>没有人需要是坏人。</b>只要 OKR 是时长，A/B 测试会自动、日复一日地把参数推向让人更不快乐的那一侧。每一次调优都很理性，合起来就是一台超常刺激机器。</p></div>` : ''}
+
+    <div class="sec" data-n="双人"><h2>两个人的部分</h2>
+      <p>把第二幕的人格卡和对照清单摆在一起，按顺序聊这五题。不许辩护，只许陈述。</p>
+      <ol class="qz">
+        <li><b>谁按得更快？</b>快的那个人，在生活里是不是也更容易被「再看一个」抓住？慢的那个人，是真的不心动，还是只是慢半拍？</li>
+        <li><b>换池子次数差多少？</b>换得多的那位，讲讲你换池子时脑子里在想什么。那个念头，和「这次买彩票换个号」「这家店排队久一定好吃」是不是同一个念头。</li>
+        <li><b>你们谁看见了那行灰字？</b>看见的说说是第几抽、当时在想什么；没看见的说说——你有没有哪怕一次意识到自己可以随时走。</li>
+        <li><b>「喜欢」的平均分谁更低？</b>分低还继续按的那个人请回答：你们家现在有哪一件事，是你天天在做、但事后打分不到 3 的？</li>
+        <li><b>最后一题，一起答：</b>你们家最像这台机器的东西是什么？手机、某个 App、外卖、购物车，还是某种争吵模式——然后当场决定给它装一个停止线索，具体到能写在纸上。</li>
+      </ol></div>
+
+    <div class="sec" data-n="做法"><h2>那么，能做什么</h2>
+      <p>文章里的建议是对的，但排序值得改一下。按有效性从高到低：</p>
+      <p><b>1 · 改环境，别改意志力。</b>意志力是会耗尽的资源，环境不会。手机不进卧室；App 挪到第二屏或删掉；关掉自动播放。你不是在对抗欲望，你是在抬高发起成本。</p>
+      <p><b>2 · 手动把停止线索装回去。</b>这台机器最狠的一刀不是出货率，是我拆掉了破产和进度条。所以你要自己装回来：定时器、一集就是一集、刷之前先说好刷几分钟。</p>
+      <p><b>3 · 用「喜欢」而不是「想要」做决定。</b>事前问「我想不想」永远得到 yes，那是多巴胺在替你回答。改成事后问：<b>刚才那半小时，回想起来愉快吗？</b>就像实验里那个打分弹窗。真喜欢的事做完有满足感，被「想要」驱动的事做完只剩空。</p>
+      <p><b>4 · 给敏感度留恢复时间。</b>耐受是可逆的。每天留一段什么都不做的时间，一开始难受，那个难受本身就是戒断，也是恢复正在发生的证据。</p></div>
+
+    <hr class="rule">
+    <h2 style="font-size:clamp(20px,4.4vw,30px);line-height:1.5">真正的快乐通常不来自更强的刺激，<br>而来自敏感度的恢复。</h2>
+    <p>这句话是原文的结尾。现在你有一份自己的行为日志给它做注脚了。</p>`;
+}
+$('again').onclick = () => location.reload();
+</script>
+</body>
+</html>
