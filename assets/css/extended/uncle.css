@@ -330,7 +330,19 @@ body.home .main {
   --auto-hl-string: #9ece6a;
   --auto-hl-operator: #7dcfff;
   --auto-hl-comment: #565f89;
+  display: block;
+  word-break: normal;
+  overflow-x: auto;
   color: #c0caf5;
+}
+
+/* PaperMod's default `.md-content pre code` uses a grid so Chroma's
+   `.line` wrappers can form rows. The heuristic highlighter replaces those
+   wrappers with inline token spans, so keep this variant in normal flow. */
+.post-content pre code.auto-highlighted > span {
+  display: inline;
+  width: auto;
+  min-width: 0;
 }
 
 .post-content pre code.auto-highlighted .auto-hl-keyword {
