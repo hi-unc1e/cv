@@ -21,8 +21,8 @@ cd cv
 hugo server -D
 ```
 
-原创静态小工具位于 `static/funny/`。工作状态趣味自检的公开路径是
-`/funny/work-checkin/`，所有答案只在浏览器中计算，不会发送到服务端。
+原创静态小工具位于 `static/funny/`，统一从 `/funny/` 这个「小玩意」导航页进入。
+目前包括 `/funny/work-checkin/` 工作状态趣味自检和 `/dopamine-lab/` 欧气值·多巴胺实验室；相关答案与实验日志只在浏览器中计算，不会发送到服务端。
 
 本地逻辑可单独验证：
 

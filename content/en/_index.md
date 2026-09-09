@@ -17,7 +17,7 @@ disableAnchoredHeadings: true
     <a href="https://github.com/hi-unc1e" rel="noopener">GitHub</a>
     <a href="https://unc1e.cn/" rel="noopener">Yuque</a>
     <a href="/projects/">Projects</a>
-    <a href="/funny/work-checkin/">Work Check-in</a>
+    <a href="/funny/">Fun</a>
   </nav>
 </section>
 

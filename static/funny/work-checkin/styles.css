@@ -49,6 +49,9 @@ button, input { font: inherit; }
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; font-family: var(--mono); font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; }
 .back-link { text-decoration: none; }
 .back-link:hover { color: var(--blue); }
+.tool-nav { display: flex; align-items: center; gap: 18px; }
+.hub-link { color: var(--ink); text-decoration: none; }
+.hub-link:hover { color: var(--blue); }
 .privacy { color: var(--cyan); }
 .hero { padding: clamp(64px, 10vw, 112px) 0 52px; border-bottom: 1px solid var(--line); }
 .eyebrow, .progress-label, .result-code, .next-move > span { font-family: var(--mono); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; }
@@ -112,6 +115,7 @@ button, input { font: inherit; }
 @media (max-width: 640px) {
   .shell { width: min(100% - 28px, 920px); padding-top: 18px; }
   .topbar { align-items: flex-start; }
+  .tool-nav { align-items: flex-end; flex-direction: column-reverse; gap: 4px; }
   .privacy { max-width: 150px; text-align: right; }
   .hero { padding-top: 58px; }
   .status-console { grid-template-columns: 1fr; }

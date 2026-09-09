@@ -51,6 +51,9 @@ html[data-stage="machine"] body{
 
 /* ════════ 排版 ════════ */
 .sheet{max-width:940px;margin:0 auto;padding:clamp(28px,6vw,64px) clamp(18px,5vw,40px) 140px}
+.lab-nav{display:flex;justify-content:space-between;gap:18px;margin:0 0 52px;font:600 11px/1 var(--mono);letter-spacing:.12em;text-transform:uppercase}
+.lab-nav a{text-decoration:none;color:var(--ink2)}
+.lab-nav a:hover{color:var(--vermil)}
 .screen{display:none}
 .screen.on{display:block;animation:rise .55s cubic-bezier(.2,.7,.3,1)}
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
@@ -296,6 +299,7 @@ input[type=range]{width:100%;height:28px;accent-color:var(--vermil);background:n
 
 <!-- ══════════ 0 ══════════ -->
 <section class="screen on" id="intro"><div class="sheet">
+  <nav class="lab-nav" aria-label="工具导航"><a href="/">← UNC.LA</a><a href="/funny/">全部小玩意</a></nav>
   <p class="eyebrow">封闭实验 · 不联网 · 不落盘</p>
   <h1>多巴胺实验室
     <span class="sub">你会先当小白鼠，再当法医，最后当产品经理。<br>同一台机器，三个座位。</span></h1>

@@ -111,7 +111,7 @@ languages:
           weight: 30
         - identifier: funny
           name: 小玩意
-          url: /funny/work-checkin/
+          url: /funny/
           weight: 35
         - identifier: about
           name: 关于
@@ -149,7 +149,7 @@ languages:
           weight: 30
         - identifier: funny
           name: Fun
-          url: /funny/work-checkin/
+          url: /funny/
           weight: 35
         - identifier: about
           name: About

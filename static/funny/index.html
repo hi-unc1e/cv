@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="@Unc1e 做的一些可以直接打开的小工具和实验。">
+  <meta name="theme-color" content="#eef3f7">
+  <meta property="og:title" content="小玩意 · @Unc1e">
+  <meta property="og:description" content="一些可以直接打开的小工具和实验。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.unc.la/funny/">
+  <link rel="canonical" href="https://www.unc.la/funny/">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <title>小玩意 · @Unc1e</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --paper: #eef3f7;
+      --card: rgba(255, 255, 255, .9);
+      --ink: #182231;
+      --muted: #69798d;
+      --line: #cfd9e3;
+      --blue: #2457d6;
+      --cyan: #0b8fa3;
+      --orange: #da713d;
+      --soft-blue: #e5edff;
+      --shadow: 0 24px 70px rgba(37, 61, 93, .13);
+      --sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, sans-serif;
+      --serif: "Songti SC", "STSong", "Noto Serif CJK SC", Georgia, serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --paper: #101722;
+        --card: rgba(24, 32, 45, .92);
+        --ink: #edf3fb;
+        --muted: #9aa9bd;
+        --line: #2d3b4f;
+        --blue: #82a8ff;
+        --cyan: #61c7d4;
+        --orange: #ff9a67;
+        --soft-blue: #1d2b49;
+        --shadow: 0 28px 80px rgba(0, 0, 0, .3);
+      }
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.65;
+      background:
+        linear-gradient(90deg, color-mix(in srgb, var(--line) 40%, transparent) 1px, transparent 1px),
+        linear-gradient(color-mix(in srgb, var(--line) 32%, transparent) 1px, transparent 1px),
+        var(--paper);
+      background-size: 48px 48px;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--blue) 64%, transparent); outline-offset: 4px; }
+    .hub { width: min(100% - 40px, 1040px); margin: 0 auto; padding: 24px 0 76px; }
+    .topbar, .tool-card__top, .hub-footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .topbar { color: var(--muted); font: 700 .74rem/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+    .topbar a { text-decoration: none; }
+    .topbar a:hover { color: var(--blue); }
+    .topbar__right { display: flex; align-items: center; gap: 16px; }
+    .topbar__signal { color: var(--cyan); }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: clamp(32px, 8vw, 108px); align-items: end; padding: clamp(70px, 12vw, 140px) 0 58px; border-bottom: 1px solid var(--line); }
+    .eyebrow, .section-label, .tool-card__eyebrow, .tool-card__meta, .stamp__label { font: 700 .72rem/1.3 var(--mono); letter-spacing: .13em; text-transform: uppercase; }
+    .eyebrow { margin: 0 0 22px; color: var(--cyan); }
+    h1 { max-width: 720px; margin: 0; font: 700 clamp(3rem, 8vw, 6.4rem)/.98 var(--serif); letter-spacing: -.065em; }
+    h1 em { color: var(--blue); font-style: normal; }
+    .hero__copy { max-width: 620px; margin: 28px 0 0; color: var(--muted); font-size: clamp(1rem, 2vw, 1.16rem); line-height: 1.85; }
+    .stamp { align-self: stretch; display: flex; flex-direction: column; justify-content: space-between; padding: 16px 0 12px 20px; border-left: 1px solid var(--line); }
+    .stamp__number { margin: 14px 0; color: var(--blue); font: 800 clamp(4.3rem, 9vw, 6.8rem)/.8 var(--mono); letter-spacing: -.1em; }
+    .stamp__label { color: var(--muted); }
+    .stamp__note { margin: 0; color: var(--muted); font-size: .84rem; line-height: 1.7; }
+    .stamp__rule { width: 58px; height: 4px; margin-top: 20px; background: var(--orange); }
+    .tools { padding-top: 34px; }
+    .tools__intro { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 18px; }
+    .section-label { margin: 0; color: var(--muted); }
+    .tools__count { margin: 0; color: var(--muted); font: .76rem var(--mono); }
+    .tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .tool-card { position: relative; display: flex; min-height: 430px; flex-direction: column; overflow: hidden; padding: 22px; border: 1px solid var(--line); background: var(--card); box-shadow: var(--shadow); text-decoration: none; transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease; }
+    .tool-card:hover { transform: translateY(-5px); border-color: var(--blue); box-shadow: 0 30px 82px rgba(37, 61, 93, .2); }
+    .tool-card__top { align-items: flex-start; }
+    .tool-card__eyebrow { color: var(--cyan); }
+    .tool-card--lab .tool-card__eyebrow { color: var(--orange); }
+    .tool-card__arrow { color: var(--blue); font: 1.45rem/1 var(--mono); transition: transform 180ms ease; }
+    .tool-card:hover .tool-card__arrow { transform: translate(4px, -4px); }
+    .preview { position: relative; display: flex; align-items: center; justify-content: center; height: 196px; margin: 28px -22px 30px; overflow: hidden; }
+    .preview--checkin { background: var(--soft-blue); }
+    .preview--checkin::before, .preview--checkin::after { content: ""; position: absolute; width: 120%; height: 1px; background: color-mix(in srgb, var(--blue) 24%, transparent); transform: rotate(-12deg); }
+    .preview--checkin::after { transform: rotate(12deg); }
+    .console { position: relative; z-index: 1; width: min(78%, 300px); padding: 15px; border: 1px solid color-mix(in srgb, var(--blue) 44%, var(--line)); border-left: 4px solid var(--blue); background: color-mix(in srgb, var(--card) 88%, transparent); box-shadow: 10px 12px 0 color-mix(in srgb, var(--blue) 16%, transparent); }
+    .console__head { display: flex; justify-content: space-between; color: var(--muted); font: 700 .62rem var(--mono); letter-spacing: .08em; }
+    .console__ready { color: var(--cyan); }
+    .console__lines { display: grid; gap: 8px; margin-top: 18px; }
+    .console__line { display: grid; grid-template-columns: 38px 1fr; align-items: center; gap: 9px; color: var(--muted); font: .62rem var(--mono); }
+    .console__line::after { content: ""; height: 7px; background: linear-gradient(90deg, var(--blue) 0 68%, var(--line) 68%); }
+    .console__line:nth-child(2)::after { background: linear-gradient(90deg, var(--cyan) 0 46%, var(--line) 46%); }
+    .console__line:nth-child(3)::after { background: linear-gradient(90deg, var(--orange) 0 82%, var(--line) 82%); }
+    .preview--lab { background: #330c12; }
+    .preview--lab::before { content: ""; position: absolute; inset: 20px; border: 1px solid rgba(216, 176, 63, .45); transform: rotate(2deg); }
+    .reels { position: relative; z-index: 1; display: flex; gap: 5px; padding: 12px; border: 1px solid #b58c29; background: linear-gradient(180deg, #7a1725, #470a13); box-shadow: 0 15px 32px rgba(0, 0, 0, .36), 0 0 0 4px rgba(203, 164, 39, .14); }
+    .reel { display: grid; width: 53px; height: 72px; place-items: center; border: 3px solid #caa531; background: #e9eae3; color: #1a1c20; font: 1.85rem var(--serif); }
+    .reel:nth-child(2) { color: #bd2f23; }
+    .reel:nth-child(3) { color: #1f4e79; }
+    .tool-card__body { flex: 1; }
+    .tool-card h2 { margin: 0; color: var(--ink); font: 700 clamp(1.6rem, 3vw, 2.25rem)/1.15 var(--serif); letter-spacing: -.035em; }
+    .tool-card__desc { max-width: 440px; margin: 13px 0 0; color: var(--muted); font-size: .94rem; line-height: 1.8; }
+    .tool-card__bottom { display: flex; align-items: end; justify-content: space-between; gap: 14px; margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); }
+    .tool-card__meta { margin: 0; color: var(--muted); font-size: .65rem; line-height: 1.7; }
+    .tool-card__cta { color: var(--blue); font-size: .86rem; font-weight: 700; white-space: nowrap; }
+    .hub-footer { margin-top: 54px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--muted); font: .7rem var(--mono); letter-spacing: .05em; }
+    .hub-footer p { margin: 0; }
+    .hub-footer a { color: var(--muted); text-decoration: none; }
+    .hub-footer a:hover { color: var(--blue); }
+    @media (max-width: 700px) {
+      .hub { width: min(100% - 28px, 1040px); padding-top: 18px; }
+      .hero { grid-template-columns: 1fr; gap: 34px; padding-top: 72px; }
+      .stamp { min-height: 145px; padding: 18px 0 0; border-top: 1px solid var(--line); border-left: 0; }
+      .stamp__number { position: absolute; right: 0; bottom: 30px; margin: 0; font-size: 4.4rem; }
+      .stamp__note { max-width: 210px; }
+      .tool-grid { grid-template-columns: 1fr; }
+      .tool-card { min-height: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="hub">
+    <nav class="topbar" aria-label="站点导航">
+      <a href="/">← UNC.LA</a>
+      <div class="topbar__right">
+        <span class="topbar__signal">● LOCAL FIRST</span>
+        <a href="/about/">ABOUT</a>
+      </div>
+    </nav>
+    <header class="hero">
+      <div>
+        <p class="eyebrow">UNC.LA / SMALL MACHINES</p>
+        <h1>小玩意，<em>请自取。</em></h1>
+        <p class="hero__copy">一些不太像文章、但值得亲手点一下的东西。工作状态可以自检，注意力也可以被一台老虎机拆开看。</p>
+      </div>
+      <aside class="stamp" aria-label="小玩意页面状态">
+        <span class="stamp__label">现在架上</span>
+        <span class="stamp__number">02</span>
+        <p class="stamp__note">两个小实验<br>都在浏览器里运行</p>
+        <span class="stamp__rule" aria-hidden="true"></span>
+      </aside>
+    </header>
+    <section class="tools" aria-labelledby="tools-title">
+      <div class="tools__intro">
+        <h2 id="tools-title" class="section-label">可以玩的东西</h2>
+        <p class="tools__count">02 ITEMS / NO ACCOUNT</p>
+      </div>
+      <div class="tool-grid">
+        <a class="tool-card" href="/funny/work-checkin/">
+          <div class="tool-card__top"><span class="tool-card__eyebrow">01 / CHECK-IN</span><span class="tool-card__arrow" aria-hidden="true">↗</span></div>
+          <div class="preview preview--checkin" aria-hidden="true">
+            <div class="console">
+              <div class="console__head"><span>PRE-FLIGHT CHECK</span><span class="console__ready">● READY</span></div>
+              <div class="console__lines"><span class="console__line">ENERGY</span><span class="console__line">AGENCY</span><span class="console__line">REST</span></div>
+            </div>
+          </div>
+          <div class="tool-card__body">
+            <h2>工作状态 Check-in</h2>
+            <p class="tool-card__desc">用 12 个问题，花 3 分钟看看最近的工作系统在发出什么信号。不诊断，只做一次诚实的状态快照。</p>
+          </div>
+          <div class="tool-card__bottom"><p class="tool-card__meta">12 QUESTIONS<br>≈ 3 MINUTES · LOCAL ONLY</p><span class="tool-card__cta">开始自检 →</span></div>
+        </a>
+        <a class="tool-card tool-card--lab" href="/dopamine-lab/">
+          <div class="tool-card__top"><span class="tool-card__eyebrow">02 / EXPERIMENT</span><span class="tool-card__arrow" aria-hidden="true">↗</span></div>
+          <div class="preview preview--lab" aria-hidden="true"><div class="reels"><span class="reel">♠</span><span class="reel">✦</span><span class="reel">◈</span></div></div>
+          <div class="tool-card__body">
+            <h2>欧气值 · 多巴胺实验室</h2>
+            <p class="tool-card__desc">先当小白鼠，再当法医，最后当产品经理。用一台认真调过参的老虎机，亲手观察不确定奖励怎样抓住注意力。</p>
+          </div>
+          <div class="tool-card__bottom"><p class="tool-card__meta">60 PULLS<br>3 ACTS · NO STORAGE</p><span class="tool-card__cta">进入实验室 →</span></div>
+        </a>
+      </div>
+    </section>
+    <footer class="hub-footer"><p>UNC.LA · SMALL MACHINES, BIG QUESTIONS</p><a href="/">回到主页 ↑</a></footer>
+  </main>
+</body>
+</html>
