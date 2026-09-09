@@ -321,6 +321,49 @@ body.home .main {
   line-height: 1.65;
 }
 
+/* 基础启发式高亮：只给未标注语言的代码块上色，避免覆盖 Chroma 的正式语法高亮。 */
+.post-content pre code.auto-highlighted {
+  --auto-hl-keyword: #bb9af7;
+  --auto-hl-function: #7aa2f7;
+  --auto-hl-constant: #ff9e64;
+  --auto-hl-number: #e0af68;
+  --auto-hl-string: #9ece6a;
+  --auto-hl-operator: #7dcfff;
+  --auto-hl-comment: #565f89;
+  color: #c0caf5;
+}
+
+.post-content pre code.auto-highlighted .auto-hl-keyword {
+  color: var(--auto-hl-keyword);
+  font-weight: 700;
+}
+
+.post-content pre code.auto-highlighted .auto-hl-function {
+  color: var(--auto-hl-function);
+}
+
+.post-content pre code.auto-highlighted .auto-hl-constant {
+  color: var(--auto-hl-constant);
+  font-weight: 700;
+}
+
+.post-content pre code.auto-highlighted .auto-hl-number {
+  color: var(--auto-hl-number);
+}
+
+.post-content pre code.auto-highlighted .auto-hl-string {
+  color: var(--auto-hl-string);
+}
+
+.post-content pre code.auto-highlighted .auto-hl-operator {
+  color: var(--auto-hl-operator);
+}
+
+.post-content pre code.auto-highlighted .auto-hl-comment {
+  color: var(--auto-hl-comment);
+  font-style: italic;
+}
+
 .project-index {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

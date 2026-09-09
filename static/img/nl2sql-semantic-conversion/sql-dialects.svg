@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="660" viewBox="0 0 560 660" role="img" aria-labelledby="title desc">
+<title id="title">One query, two SQL dialects</title><desc id="desc">PostgreSQL LIMIT 10 becomes SQL Server TOP (10). Projection, filter and ordering stay unchanged.</desc>
+<rect width="560" height="660" rx="24" fill="#101827"/>
+<g font-family="Arial, sans-serif"><text x="28" y="44" fill="#93c5fd" font-size="18" letter-spacing="2">01 / SAME QUERY, DIFFERENT SYNTAX</text>
+<rect x="20" y="68" width="520" height="252" rx="16" fill="#1d293e"/>
+<text x="40" y="102" fill="#f8fafc" font-size="25" font-weight="bold">PostgreSQL</text>
+<rect x="32" y="265" width="185" height="35" rx="6" fill="#1f6feb"/>
+<g font-family="monospace" font-size="24" fill="#e2e8f0"><text x="40" y="146">SELECT order_id, amount</text><text x="40" y="181">FROM orders</text><text x="40" y="216">WHERE amount &gt; 100</text><text x="40" y="251">ORDER BY order_id DESC</text><text x="40" y="291" fill="#ffffff">LIMIT 10;</text></g>
+<path d="M280 331v28m-9-9 9 9 9-9" stroke="#93c5fd" stroke-width="3" fill="none"/>
+<rect x="20" y="374" width="520" height="214" rx="16" fill="#1d293e"/>
+<text x="40" y="409" fill="#f8fafc" font-size="25" font-weight="bold">SQL Server</text>
+<rect x="132" y="430" width="124" height="32" rx="5" fill="#1f6feb"/>
+<g font-family="monospace" font-size="24" fill="#e2e8f0"><text x="40" y="454">SELECT <tspan fill="#ffffff">TOP (10)</tspan> order_id, amount</text><text x="40" y="489">FROM orders</text><text x="40" y="524">WHERE amount &gt; 100</text><text x="40" y="559">ORDER BY order_id DESC;</text></g>
+<text x="28" y="629" fill="#a7f3d0" font-size="23">Same columns · filter · order · row limit</text></g></svg>

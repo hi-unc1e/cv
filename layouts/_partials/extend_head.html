@@ -17,6 +17,11 @@
   {{- end -}}
 {{- end -}}
 
+{{- /* 未标注语言的代码块：用轻量启发式补上基础 token 颜色，明确语言的代码仍由 Chroma 处理。 */ -}}
+{{- with (resources.Get "js/auto-code-highlight.js" | resources.Minify) -}}
+<script>{{ .Content | safeJS }}</script>
+{{- end -}}
+
 {{- /* mermaid 客户端渲染：仅当页面含 ```mermaid 代码块时从 CDN 加载，失败退化为普通代码块。 */ -}}
 <script type="module">
   if (document.querySelector('pre > code.language-mermaid')) {

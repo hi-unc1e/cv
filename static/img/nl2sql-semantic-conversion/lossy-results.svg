@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="560" height="604" viewBox="0 0 560 604" role="img" aria-labelledby="title desc">
+<title id="title">Coarse categories change query results</title><desc id="desc">For amounts 80, 100, 150, 200, 240, greater than 100 selects the last three. Selecting only at least 200 misses 150; selecting all adds 80 and 100.</desc>
+<rect width="560" height="604" rx="24" fill="#101827"/>
+<g font-family="Arial, sans-serif" fill="#e2e8f0"><text x="28" y="44" fill="#93c5fd" font-size="18" letter-spacing="2">02 / INFORMATION LOST</text>
+<text x="28" y="87" font-size="24">Five orders. Amount in yuan.</text>
+<g font-size="25" text-anchor="middle"><text x="72" y="136">80</text><text x="176" y="136">100</text><text x="280" y="136">150</text><text x="384" y="136">200</text><text x="488" y="136">240</text></g>
+<text x="28" y="186" font-size="23">Wanted: amount &gt; 100</text>
+<g fill="#334155"><circle cx="72" cy="224" r="23"/><circle cx="176" cy="224" r="23"/></g><g fill="#238636"><circle cx="280" cy="224" r="23"/><circle cx="384" cy="224" r="23"/><circle cx="488" cy="224" r="23"/></g>
+<text x="28" y="302" font-size="23">Select “at least 200”</text>
+<g fill="#334155"><circle cx="72" cy="341" r="23"/><circle cx="176" cy="341" r="23"/></g><circle cx="280" cy="341" r="23" fill="none" stroke="#f87171" stroke-width="3"/><path d="m271 332 18 18m0-18-18 18" stroke="#f87171" stroke-width="3"/><g fill="#238636"><circle cx="384" cy="341" r="23"/><circle cx="488" cy="341" r="23"/></g>
+<text x="280" y="389" text-anchor="middle" fill="#fca5a5" font-size="22">150 missed</text>
+<text x="28" y="448" font-size="23">Select both categories</text>
+<g fill="#da3633"><circle cx="72" cy="487" r="23"/><circle cx="176" cy="487" r="23"/></g><g fill="#238636"><circle cx="280" cy="487" r="23"/><circle cx="384" cy="487" r="23"/><circle cx="488" cy="487" r="23"/></g>
+<text x="28" y="548" fill="#fca5a5" font-size="23">80 and 100 added</text>
+<text x="28" y="581" fill="#94a3b8" font-size="19">Green: selected correctly · Red: mismatch</text></g></svg>
