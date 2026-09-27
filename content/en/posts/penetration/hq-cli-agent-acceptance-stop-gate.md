@@ -51,9 +51,21 @@ The core idea in one sentence: **whatever machines can prove, machines prove**. 
 
 The quick/full split was taught to me by reality: quick stays under a minute and runs at every wrap-up; builds, e2e, and full suites go to full, reserved for milestones. There's also the case where a check can't run due to external conditions (quota, account, device) — the script exits with `exit 3`, meaning "⏸ not run" — neither pass nor fail. Forcing that into black-and-white only teaches people to ignore acceptance results.
 
+And here is what a machine check looks like in practice (real output; quick tier, 1.7s total; paths redacted):
+
+![hq verify --tier quick real output on Auto_JB_APE: lint passed in 0.1s, signal-contract tests passed in 1.6s, summary 2/2 passed](/img/hq-demo/hq-verify-quick.png)
+
+*`hq verify --tier quick`: lint ✅ 0.1s + signal contracts ✅ 1.6s, 2/2 passed*
+
 ## Reviewing and answering: five commands
 
 The CLI keeps exactly five human commands; machine commands live in a separate group under `--help` and stay out of daily view.
+
+The real board looks like this — one line per project, so everything waiting on your judgment is a single glance away (other projects anonymized):
+
+![hq status cross-project board: one row per project showing active/parked state, ❓ pending judgments, ⛔ blockers, ✅ machine-acceptance counts, and a one-line summary; the auto-jb-ape row shows 414 engine tests green with all questions cleared, other projects blurred for privacy](/img/hq-demo/hq-status-board.png)
+
+*Live board (local screenshot, other projects anonymized; terminal text in Chinese — columns read: name, state, ❓/⛔/✅ counts, one-line summary)*
 
 Review — standing inside a project, you see just that project (demo below uses the fictional project demo-api, data simulated):
 
@@ -124,6 +136,12 @@ The rules, in plain language:
 3. At most two blocks per turn — from the third attempt on, the gate lets the session through and records `gave-up` in the event log (`<project>/.hq/gate.log`). Preventing infinite loops outranks preventing slacking.
 
 And one design decision I consider the most important: **the gate is fail-open**. If hq itself crashes, times out, or hits a broken environment, it always lets you through. An acceptance tool must not become the new single point of failure — it's a gate, not a prison door.
+
+A real block-and-release captured on my machine (the agent's second attempt, after updating STATUS per the protocol, goes through; paths redacted):
+
+![hq gate real interception record: first wrap-up attempt returns decision block with the protocol remediation reason; after the agent updates STATUS per the protocol, the second attempt returns an empty JSON and is allowed through](/img/hq-demo/hq-stop-gate.png)
+
+*block with the protocol reason → remediation → `{}` allowed*
 
 The result is exactly the division of labor I wanted: an agent trying to wrap up with unverified changes gets bounced back by the machine; what it can prove, it proves itself; what it can't, it leaves as a ❓ for me. And I only ever handle the ❓s.
 
