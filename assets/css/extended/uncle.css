@@ -31,10 +31,10 @@
 :root[data-theme="dark"] {
   --theme: #10141d;
   --entry: #171d28;
-  --primary: #eef3fb;
+  --primary: #e4ebf5;
   --secondary: #9ca8bc;
   --tertiary: #333d4f;
-  --content: #d8dfeb;
+  --content: #c6cfdd;
   --code-block-bg: #090c12;
   --code-bg: #1c2330;
   --border: #293346;
