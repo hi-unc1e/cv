@@ -4,7 +4,7 @@ slug: esp32-iphone-ble-hid-agent
 translationKey: esp32-iphone-ble-hid-agent
 url: /en/26/10/esp32-iphone-ble-hid-agent/
 date: 2026-10-31T12:20:00+08:00
-draft: true
+draft: false
 codeStyle: tokyonight-night
 pageStyle: knowledge-base
 tags:
