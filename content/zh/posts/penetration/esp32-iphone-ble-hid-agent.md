@@ -122,6 +122,8 @@ flowchart LR
   <figcaption>一次按键在命令行里的样子。</figcaption>
 </figure>
 
+这套命令封在仓库的 [iphone-esp-control Skill](https://github.com/hi-unc1e/esp32-iphone-agent/blob/main/skills/iphone-esp-control/SKILL.md) 里。先跑 `ic doctor` 查服务端、板子、蓝牙和投屏，再用 `ic tap-text`、`ic run` 做点击和可重复场景；每一步都回 JSON，失败时能对着截图和报告查。
+
 网络也换了个方向：ESP32 主动找服务端，板上不监听端口。插着 USB 就走串口，拔线后靠 Wi-Fi + mDNS 自动回连；手机开热点、做 NAT 也能用。
 
 ## 实测下来
@@ -139,7 +141,7 @@ USB 到板子的 ping 中位数是 5 ms，Wi-Fi 是 104 ms。能用线就用线�
 
 能放模拟器里测的逻辑，就别占真机。真机留给网络、权限弹窗、传感器这些模拟器替代不了的东西。我平时用它跑 App 回归和兼容性复现，也会在红队报告里补几张真机截图。
 
-医院里更麻烦：电脑不能装 Agent，也上不了外网，就让手机跑 AI，ESP32 把手机上的文字当成键盘输入敲进电脑。这个用法我还没写，感兴趣可以往这个方向深挖。
+医院这个例子来自 [tombkeeper 的微博](https://weibo.com/1401527553/Rp7ivkeOD)：医院电脑一般不能访问互联网，医生也就很难用 AI 写病历。顺着这个思路，可以让联网手机跑 AI，ESP32 把手机上的文字当成键盘输入敲进电脑。这个用法我还没写，感兴趣可以往这个方向深挖。
 
 它替代不了模拟器。需要碰真机的时候，再让它上场。
 
