@@ -44,7 +44,7 @@ flowchart LR
 
 <figure>
   <img src="/img/esp32-iphone-ble-hid-agent/app-store-real-device.jpg" alt="A real iPhone App Store Today screen mirrored to the Mac, with the green AssistiveTouch pointer visible after the agent tapped the App Store icon." loading="lazy">
-  <figcaption>2026-10-31 当前 iPhone 实测：Agent 识别并点击 App Store 图标后截到的真实页面，绿色辅助触控指针仍在画面里。这里没有安装、购买或修改账号。</figcaption>
+  <figcaption>2026-10-31 当前 iPhone 实测：Agent 识别并点击 App Store 图标后截到的真实页面，绿色辅助触控指针仍在画面里。</figcaption>
 </figure>
 
 下面这段 7.6 秒素材来自同一套链路，保留了原始录屏证据，方便看指针移动和界面反馈：
