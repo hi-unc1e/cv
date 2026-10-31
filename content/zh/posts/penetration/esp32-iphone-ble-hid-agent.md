@@ -27,13 +27,13 @@ iOS 不需要知道自己被自动化。对它来说，ESP32-S3 就是一个叫 
 
 ```mermaid
 flowchart LR
-    P[iPhone] -- "AirPlay screen" --> U[UxPlay receiver]
-    U -- "fresh JPEG frames" --> S[Python server]
-    S -- "planner / actor models" --> S
-    S -- "USB serial preferred" --> E[ESP32-S3]
-    S -- "Wi-Fi + mDNS fallback" --> E
-    E -- "BLE keyboard + mouse" --> P
-    P -- "screen change" --> U
+    P[iPhone] -- "AirPlay 画面" --> U[UxPlay 接收器]
+    U -- "新鲜 JPEG 帧" --> S[Python 服务端]
+    S -- "规划 / 执行模型" --> S
+    S -- "优先 USB 串口" --> E[ESP32-S3]
+    S -- "Wi-Fi + mDNS 回退" --> E
+    E -- "BLE 键盘 + 鼠标" --> P
+    P -- "画面变化" --> U
 ```
 
 三个工程约束决定这条链路能不能稳定：
