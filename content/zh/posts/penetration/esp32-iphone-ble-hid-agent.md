@@ -17,7 +17,7 @@ description: "ESP32-S3 通过 BLE HID 和 AirPlay 控制 iPhone：不用越狱�
 
 让 Agent 操作 iPhone，瓶颈通常不是模型，而是手。安卓有 ADB；iOS 常用的 WebDriverAgent 要开发者模式、Xcode 签名和证书维护，免费证书七天过期，别人的手机也很难按这套流程借给你测。
 
-我换了一条路：<strong>ESP32-S3 只做标准蓝牙键盘和鼠标，AirPlay 把屏幕交给电脑，Python 服务端先看见指针、修正到位，再把点击交给手机。</strong>真机不越狱、不开开发者模式，也不安装被控 App。项目核心是给 Agent 一双合法外设的手，加一套可复核的眼睛，而不是攻破 iOS。
+我换了一条路：<strong>ESP32-S3 只做标准蓝牙键盘和鼠标，AirPlay 把屏幕交给电脑，Python 服务端先看见指针、修正到位，再把点击交给手机。</strong>真机不越狱、不开开发者模式，也不安装被控 App；它只依赖已授权的蓝牙外设和屏幕镜像权限，每一步动作都能回看截图和坐标。
 
 代码在 [hi-unc1e/esp32-iphone-agent](https://github.com/hi-unc1e/esp32-iphone-agent)。这次合并把「电脑控制模式」变成主线，同时保留原来板子自带 AirPlay、iPhone App 独立运行的版本。
 
@@ -36,11 +36,11 @@ flowchart LR
     P -- "screen change" --> U
 ```
 
-这条路有三个容易做错的地方，我都在代码里给了约束：
+三个工程约束决定这条链路能不能稳定：
 
 1. <strong>指针是相对的，iOS 还有加速度曲线。</strong>固件把移动拆成沿直线的等长报告，每 15 ms 一帧，避免发太快后被 BLE 合并或丢帧。服务端用三点自动校准拟合屏幕比例，之后定期把指针打回左上角清漂移。
 2. <strong>不能盲点。</strong>AssistiveTouch 指针设成绿色小环后，服务端会在点击前识别指针；误差超过 0.8% 屏幕距离就修正，最多三次，仍然看不见或不到位就不按下。
-3. <strong>动作后要复核。</strong>服务端等待新帧、确认画面变化，再把结果交给模型决定下一步。测试产物包含截图、动作坐标、OCR 断言、耗时和可选 MP4，而不是只留一句“成功”。
+3. <strong>动作后要复核。</strong>服务端等待新帧、确认画面变化，再把结果交给模型决定下一步。测试产物包含截图、动作坐标、OCR 断言、耗时和可选 MP4，失败时能定位到动作和画面。
 
 <figure>
   <img src="/img/esp32-iphone-ble-hid-agent/app-store-real-device.jpg" alt="A real iPhone App Store Today screen mirrored to the Mac, with the green AssistiveTouch pointer visible after the agent tapped the App Store icon." loading="lazy">
@@ -56,23 +56,23 @@ flowchart LR
 
 ## 关键架构改动
 
-原项目的 standalone 架构很强硬：ESP32 自己做 AirPlay 接收器、开热点、转发 H.264，iPhone App 再通过 BLE 拿视频并决策。问题是 BLE 已经被视频占用，再叠 HID 会抢时序；Xcode 签名和 iOS App 也让借用设备变麻烦。
+原项目把接收、转发和决策都压在板子与手机上：ESP32 做 AirPlay 接收器、开热点、转发 H.264，iPhone App 再通过 BLE 拿视频并决策。BLE 已经被视频占用，再叠 HID 会抢时序；Xcode 签名和 iOS App 也让借用设备变麻烦。
 
 | 层 | 原主线 | 这次合并后的电脑控制模式 |
 |---|---|---|
 | 眼睛 | 板子接收 AirPlay，BLE 转视频 | Mac/Linux 跑 UxPlay，服务端读新鲜 JPEG |
-| 大脑 | iPhone SwiftUI App | Python server，可接 planner/actor 视觉模型 |
+| 大脑 | iPhone SwiftUI App | Python server；planner 规划，actor 执行，另暴露 CLI/MCP |
 | 手 | USB HID | ESP32-S3 BLE HID 键鼠 |
-| 传输 | 手机和板子绑得更紧 | 有 USB 串口优先串口；拔线后 Wi-Fi/mDNS 自动找服务端 |
+| 传输 | 视频走 BLE，手机需加入板卡热点 | 有 USB 串口优先串口；拔线后 Wi-Fi/mDNS 自动找服务端 |
 | 验收 | 人工看 App 状态 | JSON 场景、OCR、HTML 报告、截图和录屏 |
 
-最有价值的改动不是“加了蓝牙”，而是把控制面从手机里拿出来。这样 Agent 可以和代码、日志、测试报告处在同一台电脑上，也能通过 CLI/MCP 把 iPhone 变成工具调用。板子仍然只执行行协议，不做决策；断线时会释放鼠标和键盘，避免卡在长按。
+这次把决策代码从 iPhone 移到 Mac/Linux：Agent、日志和测试报告在同一台电脑上，CLI/MCP 可以把 iPhone 注册成工具。ESP32 只执行行协议；断线时释放鼠标和键盘，避免卡在长按。
 
 网络方向也反过来了：ESP32 主动连服务器，板上不开监听端口，手机热点 NAT 后面也能工作。`_hidagent._tcp` 由服务端广播，板子按 mDNS 找地址；插回 USB 时约 1 秒切到串口，拔掉供电重启后 8.3 秒经 Wi-Fi 回连，iPhone 蓝牙和投屏没有断。
 
 ## 实测边界
 
-先说可用部分。2026-10-31 在当前 iPhone 上跑健康检查：
+2026-10-31 在当前 iPhone 上，健康检查全部通过：
 
 ```json
 {
@@ -85,13 +85,13 @@ flowchart LR
 }
 ```
 
-同一轮合并验收里：iOS 模拟器测试 81 个通过；Python 服务端 77 个通过、1 个跳过；BLE 固件和 standalone 固件都能编译。链路指标更能说明取舍：USB 串口路径 HTTP 到板子的 ping 中位数 5.0 ms、p95 5.4 ms；Wi-Fi 路径中位数 104 ms、p95 203 ms。所以默认推荐串口，无线只是脱机场景的兜底。
+同一轮验收里：iOS 模拟器测试 81 个通过；Python 服务端 77 个通过、1 个跳过；BLE 固件和 standalone 固件都能编译。传输选择看实测延迟：USB 串口路径 HTTP 到板子的 ping 中位数 5.0 ms、p95 5.4 ms；Wi-Fi 路径中位数 104 ms、p95 203 ms。所以默认推荐串口，无线只做脱机兜底。
 
-再说边界。iOS 不镜像锁屏密码、Apple Pay 和 DRM 视频；键盘报告目前以 ASCII 为主，中文要依赖输入法候选和额外点击，不能当成稳定通用输入；校准主要按竖屏设计；BLE HID 同一时间只连一个主机。物理 Agent 还会碰到购买、删除、发送这类不可逆按钮，测试场景必须先声明禁区，保留 Emergency Stop，并把录屏和结果 JSON 当成审计材料。
+还受这些限制：iOS 不镜像锁屏密码、Apple Pay 和 DRM 视频；键盘报告目前以 ASCII 为主，中文要依赖输入法候选和额外点击，不能当成稳定通用输入；校准主要按竖屏设计；BLE HID 同一时间只连一个主机。物理 Agent 还会碰到购买、删除、发送这类不可逆按钮，测试场景必须先声明禁区，保留 Emergency Stop，并把录屏和结果 JSON 当成审计材料。
 
-所以我的使用判断很直接：<strong>模拟器能证明的逻辑就留在模拟器；只有真实设备、真实网络、真实权限弹窗和真实传感器才值得用这套链路。</strong>它适合手机 App 回归、兼容性复现、红队报告里的“实际用户路径”证据，也适合行动受限时的远程手工控制。反过来说，如果你的目标是绕过 iOS 安全边界，这套方案并不适合：它只是用户已授权的辅助功能和外设自动化。
+我的取舍是：<strong>模拟器能证明的逻辑就留在模拟器；只有真实设备、真实网络、真实权限弹窗和真实传感器才值得用这套链路。</strong>它适合手机 App 回归、兼容性复现、红队报告里的“实际用户路径”证据，也适合行动受限时的远程手工控制。如果你的目标是绕过 iOS 安全边界，这套方案帮不上忙：它只使用用户已授权的辅助功能和外设自动化。
 
-还有一个我在受限环境里看好的延伸：医院或隔离内网电脑装不了 Agent、访问不了外部服务时，能联网的手机可以承担交互入口，ESP32 再作为电脑的 HID 键盘，把手机侧文本敲进电脑。这个用法我没写，感兴趣的话可以往这个方向深挖。
+另一个可试的场景是医院或隔离内网：电脑装不了 Agent、访问不了外部服务，能联网的手机承担交互，ESP32 再作为电脑的 HID 键盘，把手机侧文本敲进去。这个用法我没写，感兴趣的话可以往这个方向深挖。
 
 ## 附录：复现与选购
 
@@ -106,7 +106,7 @@ flowchart LR
 | 网络 | 2.4 GHz Wi-Fi | ESP32 不支持 5 GHz；手机和电脑需能到达同一服务端 |
 | 电脑 | macOS/Linux | 跑 UxPlay、Python server、模型和测试 |
 | 软件 | ESP32 core 3.3.x，NimBLE-Arduino 2.5.1，UxPlay 1.74 | 版本偏差主要影响 HID API 和 GStreamer 兼容性 |
-| 回退 | USB HID + Lightning 相机转换器 | BLE 不稳时保留有线方案，但要处理供电 |
+| 回退 | USB HID + Lightning 相机转换器 | BLE 不稳时用有线；iPhone 提示配件耗电过大时，给转换器 Lightning 口接充电头 |
 
 </details>
 
@@ -131,4 +131,4 @@ iPhone 一次性设置：蓝牙配对 `iPhone Agent HID`；开启 AssistiveTouch
 
 </details>
 
-真机 Agent 的价值不在于替代 ADB，而在于当 ADB、越狱和开发者模式都不可用时，仍然能留下一段可重放、可审计、可失败的动作证据。
+当 ADB、越狱和开发者模式都不可用时，这套链路仍能留下可重放、可审计、可失败的动作证据。
