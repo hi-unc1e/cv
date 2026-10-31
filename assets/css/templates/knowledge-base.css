@@ -434,6 +434,122 @@
   color: #888;
 }
 
+/* Night reading: PaperMod may be dark while this legacy template defaults to Notion light colors. */
+:root[data-theme="dark"] .post-content {
+  color: var(--content);
+}
+
+:root[data-theme="dark"] .post-content p,
+:root[data-theme="dark"] .post-content li,
+:root[data-theme="dark"] .post-content li section,
+:root[data-theme="dark"] .post-content del,
+:root[data-theme="dark"] .post-content figcaption,
+:root[data-theme="dark"] .post-content .footnote-word,
+:root[data-theme="dark"] .post-content .footnote-ref,
+:root[data-theme="dark"] .post-content .footnote-item p {
+  color: var(--content);
+}
+
+:root[data-theme="dark"] .post-content h1,
+:root[data-theme="dark"] .post-content h2,
+:root[data-theme="dark"] .post-content h3,
+:root[data-theme="dark"] .post-content h4,
+:root[data-theme="dark"] .post-content h5,
+:root[data-theme="dark"] .post-content h6,
+:root[data-theme="dark"] .post-content h1 .content,
+:root[data-theme="dark"] .post-content h2 .content,
+:root[data-theme="dark"] .post-content h3 .content,
+:root[data-theme="dark"] .post-content h4 .content,
+:root[data-theme="dark"] .post-content strong,
+:root[data-theme="dark"] .post-content em strong,
+:root[data-theme="dark"] .post-content .footnote-num {
+  color: var(--primary);
+}
+
+:root[data-theme="dark"] .post-content em {
+  color: #c8d2df;
+}
+
+:root[data-theme="dark"] .post-content h2 {
+  border-bottom-color: var(--border);
+}
+
+:root[data-theme="dark"] .post-content h2 .content {
+  background: var(--entry);
+}
+
+:root[data-theme="dark"] .post-content h3 .content {
+  border-bottom-color: #b98a25;
+}
+
+:root[data-theme="dark"] .post-content > p strong,
+:root[data-theme="dark"] .post-content li strong,
+:root[data-theme="dark"] .post-content table td strong,
+:root[data-theme="dark"] .post-content mark {
+  color: #1f2430;
+  background: #f0cf74;
+}
+
+:root[data-theme="dark"] .post-content a {
+  color: #9ec5ff;
+  border-bottom-color: rgba(158, 197, 255, 0.55);
+}
+
+:root[data-theme="dark"] .post-content hr {
+  background-color: var(--border);
+}
+
+:root[data-theme="dark"] .post-content img {
+  border-color: var(--border);
+}
+
+:root[data-theme="dark"] .post-content p code,
+:root[data-theme="dark"] .post-content li code {
+  color: #ffb4a9;
+  background: rgba(160, 72, 62, 0.2);
+}
+
+:root[data-theme="dark"] .post-content pre code.hljs,
+:root[data-theme="dark"] .post-content pre code:not(.hljs) {
+  background: var(--code-block-bg);
+}
+
+:root[data-theme="dark"] .post-content table,
+:root[data-theme="dark"] .post-content table tr th,
+:root[data-theme="dark"] .post-content table tr td {
+  border-color: var(--border);
+}
+
+:root[data-theme="dark"] .post-content table tr th {
+  background: var(--entry);
+  color: var(--primary);
+}
+
+:root[data-theme="dark"] .post-content table tr td {
+  background: var(--theme);
+  color: var(--content);
+}
+
+:root[data-theme="dark"] .post-content .multiquote-1,
+:root[data-theme="dark"] .post-content .multiquote-2,
+:root[data-theme="dark"] .post-content .multiquote-3,
+:root[data-theme="dark"] .post-content .callout {
+  background: var(--entry);
+  border-left-color: #b98a25;
+}
+
+:root[data-theme="dark"] .post-content .multiquote-1 p,
+:root[data-theme="dark"] .post-content .multiquote-2 p,
+:root[data-theme="dark"] .post-content .multiquote-3 p,
+:root[data-theme="dark"] .post-content .callout,
+:root[data-theme="dark"] .post-content .callout-title {
+  color: var(--content);
+}
+
+:root[data-theme="dark"] .post-content .footnotes-sep {
+  border-top-color: var(--border);
+}
+
 .post-content .nice-suffix-juejin-container {
   margin-top: 20px !important;
 }
