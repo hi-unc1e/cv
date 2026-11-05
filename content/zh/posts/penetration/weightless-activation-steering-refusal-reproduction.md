@@ -1,5 +1,5 @@
 ---
-title: "复现 Weightless：不改权重就能清零拒绝，但没有传说中那么神"
+title: "复现 Weightless：不改权重就能越狱白盒 LLM，3B 模型上拒绝 9/12 降到 0/12"
 slug: weightless-activation-steering-refusal-reproduction
 translationKey: weightless-activation-steering-refusal-reproduction
 url: /26/11/weightless-activation-steering-refusal-reproduction/
