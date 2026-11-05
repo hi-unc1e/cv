@@ -1,5 +1,5 @@
 ---
-title: "复现 Weightless 激活投影：不改权重清零拒绝，但回答停不下来"
+title: "复现 Weightless：不改权重就能清零拒绝，但没有传说中那么神"
 slug: weightless-activation-steering-refusal-reproduction
 translationKey: weightless-activation-steering-refusal-reproduction
 url: /26/11/weightless-activation-steering-refusal-reproduction/
@@ -11,7 +11,7 @@ tags:
   - 运行时安全
   - 红队
   - LLM 越狱
-description: "在 Colab L4 上复现 Weightless（captain-vector 与 GLP 激活投影）：不改 Qwen2.5-3B-Instruct 权重，拒绝从 9/12 降到 0/12，可逐 token 撤销，但 512 token 截断从 5/24 升至 18/24，等强度随机对照还暴露了正则评分器的假阳性。"
+description: "在 Colab L4 上复现 Weightless（captain-vector 与 GLP 激活投影）：不改 Qwen2.5-3B-Instruct 权重，拒绝从 9/12 降到 0/12，可逐 token 撤销，但 512 token 截断从 5/24 升至 18/24，等强度随机对照还暴露了正则评分器会把婉拒误判为越狱成功。"
 ---
 
 <section class="blackhat-source" aria-label="研究来源">
