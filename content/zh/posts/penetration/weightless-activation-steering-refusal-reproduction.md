@@ -56,7 +56,7 @@ h′ = h − α · (h · d̂_ℓ) d̂_ℓ
 <figure class="blackhat-source-figure">
   <img src="/img/weightless/projection_2d_explainer.png" alt="投影公式二维示意：纵轴为激活在拒绝方向 d̂ 上的坐标 h·d̂，横轴为 PC1；α=0.25 时 h·d̂ 剩 75%，α=1 时归零，横向位置不变。">
   <figcaption>
-    <span class="blackhat-figure-caption">纵轴是激活在拒绝方向 d̂ 上的坐标 h·d̂，d̂ 就是两组请求激活的均值差。投影只把这一个坐标乘以 (1−α)：α = 0.25 剩 75%，α = 1 归零。横轴等其他方向完全不动。</span>
+    <span class="blackhat-figure-caption">纵轴是激活在拒绝方向 d̂ 上的坐标 h·d̂，d̂ 就是两组请求激活的均值差。投影只把这一个坐标乘以 (1−α)：α = 0.25 剩 75%，α = 1 归零。横轴等其他方向完全不动。目标是让违规请求在拒绝方向上和正常请求重合。</span>
     <span class="blackhat-figure-source">Qwen2.5-0.5B-Instruct 第 14 层真实激活，24+24 条提示，小模型 Qwen2.5-0.5B 演示、非本文 3B 实验数据。</span>
   </figcaption>
 </figure>
@@ -74,7 +74,7 @@ h′ = h − α · (h · d̂_ℓ) d̂_ℓ
     <img src="/img/weightless/projection_3panel.png" alt="三个视角并排：α = 0、0.25、1 时违规组 h·d̂ 均值从 3.54 降到 2.65 再到 0.00。">
   </video>
   <figcaption>
-    <span class="blackhat-figure-caption">违规请求（橙）和正常请求（蓝）的激活在"拒绝方向"上分得很开。α 从 0 加到 1，橙色点云沿 d̂ 被压到 h·d̂ = 0 的平面上，水平位置一点没动。</span>
+    <span class="blackhat-figure-caption">违规请求（橙）和正常请求（蓝）的激活在"拒绝方向"上分得很开。α 从 0 加到 1，橙色点云沿 d̂ 被压到 h·d̂ = 0 的平面上，水平位置一点没动。目标是让违规请求在拒绝方向上和正常请求重合。</span>
     <span class="blackhat-figure-source">Qwen2.5-0.5B-Instruct 第 14 层真实激活，24+24 条提示，小模型 Qwen2.5-0.5B 演示、非本文 3B 实验数据。</span>
   </figcaption>
 </figure>
