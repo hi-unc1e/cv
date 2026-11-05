@@ -31,6 +31,14 @@ description: "在 Colab L4 上复现 Weightless（captain-vector 与 GLP 激活�
 
 前阵子一个朋友丢给我 Weightless 这个项目，说它能"越狱全球开源模型"，通杀。
 
+<figure class="blackhat-source-figure" style="max-width:560px;margin-left:auto;margin-right:auto;">
+  <a href="https://weightle.ss/" target="_blank" rel="noopener noreferrer"><img src="/img/weightless/weightless-site.jpg" alt="Weightless 官网首页截图：Abliteration without the weights. Put your model on GLP." style="width:100%;height:auto;"></a>
+  <figcaption>
+    <span class="blackhat-figure-caption">朋友发来的项目官网首页。点击图片打开 <a href="https://weightle.ss/" target="_blank" rel="noopener noreferrer">weightle.ss</a>。</span>
+    <span class="blackhat-figure-source"><a href="https://weightle.ss/#files" target="_blank" rel="noopener noreferrer">weightle.ss</a> 首页截图</span>
+  </figcaption>
+</figure>
+
 我拆开看了看，又在 Colab 上完整复现了一遍。先说结论：没有吹的那么神，但确实有效，而且思路是新的。
 
 有效，是指在 `Qwen2.5-3B-Instruct` 上，它不碰一个字节的权重，就把 12 条违规请求的拒绝从 9/12 压到了 0/12，卸掉 hook 又能逐 token 回到原模型。

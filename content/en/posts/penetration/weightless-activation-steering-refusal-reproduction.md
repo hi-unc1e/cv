@@ -1,5 +1,5 @@
 ---
-title: "Reproducing Weightless: Jailbreaking a White-Box LLM Without Touching Weights, Refusals Drop from 9/12 to 0/12 on a 3B Model"
+title: "Reproducing Weightless: Jailbreaking a White-Box LLM Without Touching Weights"
 slug: weightless-activation-steering-refusal-reproduction
 translationKey: weightless-activation-steering-refusal-reproduction
 url: /en/26/11/weightless-activation-steering-refusal-reproduction/
@@ -30,6 +30,14 @@ description: "Reproducing Weightless (captain-vector plus GLP activation project
 <div class="blackhat-divider" aria-hidden="true"></div>
 
 A while ago a friend sent me the Weightless project and said it could "jailbreak every open model out there." All of them.
+
+<figure class="blackhat-source-figure" style="max-width:560px;margin-left:auto;margin-right:auto;">
+  <a href="https://weightle.ss/" target="_blank" rel="noopener noreferrer"><img src="/img/weightless/weightless-site.jpg" alt="Screenshot of the Weightless homepage: Abliteration without the weights. Put your model on GLP." style="width:100%;height:auto;"></a>
+  <figcaption>
+    <span class="blackhat-figure-caption">The project homepage my friend sent. Click the image to open <a href="https://weightle.ss/" target="_blank" rel="noopener noreferrer">weightle.ss</a>.</span>
+    <span class="blackhat-figure-source"><a href="https://weightle.ss/#files" target="_blank" rel="noopener noreferrer">weightle.ss</a> homepage screenshot</span>
+  </figcaption>
+</figure>
 
 I took it apart and reproduced it end to end on Colab. The short version: it is not as magical as the pitch, but it does work, and the idea is new.
 
