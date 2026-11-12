@@ -6,12 +6,6 @@ hiddenInRss: true
 showtoc: false
 ---
 
-## Writing & Experiments
-
-| Project | Description | URL |
-| --- | --- | --- |
-| BuildBuffer | A wealth & risk journal from an engineer's view: cash flow, security, and the second growth curve | [buildbuffer.com](https://buildbuffer.com/) |
-
 ## Programming Projects
 
 Only public repositories that still represent my current technical direction.

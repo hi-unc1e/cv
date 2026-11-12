@@ -126,7 +126,7 @@ Let's Encrypt 签发
 docker run -d \
   --name qiniu-auto-cert \
   --restart always \
-  -e DOMAIN="buildbuffer.cdn.zuoxueba.org" \
+  -e DOMAIN="cdn.example.com" \
   -e EMAIL="your-email@example.com" \
   -e QINIU_AK="your_qiniu_access_key" \
   -e QINIU_SK="your_qiniu_secret_key" \

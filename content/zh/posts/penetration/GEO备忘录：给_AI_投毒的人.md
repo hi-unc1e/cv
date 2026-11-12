@@ -18,7 +18,7 @@ tags:
 
 两款 AI 把这款不存在的手环排进了推荐位，还特别贴心地加了句"适合中老年用户与健康养生爱好者"。
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/03/23/17742252891695.jpg)
+![](/img/geo-note/17742252891695.jpg)
 
 
 
@@ -37,7 +37,7 @@ tags:
 
 输入产品信息，几分钟内自动生成十几篇软文：8 篇"专家测评"、2 篇"行业排名"、1 篇"用户好评"。
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/03/23/17742253061128.jpg)
+![](/img/geo-note/17742253061128.jpg)
 
 
 
@@ -66,7 +66,7 @@ GEO，全称 Generative Engine Optimization，生成式引擎优化。
 + SEO 时代，你自己还能比一比。
 + GEO 时代，AI 已经替你比完了。
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/04/06/01-comparison-seo-vs-geo.png)
+![](/img/geo-note/01-comparison-seo-vs-geo.png)
 
 这不是未来的事。IDC 的数据说，2025 年中国 AI 搜索月活用户已经超过 6 亿。六成企业用户在作采购决策前，会先用 AI 问答平台查供应商信息。
 
@@ -81,7 +81,7 @@ Gartner 预测，到 2028 年，25% 的搜索行为将迁移到生成式引擎�
 ## 一门门槛极低的灰色生意
 我花了一些时间，把这条链路拆了一遍。
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/03/23/middle.png)
+![](/img/geo-note/middle.png)
 
 
 
@@ -131,7 +131,7 @@ AI 大模型的算法每周更新，上周投的"毒"，这周可能就被冲掉
 
 更高级的玩法还包括：伪造作者人设、AI 生成头像和虚假履历、批量制造假评论、在 schema 标记里塞入误导性结构化数据、甚至往网页代码里藏隐形的 prompt 指令，试图在 AI 爬取时直接"命令"它。
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/03/23/17742249165237.jpg)
+![](/img/geo-note/17742249165237.jpg)
 
 
 
@@ -178,11 +178,11 @@ AI 大模型的算法每周更新，上周投的"毒"，这周可能就被冲掉
 
 如果 AI 引用了你的虚构内容，恭喜你——你刚刚完成了一次 GEO 投毒的概念验证。
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/04/06/17754372100257.jpg)
+![](/img/geo-note/17754372100257.jpg)
 
 这个实验的意义不是教你去做坏事，而是让你亲身体验：**AI 的"客观推荐"，到底有多脆弱。**
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/04/06/02-flowchart-geo-demo-ssteps.png)
+![](/img/geo-note/02-flowchart-geo-demo-ssteps.png)
 
 ---
 
@@ -195,7 +195,7 @@ AI 大模型的算法每周更新，上周投的"毒"，这周可能就被冲掉
 + **AI 的引用源质量差。** 很多 AI 现在会标注引用来源。如果引用的全是没听说过的小站点、新注册的自媒体账号、或者内容农场风格的网站，有时甚至是 xx新闻 的注册用户，那么这条推荐的可信度要打个大折扣。比如这一条： （TODO）
 + **问两遍，换个问法。** GEO 投毒通常针对特定关键词优化。换一种问法、换一个 AI 平台再问一次，看结果是否一致。不一致的部分，就是需要你自己判断的部分。
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/04/06/03-infographic-detection-signals.png)
+![](/img/geo-note/03-infographic-detection-signals.png)
 
 
 
@@ -232,11 +232,11 @@ AI 大模型的算法每周更新，上周投的"毒"，这周可能就被冲掉
 
 最后输出的报告，大概长这样：
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/04/06/17754362119622.jpg)
+![](/img/geo-note/17754362119622.jpg)
 
 
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/04/06/17754366270626.jpg)
+![](/img/geo-note/17754366270626.jpg)
 
 
 
@@ -255,7 +255,7 @@ AI 大模型的算法每周更新，上周投的"毒"，这周可能就被冲掉
 
 ---
 
-![](https://buildbuffer.cdn.zuoxueba.org/mweb/2026/03/23/17742250441801.jpg)
+![](/img/geo-note/17742250441801.jpg)
 
 
 

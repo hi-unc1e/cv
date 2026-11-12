@@ -6,12 +6,6 @@ hiddenInRss: true
 showtoc: false
 ---
 
-## 写作与实验
-
-| 项目 | 说明 | URL |
-| --- | --- | --- |
-| BuildBuffer | 从工程师视角记录现金流、安全感和第二增长曲线的风险与财富专题 | [buildbuffer.com](https://buildbuffer.com/) |
-
 ## 编程项目
 
 这里只放仍能代表我当前技术方向的公开仓库。
